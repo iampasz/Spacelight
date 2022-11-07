@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bear">Bear</string>
+    <string name="rebbit">Rabbit</string>
+    <string name="cat">Cat</string>
+    <string name="pig">Pig</string>
+    <string name="frog">Frog</string>
+    <string name="dog">Dog</string>
+    <string name="begemot">Hippo</string>
+    <string name="mouse">Mouse</string>
+    <string name="moon">Moon</string>
+
+    <string name="title_ad">Congratulations</string>
+    <string name="text_ad">You opened secret Night Light!</string>
+
+</resources>

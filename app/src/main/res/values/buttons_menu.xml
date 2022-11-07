@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="sounds">Sounds</string>
+    <string name="bg_color">BG Color</string>
+    <string name="ng_color">NL Color</string>
+    <string name="ng">Nightlighter</string>
+    <string name="timer">Timer</string>
+    <string name="brightness">Brightness</string>
+
+    <string name="menu">Menu</string>
+
+    <string name="lock">Lock</string>
+    <string name="unlock">Unlock</string>
+
+    <string name="animation">Animation</string>
+
+
+    <string name="politica">Privacy Policy</string>
+
+</resources>
