@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">Lumière de lespace</string>
+    <string name="facebook_app_id" translatable="false">488998881840882</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb488998881840882</string>
+    <!--<string name="banner_ad_unit_id">ca-app-pub-1657105281106558/8080795492</string>-->
+    <!--старий ненастраевымый банер-->
+    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/9922711695</string>
+    <!--native banner ads
+    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/7813195271</string>-->
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="again">Encore?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="ok">d accord</string>
+
+    <string name="open_policy">Politique d ouverture?</string>
+    <string name="hippo">hippopotame</string>
+    <string name="koala">koala</string>
+    <string name="cow">vache</string>
+    <string name="monkey">guenon</string>
+    <string name="panda">Panda</string>
+    <string name="raccoon">raton laveur</string>
+
+    <string name="cat">chatte</string>
+    <string name="pig">truie</string>
+    <string name="bear">ourse</string>
+
+
+    <integer-array name="hours">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </integer-array>
+
+    <integer-array name="minutes">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </integer-array>
+
+    <string name="sounds">Des sons</string>
+    <string name="bg_color">BG Couleur</string>
+    <string name="ng_color">NL Couleur</string>
+    <string name="ng">Veilleuse</string>
+    <string name="timer">Minuteur</string>
+    <string name="brightness">Luminosité</string>
+
+    <string name="menu">Menu</string>
+
+    <string name="lock">Bloquer</string>
+    <string name="unlock">Ouvrir</string>
+
+    <string name="animation">Animation</string>
+
+
+    <string name="politica">Politique de confidentialité</string>
+
+
+
+    <string name="title_ad">Toutes nos félicitations</string>
+    <string name="text_ad">Vous avez ouvert la veilleuse secrète!</string>
+
+    <string name="minutes">minutes</string>
+    <string name="hours">heures</string>
+
+
+
+</resources>

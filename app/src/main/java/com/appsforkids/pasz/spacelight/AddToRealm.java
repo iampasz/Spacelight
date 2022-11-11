@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.appsforkids.pasz.spacelight.Interfaces.GetJson;
 import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
+import com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 import com.appsforkids.pasz.spacelight.RealmObjects.ShopItems;
 
@@ -96,6 +97,70 @@ class AddToRealm {
                         }else{
                             realm.insert(musicItemArrayList.get(i));
                         }
+                    }
+
+                    realm.commitTransaction();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        readJson.execute("https://koko-oko.com/audio/music.json");
+    }
+
+
+    public void getImgJsonFromURL(){
+
+        ReadJson readJson = new ReadJson(new GetJson() {
+            @Override
+            public void getJson(String result) {
+
+                ArrayList<ImageBgFile> imageItemArrayList = new ArrayList<>();
+
+                try {
+
+                    String jsonText = result;
+
+                    JSONObject jsonRoot = new JSONObject(jsonText);
+                    JSONArray jsonArray = jsonRoot.getJSONArray("music");
+
+                    //Toast.makeText(context, jsonArray.length()+" ", Toast.LENGTH_SHORT).show();
+                    for(int i = 0; jsonArray.length()>i; i++){
+
+                        ImageBgFile imageBgFile = new ImageBgFile();
+
+                      //  imageBgFile.setId(jsonArray.getJSONObject(i).getInt("id"));
+
+
+
+
+
+
+                        //Toast.makeText(context, jsonArray.getJSONObject(0).getString("name")+"55", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, musicItem.getName()+"55", Toast.LENGTH_SHORT).show();
+
+                        imageItemArrayList.add(imageBgFile);
+
+                    }
+
+
+                    Realm.init(ctx);
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+
+                    if(realm.where(AudioFile.class).findFirst()!=null){
+                        maxId =  realm.where(AudioFile.class).max("id");
+                    }
+
+                    for(int i = 0; i<imageItemArrayList.size(); i++){
+
+//                        if(imageItemArrayList.get(i).getImage_internet_link()<=maxId.intValue()){
+//
+//                        }else{
+//                            realm.insert(imageItemArrayList.get(i));
+//                        }
                     }
 
                     realm.commitTransaction();

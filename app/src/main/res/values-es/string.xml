@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">Luz espacial</string>
+    <string name="facebook_app_id" translatable="false">488998881840882</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb488998881840882</string>
+    <!--<string name="banner_ad_unit_id">ca-app-pub-1657105281106558/8080795492</string>-->
+    <!--старий ненастраевымый банер-->
+    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/9922711695</string>
+    <!--native banner ads
+    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/7813195271</string>-->
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="again">Otra vez?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="ok">ok</string>
+
+    <string name="open_policy">política abierta?</string>
+    <string name="hippo">hipopótamo</string>
+    <string name="koala">coala</string>
+    <string name="cow">vaca</string>
+    <string name="monkey">mona</string>
+    <string name="panda">panda</string>
+    <string name="raccoon">mapache</string>
+
+    <string name="cat">gata</string>
+    <string name="pig">cerda</string>
+    <string name="bear">llevar</string>
+
+
+    <integer-array name="hours">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </integer-array>
+
+    <integer-array name="minutes">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </integer-array>
+
+    <string name="sounds">Sonidos</string>
+    <string name="bg_color">BG Color</string>
+    <string name="ng_color">NL Color</string>
+    <string name="ng">Encendedor nocturno</string>
+    <string name="timer">Temporizador</string>
+    <string name="brightness">Brillo</string>
+
+    <string name="menu">Menú</string>
+
+    <string name="lock">Cerrar</string>
+    <string name="unlock">desbloquear</string>
+
+    <string name="animation">Animación</string>
+
+
+    <string name="politica">Política de privacidad</string>
+
+
+
+    <string name="title_ad">Felicidades</string>
+    <string name="text_ad">Abriste la Luz Nocturna secreta!</string>
+
+    <string name="minutes">minutos</string>
+    <string name="hours">horas</string>
+
+
+
+</resources>

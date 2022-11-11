@@ -9,10 +9,12 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.appsforkids.pasz.spacelight.Adapters.ListImageAdapter;
 import com.appsforkids.pasz.spacelight.Adapters.ListMusicAdapter;
 import com.appsforkids.pasz.spacelight.DownloadFileFromURL;
 import com.appsforkids.pasz.spacelight.Interfaces.DownloadButton;
@@ -33,7 +35,7 @@ import io.realm.Sort;
 public class BgListFragment extends Fragment {
 
     ImageView close_button;
-    ListMusicAdapter listMusicAdapter;
+    ListImageAdapter listImageAdapter;
     RecyclerView rv_melody;
     int currentMusicPosition = -1;
     ArrayList<AudioFile> arrayList;
@@ -44,7 +46,7 @@ public class BgListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Set View container and add buterknife library
-        View view = inflater.inflate(R.layout.my_music_list, container, false);
+        View view = inflater.inflate(R.layout.bg_list, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -145,9 +147,9 @@ public class BgListFragment extends Fragment {
             }
         };
 
-        listMusicAdapter = new ListMusicAdapter(getContext(), playMyMusic, downloadButton);
+        listImageAdapter = new ListImageAdapter(getContext(), playMyMusic, downloadButton);
 
-        rv_melody.setAdapter(listMusicAdapter);
+        rv_melody.setAdapter(listImageAdapter);
 
         close_button = (ImageView) view.findViewById(R.id.close_button);
         close_button.setOnClickListener(new View.OnClickListener() {
@@ -227,8 +229,8 @@ public class BgListFragment extends Fragment {
         needFile.setStatus(true);
         realm.commitTransaction();
 
-        if (listMusicAdapter != null) {
-            listMusicAdapter.notifyDataSetChanged();
+        if (listImageAdapter != null) {
+            listImageAdapter.notifyDataSetChanged();
         }
 
         return needFile.getInternetLink();

@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Space Light</string>
+    <string name="facebook_app_id" translatable="false">488998881840882</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb488998881840882</string>
+    <!--<string name="banner_ad_unit_id">ca-app-pub-1657105281106558/8080795492</string>-->
+    <!--старий ненастраевымый банер-->
+    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/9922711695</string>
+    <!--native banner ads
+    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/7813195271</string>-->
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="again">Again?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">ok</string>
+
+    <string name="open_policy">Open policy?</string>
+    <string name="hippo">hippo</string>
+    <string name="koala">koala</string>
+    <string name="cow">cow</string>
+    <string name="monkey">monkey</string>
+    <string name="panda">panda</string>
+    <string name="raccoon">raccoon</string>
+    <string name="cat">cat</string>
+    <string name="pig">pig</string>
+    <string name="bear">bear</string>
+
+
+    <integer-array name="hours">
+            <item>1</item>
+            <item>2</item>
+            <item>3</item>
+            <item>4</item>
+            <item>5</item>
+            <item>6</item>
+            <item>7</item>
+            <item>8</item>
+        </integer-array>
+
+    <integer-array name="minutes">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </integer-array>
+
+    <string name="sounds">Sounds</string>
+    <string name="bg_color">BG Color</string>
+    <string name="ng_color">NL Color</string>
+    <string name="ng">Nightlighter</string>
+    <string name="timer">Timer</string>
+    <string name="brightness">Brightness</string>
+
+    <string name="menu">Menu</string>
+
+    <string name="lock">Lock</string>
+    <string name="unlock">Unlock</string>
+
+    <string name="animation">Animation</string>
+
+
+    <string name="politica">Privacy Policy</string>
+
+
+
+    <string name="title_ad">Congratulations</string>
+    <string name="text_ad">You opened secret Night Light!</string>
+
+    <string name="minutes">minutes</string>
+    <string name="hours">hours</string>
+
+
+
+</resources>

@@ -45,7 +45,11 @@ import com.appsforkids.pasz.spacelight.R;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 import com.appsforkids.pasz.spacelight.RevolutionAnimationView;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
@@ -92,6 +96,8 @@ public class MainFragment extends Fragment {
 
     MyPagerAdapter pagerAdapter;
    // MediaPlayer mediaPlayer;
+
+    private AdView mAdView;
 
     RecyclerViewAdapter adapter;
 
@@ -155,6 +161,9 @@ public class MainFragment extends Fragment {
 
         myObjects = new MyObjects(getContext());
 
+        mAdView = view.findViewById(R.id.adView);
+
+        setMyAds();
 
         setSettings();
 
@@ -175,7 +184,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onFinish() {
                 lockButton.setVisibility(View.GONE);
-                suit.setVisibility(View.GONE);
+                //suit.setVisibility(View.GONE);
             }
         };
 
@@ -188,11 +197,12 @@ public class MainFragment extends Fragment {
        // lock_frame.setZ(1);
 
         lock_frame.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
                 lockButton.setVisibility(View.VISIBLE);
-                suit.setVisibility(View.VISIBLE);
+                //suit.setVisibility(View.VISIBLE);
                 hideLockTimer.start();
 
                 return false;
@@ -326,6 +336,9 @@ public class MainFragment extends Fragment {
             lock_button.setImageResource(R.drawable.ic_lock);
             lockButton.setAlpha(0.3f);
             lock_frame.setClickable(true);
+
+            mAdView.setVisibility(View.GONE);
+
             chekMenu = false;
             show = false;
 
@@ -335,13 +348,15 @@ public class MainFragment extends Fragment {
         } else {
             rv.setVisibility(View.VISIBLE);
             textView.setVisibility(View.VISIBLE);
+            suit.setVisibility(View.VISIBLE);
+            mAdView.setVisibility(View.VISIBLE);
             lockButton.setAlpha(1f);
             if(timerOn){
                 timerText.setVisibility(View.VISIBLE);
             }else{
 
             }
-            suit.setVisibility(View.VISIBLE);
+
             lock_button.setImageResource(R.drawable.ic_unlock);
             lock_frame.setClickable(false);
             chekMenu = true;
@@ -519,13 +534,14 @@ public class MainFragment extends Fragment {
 
     private void changeBackgroundImage(){
 
+        anim_bg++;
 
         if(anim_bg>=myObjects.getBackground().length){
             anim_bg = 0;
         }
         mainBg.setBackgroundResource(myObjects.getBackground()[anim_bg]);
         backgroundTumbler=false;
-        anim_bg++;
+
     }
 
     private void setMelody(){
@@ -634,6 +650,21 @@ public class MainFragment extends Fragment {
                         mInterstitialAd = null;
                     }
                 });
+    }
+
+    private void setMyAds(){
+
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        //Реклама РАБОТАЕТ ПРОСТО ОТКЛЮЧИТЬ ТУТ
+        mAdView.loadAd(adRequest);
     }
 
 }

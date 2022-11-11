@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "941264475117",
+    "project_id": "space-light-d50f8",
+    "storage_bucket": "space-light-d50f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:941264475117:android:4ec6142b9b230025250de4",
+        "android_client_info": {
+          "package_name": "com.appsforkids.pasz.spacelight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "941264475117-js7pg12u5ss19589ptlrkoigf9gatcr6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9x65WOoIjIfG5Xe0E9aPVgEzRhTaWLVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "941264475117-js7pg12u5ss19589ptlrkoigf9gatcr6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

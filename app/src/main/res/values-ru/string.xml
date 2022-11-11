@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Свет космоса</string>
+    <string name="facebook_app_id" translatable="false">488998881840882</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb488998881840882</string>
+    <!--<string name="banner_ad_unit_id">ca-app-pub-1657105281106558/8080795492</string>-->
+    <!--старий ненастраевымый банер-->
+    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/9922711695</string>
+    <!--native banner ads
+    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/7813195271</string>-->
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="again">Заново?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="ok">ок</string>
+
+    <string name="open_policy">Открыть политику конфиденциальности?</string>
+    <string name="hippo">гипопотам</string>
+    <string name="koala">коала</string>
+    <string name="cow">корова</string>
+    <string name="monkey">мартышка</string>
+    <string name="panda">панда</string>
+    <string name="raccoon">енот</string>
+    <string name="cat">кот</string>
+    <string name="pig">свинка</string>
+    <string name="bear">мишка</string>
+
+
+    <integer-array name="hours">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </integer-array>
+
+    <integer-array name="minutes">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+    </integer-array>
+
+    <string name="sounds">Звуки</string>
+    <string name="bg_color">Цвет фона</string>
+    <string name="ng_color">Цвет ночника</string>
+    <string name="ng">Ночник</string>
+    <string name="timer">Таймер</string>
+    <string name="brightness">Яркость</string>
+
+    <string name="menu">Меню</string>
+
+    <string name="lock">Блок</string>
+    <string name="unlock">Розблок</string>
+
+    <string name="animation">Анимация</string>
+
+
+    <string name="politica">Политика конфиденциальности</string>
+
+
+
+    <string name="title_ad">Поздравления</string>
+    <string name="text_ad">Вы открыли скрытый ночник</string>
+
+    <string name="minutes">минуты</string>
+    <string name="hours">часы</string>
+
+
+
+</resources>

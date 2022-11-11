@@ -86,7 +86,6 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
             public void onClick(View view) {
                // DownloadFileFromURL downloadFileFromURL =  new DownloadFileFromURL(holder.play_frame.ge)
                 downloadButton.download(holder.getAdapterPosition());
-                Log.i("Test", " holder.download_frame.setOnClickListener" );
             }
         });
 
@@ -101,14 +100,12 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
 
                 if(pressedPosition==holder.getAdapterPosition()){
                     //holder.play_item.setImageResource(R.drawable.bt_play);
-                    Log.i("Play", pressedPosition+ " тут должен плей поставить " +  holder.getAdapterPosition());
                     playMyMusic.pressPosition(holder.getAdapterPosition(), false);
                     pressedPosition=-1;
 
                 }else{
                     playMyMusic.pressPosition(holder.getAdapterPosition(), true);
                     //holder.play_item.setImageResource(R.drawable.bt_pause);
-                    Log.i("Play", pressedPosition+ " тут должен стоп поставить " +  holder.getAdapterPosition());
                     pressedPosition =  holder.getAdapterPosition();
                 }
                 notifyDataSetChanged();
@@ -122,12 +119,8 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
             holder.play_item.setImageResource(R.drawable.bt_play);
         }
 
-        Log.i("ListMusicAdapter", currentMusicPosition+" currentMusicPosition and holder.getAdapterPosition() "+ holder.getAdapterPosition());
-
         if(holder.getAdapterPosition()==currentMusicPosition && currentMusicPosition!=-1){
             holder.play_item.setImageResource(R.drawable.bt_pause);
-            Log.i("ListMusicAdapter", currentMusicPosition+" we are here");
-
         }
 
     }

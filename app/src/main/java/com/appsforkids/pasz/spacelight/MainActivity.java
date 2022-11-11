@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String MY_SETTINGS = "my_settings";
     int currentMusicPosition = -1;
-    private AdView mAdView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setFullScrean();
         setSettings();
         setContentView(R.layout.main);
-        setMyAds();
+
 
         if (!isFirstOpen()) {
             //We add nightlights to realm at first time
@@ -271,20 +271,7 @@ public class MainActivity extends AppCompatActivity {
         return hasVisited;
     }
 
-    private void setMyAds(){
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-
-
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        //Реклама РАБОТАЕТ ПРОСТО ОТКЛЮЧИТЬ ТУТ
-        //  mAdView.loadAd(adRequest);
-    }
 
     private void loadBanner() {
 //        AdRequest adRequest = new AdRequest.Builder().addTestDevice ("DF666E0D371B0FD388029A01F5323F05").addTestDevice("4642B5D65FCEE3D701A93A8A6ED589EA")
