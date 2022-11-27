@@ -47,7 +47,7 @@
     <string name="sounds">Звуки</string>
     <string name="bg_color">Цвет фона</string>
     <string name="ng_color">Цвет ночника</string>
-    <string name="ng">Ночник</string>
+    <string name="ng">Фон</string>
     <string name="timer">Таймер</string>
     <string name="brightness">Яркость</string>
 

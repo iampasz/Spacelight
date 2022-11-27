@@ -47,7 +47,7 @@
     <string name="sounds">Geräusche</string>
     <string name="bg_color">BG Farbe</string>
     <string name="ng_color">NL Farbe</string>
-    <string name="ng">Nachtlichter</string>
+    <string name="ng">BG Farbe</string>
     <string name="timer">Timer</string>
     <string name="brightness">Helligkeit</string>
 

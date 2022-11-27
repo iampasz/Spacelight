@@ -1,8 +1,10 @@
 package com.appsforkids.pasz.spacelight.RealmObjects;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 
-public class ShopItems extends RealmObject {
+public class ShopItems extends RealmObject implements Serializable {
 
     public int cost;
     public int image_item;

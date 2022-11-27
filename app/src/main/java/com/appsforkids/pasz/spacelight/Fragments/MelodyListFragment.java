@@ -1,6 +1,8 @@
 package com.appsforkids.pasz.spacelight.Fragments;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.appsforkids.pasz.spacelight.Adapters.ListMusicAdapter;
 import com.appsforkids.pasz.spacelight.DownloadFileFromURL;
+import com.appsforkids.pasz.spacelight.Interfaces.DoThisAction;
 import com.appsforkids.pasz.spacelight.Interfaces.DownloadButton;
 import com.appsforkids.pasz.spacelight.Interfaces.FileIsDownloaded;
 import com.appsforkids.pasz.spacelight.MainActivity;
@@ -44,7 +47,7 @@ public class MelodyListFragment extends Fragment {
     int currentMusicPosition = -1;
     ArrayList<AudioFile> arrayList;
     int clickId;
-
+    String nameSong ="";
 
     @Nullable
     @Override
@@ -69,85 +72,119 @@ public class MelodyListFragment extends Fragment {
         //Set current music position
         setSettings();
 
-
         PlayMyMusic playMyMusic = new PlayMyMusic() {
+            Boolean answer = false;
             @Override
             public void pressPosition(int position, Boolean play_status) {
 
-                AudioFile audioFile = arrayList.get(position);
+                nameSong = arrayList.get(position).getNameSong();
+                Log.i("WHAT", "імя файлу яке було щойно натиснуте " + nameSong);
 
-                Log.i("FIRST", audioFile.getResourceLink() + "we are");
-                Log.i("FIRST", audioFile.getFileName() + "we are");
-                Log.i("FIRST", audioFile.getLockalLink() + "we are");
-                Log.i("FIRST", audioFile.getInternetLink() + "we are");
-                Log.i("FIRST", audioFile.getNameSong() + "we are");
-                Log.i("FIRST", audioFile.getAuthorSong() + "we are");
-                if(audioFile.getResourceLink()!=0){
-                    Log.i("FIRST", audioFile.getResourceLink() + "we are");
-                    ((MainActivity)getActivity()).playMusic(audioFile.getResourceLink(), play_status);
-                    Log.i("FIRST", "we are");
+                if(play_status){
+                    Log.i("WHAT", "зараз тут ПЛЕЙ " + play_status);
 
                 }else{
-                    if(audioFile.getLockalLink()!=null){
-                        ((MainActivity)getActivity()).playLockalMusic(audioFile.getLockalLink(),play_status);
+                    Log.i("WHAT", "зараз тут СТОП " + play_status);
+                    nameSong ="";
+                }
+
+                if(arrayList.get(position).getLockalLink()!=null){
+                    pressPlay(position, play_status);
+                }else{
+
+                    if(!play_status){
+                        pressPlay(position, play_status);
                     }else{
-                        ((MainActivity)getActivity()).playLockalMusic(audioFile.getInternetLink(),play_status);
+
+                        switch (hasConnection(getContext())) {
+                            case 0:
+                                getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init("Інтернет вимкнено. Завантажте мелодію для програвання в фоновому режимі")).commit();
+
+                                break;
+                            case 1:
+                                getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init("Рекомендуємо завантажити мелодію на мобільний пристрій")).commit();
+                                pressPlay(position, play_status);
+                                break;
+                            case 2:
+                                getParentFragmentManager()
+                                        .beginTransaction()
+                                        .add(R.id.container,
+                                                MessageFragment.init("Інтернет підключено до мобільної мережі. Рекомендуємо використовувати вайфай, або завантажити мелодію на пристрій. Продовжити використовувати мобільну мережу?", new DoThisAction() {
+                                                    @Override
+                                                    public void doThis() {
+                                                        pressPlay(position, play_status);
+                                                    }
+
+                                                    @Override
+                                                    public void doThis(int hours, int minutes) {
+
+                                                    }
+                                                    @Override
+                                                    public  void doThat() {
+                                                        listMusicAdapter.setPressedPosition();
+                                                        listMusicAdapter.notifyDataSetChanged();
+                                                    }
+                                                })).commit();
+                                break;
+                            case 3:
+                                getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init("Рекомендуємо завантажити мелодію на мобільний пристрій")).commit();
+                                pressPlay(position, play_status);
+                                break;
+                        }
+
                     }
                 }
 
+            }
 
-
-                if(play_status){
-                    currentMusicPosition = position;
-                }else{
-                    currentMusicPosition = -1;
-                }
-
-
-//                AudioFile audioFile = arrayList.get(position);
-//
-//                if (audioFile.getResourceLink() != 0) {
-//                    Log.i("Playr", "Playe file:" + audioFile.getId());
-//                    ((MainActivity) getActivity()).playMusic(audioFile.getId(), play_status);
-//                } else {
-//                    if (audioFile.getLockalLink() != null) {
-//                        Log.i("Playr", "Playe file:" + audioFile.getLockalLink());
-//
-//                        ((MainActivity) getActivity()).playLockalMusic(audioFile.getLockalLink(), play_status);
-//                    } else {
-//                        if (audioFile.getInternetLink() != null) {
-//                            Log.i("Playr", "Playe file:" + audioFile.getInternetLink());
-//                            ((MainActivity) getActivity()).playLockalMusic(audioFile.getInternetLink(), play_status);
-//                        } else {
-//                            Log.i("Playr", "Sorry, but file is broken");
-//                        }
-//                    }
-//                }
+            @Override
+            public boolean getAnswer(){
+                return answer;
             }
 
         };
-
         DownloadButton downloadButton = new DownloadButton() {
             @Override
             public void download(int position) {
-                Log.i("Test", position + " position");
 
-                AudioFile audioFile = arrayList.get(position);
+                switch (hasConnection(getContext())) {
+                    case 0:
+                        getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init("Інтернет вимкнено. Для завантаження мелодії під'єднайтесь до інтернету")).commit();
 
-                clickId = audioFile.getId();
+                        break;
+                    case 1:
+                        pressDownload(position);
+                        break;
+                    case 2:
 
-                Log.i("Test", audioFile.getInternetLink() + " audioFileAll.get(position).getInternetLink()");
-                String file_name = audioFile.getFileName();
-                new DownloadFileFromURL(getActivity(), file_name, new FileIsDownloaded() {
-                    @Override
-                    public void fileDownloaded(String path) {
-                        Log.i("hello", "hello");
-                        //Toast.makeText(getContext(), "hghggg", Toast.LENGTH_SHORT).show();
-                        saveLink(clickId, path);
-                        //Toast.makeText(getContext(), "sdsd", Toast.LENGTH_SHORT).show();
-                        refreshList();
-                    }
-                }).execute(audioFile.getInternetLink());
+                        getParentFragmentManager()
+                                .beginTransaction()
+                                .add(R.id.container,
+                                        MessageFragment.init("Інтернет підключено до мобільної мережі. Рекомендуємо використовувати вайфай. Продовжити використовувати мобільну мережу?", new DoThisAction() {
+                                            @Override
+                                            public void doThis() {
+                                                listMusicAdapter.setPressedPosition();
+                                                pressDownload(position);
+
+                                            }
+
+                                            @Override
+                                            public void doThis(int hours, int minutes) {
+
+                                            }
+                                            @Override
+                                            public void doThat() {
+
+                                            }
+                                        })).commit();
+
+                        break;
+                    case 3:
+                        pressDownload(position);
+                        break;
+                }
+
+
             }
         };
 
@@ -166,30 +203,31 @@ public class MelodyListFragment extends Fragment {
 
     //Play choosing melody in Main Activity
     public void playMusic(int musicId) {
-        ((MainActivity) getActivity()).playMusic(musicId, true);
+       // ((MainActivity) getActivity()).playMusic(musicId, true);
 
     }
 
-    ;
-
     //Save current music position
-    private void saveSettings(){
+    private void saveSettings() {
         Realm.init(getContext());
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         MySettings settings = realm.where(MySettings.class).findFirst();
         settings.setCurrentMusicPosition(currentMusicPosition);
+        settings.setCurrentMusic(nameSong);
+        //fileName = arrayList.get(position).getFileName();
+
+        Log.i("WHAT", "ім'я файлу яке було зараз збережене в налаштуваннях " + nameSong);
         realm.commitTransaction();
-        Log.i("MelodyListFragment",  "saveSettings in MelodyListFragment. Current position was save. CurrentPosition is "+ currentMusicPosition);
     }
 
     //Get currentMusicPosition from saved settings
-    public void setSettings(){
+    public void setSettings() {
         Realm.init(getContext());
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         MySettings settings = realm.where(MySettings.class).findFirst();
-        currentMusicPosition = settings.getCurrentMusicPosition();
+        nameSong = settings.getCurrentMusic();
         realm.commitTransaction();
     }
 
@@ -197,7 +235,6 @@ public class MelodyListFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         saveSettings();
-        Log.i("currentMusicPosition",  currentMusicPosition + "currentMusicPosition");
     }
 
     public ArrayList<AudioFile> getAudios() {
@@ -205,15 +242,6 @@ public class MelodyListFragment extends Fragment {
         if (arrayList == null) {
             arrayList = new ArrayList<>();
         }
-//        //Перша мелодія яка яку не потрібно завантажувати з інтернету
-//        AudioFile firstAudio = new AudioFile();
-//        firstAudio.setResourseLink(R.raw.sound_file_3);
-//        firstAudio.setNameSong("Stream");
-//        firstAudio.setAuthorSong("Twarres");
-//        firstAudio.setStatus(true);
-//        firstAudio.setLockalLink("plug");
-//
-//        arrayList.add(firstAudio);
 
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
@@ -234,15 +262,75 @@ public class MelodyListFragment extends Fragment {
         realm.commitTransaction();
 
         if (listMusicAdapter != null) {
-            listMusicAdapter.notifyDataSetChanged();
+            //listMusicAdapter.notifyDataSetChanged();
         }
-
         return needFile.getInternetLink();
     }
 
     private void refreshList() {
+        listMusicAdapter.setPressedPosition();
         arrayList.clear();
         arrayList = getAudios();
+        listMusicAdapter.notifyDataSetChanged();
+    }
 
+    public int hasConnection(final Context context) {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return 3;
+        } else {
+
+        }
+        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return 2;
+        } else {
+
+        }
+        wifiInfo = cm.getActiveNetworkInfo();
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return 1;
+        } else {
+
+        }
+        return 0;
+    }
+
+    private void pressPlay(int position, Boolean play_status){
+        AudioFile audioFile = arrayList.get(position);
+
+        if (audioFile.getResourceLink() != 0) {
+            ((MainActivity) getActivity()).playMusic(audioFile.getResourceLink(), play_status);
+
+        } else {
+            if (audioFile.getLockalLink() != null) {
+                ((MainActivity) getActivity()).playLockalMusic(audioFile.getLockalLink(), play_status);
+            } else {
+                  ((MainActivity) getActivity()).playLockalMusic(audioFile.getInternetLink(), play_status);
+            }
+        }
+
+        if (play_status) {
+            currentMusicPosition = position;
+        } else {
+            currentMusicPosition = -1;
+        }
+    }
+
+    private void pressDownload(int position){
+        AudioFile audioFile = arrayList.get(position);
+
+        clickId = audioFile.getId();
+
+        String file_name = audioFile.getFileName();
+        new DownloadFileFromURL(getActivity(), file_name, new FileIsDownloaded() {
+            @Override
+            public void fileDownloaded(String path) {
+                saveLink(clickId, path);
+                refreshList();
+            }
+        }).execute(audioFile.getInternetLink());
     }
 }

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     private static final String TAG = "MainActivity";
     private static final String MY_SETTINGS = "my_settings";
-    int currentMusicPosition = -1;
+    String nameSong = "";
 
 
     @Override
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             mySettings.createCoinse(500);
             mySettings.setRate(0);
             mySettings.setAdds(false);
-            mySettings.setCurrentMusicPosition(-1);
+            mySettings.setCurrentMusic("");
             mySettings.setTimerTime(-1);
 
             realm.insert(mySettings);
@@ -206,12 +206,19 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.i("Hello", "No AddToRealm" + settings);
             MyObjects myObjects = new MyObjects(this);
-            currentMusicPosition = settings.getCurrentMusicPosition();
+            nameSong = settings.getCurrentMusic();
 
-            if (currentMusicPosition != -1) {
-                Log.i("currentMusicPosition", currentMusicPosition + "currentMusicPosition");
+            Log.i("WHAT", "mySettings " + settings);
+            Log.i("WHAT", "nameSong " + nameSong);
 
-                AudioFile audioFile = getAudios().get(currentMusicPosition);
+            AudioFile audioFile = getAudios().where().equalTo("nameSong", nameSong).findFirst();
+
+            Log.i("WHAT", audioFile+"  fffff  ");
+//            Log.i("WHAT", audioFile.getNameSong()+"  fffff2  ");
+
+            if (audioFile != null) {
+
+                Log.i("WHAT", audioFile.nameSong+"");
 
                 if(audioFile.getResourceLink()!=0){
                     playMusic(audioFile.getResourceLink(), true);

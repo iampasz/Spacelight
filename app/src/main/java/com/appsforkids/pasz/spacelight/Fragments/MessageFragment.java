@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class MessageFragment extends Fragment {
 
-    @BindView(R.id.no_button )
+    @BindView(R.id.no_button)
     FrameLayout no_button;
 
     @BindView(R.id.yes_button)
@@ -69,6 +69,8 @@ public class MessageFragment extends Fragment {
         new FadeInAnimation(view).setDuration(300).animate();
         new ScaleInAnimation(view).setDuration(500).animate();
 
+        DoThisAction doThisAction = (DoThisAction)  getArguments().getSerializable("do_this");
+
 
         no_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +78,9 @@ public class MessageFragment extends Fragment {
 
                 //new FlipVerticalAnimation(frame_constraine).setDuration(1000).animate();
                 //new ScaleOutAnimation(frame_constraine).setDuration(500).animate();
+
+                doThisAction.doThis(0,0);
+                doThisAction.doThat();
 
                 FragmentManager fm = getParentFragmentManager();
                 fm.beginTransaction().remove(MessageFragment.this).commit();
@@ -87,7 +92,7 @@ public class MessageFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-               DoThisAction doThisAction = (DoThisAction)  getArguments().getSerializable("do_this");
+
 
                 new FadeOutAnimation(frame_constraine).setDuration(200).setListener(new AnimationListener() {
                     @Override

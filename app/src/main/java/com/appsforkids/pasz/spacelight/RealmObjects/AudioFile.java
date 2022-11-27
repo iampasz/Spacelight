@@ -1,8 +1,10 @@
 package com.appsforkids.pasz.spacelight.RealmObjects;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 
-public class AudioFile extends RealmObject {
+public class AudioFile extends RealmObject implements Serializable {
 
     int id;
     public String nameSong;

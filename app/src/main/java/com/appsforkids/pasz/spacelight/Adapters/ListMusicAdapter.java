@@ -34,10 +34,12 @@ import io.realm.Sort;
 public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.ListMusicHolder> {
 
     PlayMyMusic playMyMusic;
-    int pressedPosition = -1;
-    int currentMusicPosition = -1;
+
+
     DownloadButton downloadButton;
     RealmResults<AudioFile> audioFileAll;
+    private String nameSong;
+
 
     public ListMusicAdapter(Context ctx, PlayMyMusic playMyMusic, DownloadButton downloadButton){
         this.playMyMusic = playMyMusic;
@@ -59,6 +61,8 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
     @Override
     public void onBindViewHolder(@NonNull ListMusicHolder holder, int position) {
 
+
+
             if((position%2)==0){
                 holder.music_constrain.setBackgroundResource(R.drawable.music_item_bg);
             }
@@ -68,9 +72,9 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
                 }
             }
 
-        if(hasConnection(holder.music_constrain.getContext())==0  &&  audioFileAll.get(holder.getAdapterPosition()).getLockalLink() == null){
-            holder.music_constrain.setVisibility(View.GONE);
-        }
+//        if(hasConnection(holder.music_constrain.getContext())==0  &&  audioFileAll.get(holder.getAdapterPosition()).getLockalLink() == null){
+//            //holder.music_constrain.setVisibility(View.GONE);
+//        }
 
         //holder.play_item.setTag(UUID.randomUUID().toString());
         holder.music_name.setText(audioFileAll.get(holder.getAdapterPosition()).nameSong);
@@ -91,37 +95,77 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
 
 
 
+
         holder.music_constrain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //Log.i("Play", position +" it is i, and  listMusicHolder.getAdapterPosition() " +holder.getAdapterPosition());
-                currentMusicPosition=-1;
+                //nameSong = audioFileAll.get(holder.getAdapterPosition()).getNameSong();
 
-                if(pressedPosition==holder.getAdapterPosition()){
-                    //holder.play_item.setImageResource(R.drawable.bt_play);
+
+                //Log.i("WHAT", "audioFileAll.get(holder.getAdapterPosition()).getFileName()" + audioFileAll.get(holder.getAdapterPosition()).getFileName());
+                Log.i("WHAT", "currentMusic" + nameSong);
+                holder.play_item.setImageResource(R.drawable.bt_pause);
+//
+//                if(audioFileAll.get(holder.getAdapterPosition()).getFileName()==currentMusic){
+//                    holder.play_item.setImageResource(R.drawable.bt_pause);
+//
+//                }else{
+//                    holder.play_item.setImageResource(R.drawable.bt_play);
+//                }
+
+                //Log.i("Play", position +" it is i, and  listMusicHolder.getAdapterPosition() " +holder.getAdapterPosition());
+                //currentMusic="";
+
+                Log.i("Hello", nameSong + " nameSong");
+                Log.i("Hello", audioFileAll.get(holder.getAdapterPosition()).getNameSong() + " holder.getAdapterPosition()).getFileName()");
+
+                if(audioFileAll.get(holder.getAdapterPosition()).getNameSong().equals(nameSong)){
+                    holder.play_item.setImageResource(R.drawable.bt_play);
                     playMyMusic.pressPosition(holder.getAdapterPosition(), false);
-                    pressedPosition=-1;
+                    nameSong="";
+                    Log.i("Hello", "We are here false");
 
                 }else{
                     playMyMusic.pressPosition(holder.getAdapterPosition(), true);
-                    //holder.play_item.setImageResource(R.drawable.bt_pause);
-                    pressedPosition =  holder.getAdapterPosition();
+                    holder.play_item.setImageResource(R.drawable.bt_pause);
+                    nameSong = audioFileAll.get(holder.getAdapterPosition()).getNameSong();
+                    Log.i("Hello", "We are here true");
                 }
-                notifyDataSetChanged();
+                 notifyDataSetChanged();
             }
         });
-        //Log.i("Play", pressedPosition +" presed and new " +holder.getAdapterPosition());
-        if(holder.getAdapterPosition()==pressedPosition){
+
+        Log.i("WHAT", "currentMusic notifyDataSetChanged " + nameSong);
+        Log.i("WHAT", "audioFileAll.get(holder.getAdapterPosition()).getNameSong() " + audioFileAll.get(holder.getAdapterPosition()).getNameSong());
+
+        if(audioFileAll.get(holder.getAdapterPosition()).getNameSong().equals(nameSong)){
             holder.play_item.setImageResource(R.drawable.bt_pause);
 
         }else{
             holder.play_item.setImageResource(R.drawable.bt_play);
         }
 
-        if(holder.getAdapterPosition()==currentMusicPosition && currentMusicPosition!=-1){
+        Log.i("WHAT", "Збережена позиція " + nameSong);
+
+        if(audioFileAll.get(holder.getAdapterPosition()).getNameSong().equals(nameSong) && nameSong!=""){
             holder.play_item.setImageResource(R.drawable.bt_pause);
         }
+
+
+
+
+
+//        if(holder.getAdapterPosition()==pressedPosition){
+//            holder.play_item.setImageResource(R.drawable.bt_pause);
+//
+//        }else{
+//            holder.play_item.setImageResource(R.drawable.bt_play);
+//        }
+//
+//        if(holder.getAdapterPosition()==currentMusicPosition && currentMusicPosition!=-1){
+//            holder.play_item.setImageResource(R.drawable.bt_pause);
+//        }
 
     }
 
@@ -185,9 +229,39 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
         Realm.init(ctx);
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        audioFileAll = realm.where(AudioFile.class).sort("status", Sort.DESCENDING).findAll();
-        pressedPosition = realm.where(MySettings.class).findFirst().getCurrentMusicPosition();
+        //audioFileAll = realm.where(AudioFile.class).sort("status", Sort.DESCENDING).findAll();
+
+
+
+            switch (hasConnection(ctx)){
+                case 0:
+                    audioFileAll = realm.where(AudioFile.class).equalTo("status", true).findAll();
+                    Toast.makeText(ctx, "FFFF", Toast.LENGTH_SHORT).show();
+                    break;
+
+                default:
+                    audioFileAll = realm.where(AudioFile.class).sort("status", Sort.DESCENDING).findAll();
+
+            }
+
+
+        nameSong = realm.where(MySettings.class).findFirst().getCurrentMusic();
+
+
+
+        Log.i("WHAT", "Збережена позиція яка була натиснута " + nameSong);
+
+
+
+        MySettings mySettings = realm.where(MySettings.class).findFirst();
+        Log.i("WHAT", "mySettings " + mySettings);
+
         realm.commitTransaction();
         return audioFileAll;
+    }
+
+    public void setPressedPosition(){
+        Log.i("WHAT", "Я її обнулив" + nameSong);
+        nameSong="";
     }
 }

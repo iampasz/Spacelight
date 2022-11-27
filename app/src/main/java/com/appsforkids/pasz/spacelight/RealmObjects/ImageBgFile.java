@@ -1,8 +1,10 @@
 package com.appsforkids.pasz.spacelight.RealmObjects;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 
-public class ImageBgFile extends RealmObject {
+public class ImageBgFile extends RealmObject implements Serializable {
 
 
     String imageInternetLink;

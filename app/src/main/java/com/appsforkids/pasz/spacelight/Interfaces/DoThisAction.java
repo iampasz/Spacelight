@@ -8,4 +8,6 @@ public interface DoThisAction extends Serializable {
 
     void doThis(int hours, int minutes);
 
+    void doThat();
+
 }

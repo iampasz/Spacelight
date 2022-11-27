@@ -3,10 +3,12 @@ package com.appsforkids.pasz.spacelight;
 import android.app.Application;
 import android.view.WindowManager;
 
+import androidx.multidex.MultiDexApplication;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class App extends Application {
+public class App extends MultiDexApplication {
 
     @Override
     public void onCreate() {

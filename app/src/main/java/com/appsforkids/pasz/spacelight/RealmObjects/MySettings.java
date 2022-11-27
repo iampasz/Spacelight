@@ -1,8 +1,10 @@
 package com.appsforkids.pasz.spacelight.RealmObjects;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 
-public class MySettings  extends RealmObject {
+public class MySettings  extends RealmObject implements Serializable {
 
     int nightlight;
     int animationPosition = 0;
@@ -17,6 +19,15 @@ public class MySettings  extends RealmObject {
     int gradientColor;
     boolean backgroundTumbler;
     int suitCounter;
+   String  currentMusic;
+
+    public void setCurrentMusic(String currentMusic) {
+        this.currentMusic = currentMusic;
+    }
+
+    public String getCurrentMusic() {
+        return currentMusic;
+    }
 
     public int getSuitCounter() {
         return suitCounter;

@@ -45,7 +45,6 @@ public class MyMenuItems {
         list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_racoon, R.string.raccoon));
         list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_pig, R.string.pig));
         list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_bear, R.string.bear));
-
         return list;
     }
 

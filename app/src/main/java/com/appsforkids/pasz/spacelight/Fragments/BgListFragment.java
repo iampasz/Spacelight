@@ -121,6 +121,11 @@ public class BgListFragment extends Fragment {
 //                }
             }
 
+            @Override
+            public boolean getAnswer() {
+                return false;
+            }
+
         };
 
         DownloadButton downloadButton = new DownloadButton() {

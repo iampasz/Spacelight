@@ -1,4 +1,4 @@
-package  com.appsforkids.pasz.spacelight.Fragments;
+package com.appsforkids.pasz.spacelight.Fragments;
 
 
 import android.annotation.SuppressLint;
@@ -7,6 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,50 +57,53 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements Serializable {
 
-    @BindView(R.id.pager )
+    @BindView(R.id.pager)
     ViewPager pager;
 
-    @BindView(R.id.lock_button )
+    @BindView(R.id.lock_button)
     ImageView lock_button;
 
-    @BindView(R.id.lockButton )
+    @BindView(R.id.lockButton)
     LinearLayout lockButton;
 
-    @BindView(R.id.suit )
+    @BindView(R.id.suit)
     ImageView suit;
 
-    @BindView(R.id.presents )
+    @BindView(R.id.presents)
     ImageView presents;
 
-    @BindView(R.id.animateBg )
+    @BindView(R.id.animateBg)
     ImageView animateBg;
 
-    @BindView(R.id.timer )
+    @BindView(R.id.timer)
     TextView timerText;
 
-    @BindView(R.id.mainBg )
+    @BindView(R.id.mainBg)
     FrameLayout mainBg;
 
-    @BindView(R.id.main_constrain )
+    @BindView(R.id.main_constrain)
     ConstraintLayout main_constrain;
 
-    @BindView(R.id.lock_frame )
+    @BindView(R.id.lock_frame)
     FrameLayout lock_frame;
 
-    @BindView(R.id.rv )
+    @BindView(R.id.rv)
     RecyclerView rv;
 
     MyPagerAdapter pagerAdapter;
-   // MediaPlayer mediaPlayer;
+    // MediaPlayer mediaPlayer;
 
     private AdView mAdView;
 
@@ -153,7 +161,7 @@ public class MainFragment extends Fragment {
 
         menuItems = new MyMenuItems();
 
-       // mySuitColor = myObjects.getGradientArray()[suitCounter];
+        // mySuitColor = myObjects.getGradientArray()[suitCounter];
         pagerAdapter = new MyPagerAdapter(getParentFragmentManager(), menuItems.getNightlighters());
 
         pager.setAdapter(pagerAdapter);
@@ -175,7 +183,7 @@ public class MainFragment extends Fragment {
         bgNlColors = res.getStringArray(R.array.bgNlColors);
         menuColors = res.getStringArray(R.array.menuColors);
 
-         hideLockTimer = new CountDownTimer(3000, 3000) {
+        hideLockTimer = new CountDownTimer(3000, 3000) {
             @Override
             public void onTick(long l) {
 
@@ -189,12 +197,10 @@ public class MainFragment extends Fragment {
         };
 
 
-
-
-      //  pager.setZ(1);
-      //  suit.setZ(1);
-       // lockButton.setZ(1);
-       // lock_frame.setZ(1);
+        //  pager.setZ(1);
+        //  suit.setZ(1);
+        // lockButton.setZ(1);
+        // lock_frame.setZ(1);
 
         lock_frame.setOnTouchListener(new View.OnTouchListener() {
 
@@ -215,16 +221,16 @@ public class MainFragment extends Fragment {
                 Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
                 suitColor = myFragment.getView().findViewById(R.id.suit_color);
 
-                switch (motionEvent.getAction()){
+                switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
                         suitColor.setVisibility(View.INVISIBLE);
-                        Log.i("Show","imageView.setVisibility(View.INVISIBLE);");
+                        Log.i("Show", "imageView.setVisibility(View.INVISIBLE);");
                         break;
                     case MotionEvent.ACTION_UP:
 
                         suitColor.setVisibility(View.VISIBLE);
-                        Log.i("Show","imageView.setVisibility(View.VISIBLE);");
+                        Log.i("Show", "imageView.setVisibility(View.VISIBLE);");
                         break;
 
                 }
@@ -256,20 +262,55 @@ public class MainFragment extends Fragment {
                         changeSuitColor();
                         break;
                     case 4:
-                        if(smImage==-1){
+                        if (smImage == -1) {
 
-                        }else{
+                        } else {
                             startAnimation2(myObjects.getAnimationImage()[smImage]);
                             smImage++;
-                            if(smImage>=myObjects.getAnimationImage().length){
+                            if (smImage >= myObjects.getAnimationImage().length) {
                                 deleteAnimation();
-                                smImage=0;
+                                smImage = 0;
                             }
                         }
 
                         break;
                     case 6:
-                        changeBackgroundImage();
+
+                        switch (hasConnection(getContext())) {
+                            case 0:
+                                getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init("Для відображення фонів нічника, під'єднайтесь до інтернету")).commit();
+
+                                break;
+                            case 1:
+                                changeBackgroundImage();
+                                break;
+                            case 2:
+                                getParentFragmentManager().beginTransaction().add(R.id.container, MessageFragment.init("Інтернет підключенно по мобільному, використовувати мобільний інтернет?",
+                                        new DoThisAction() {
+                                            @Override
+                                            public void doThis() {
+                                                changeBackgroundImage();
+                                            }
+
+                                            @Override
+                                            public void doThis(int hours, int minutes) {
+
+                                            }
+
+                                            @Override
+                                            public void doThat() {
+
+                                            }
+
+                                        }), "MelodyListFragment").commit();
+
+                                break;
+                            case 3:
+                                changeBackgroundImage();
+                                break;
+                        }
+
+
                         break;
                     case 5:
                         setTimer();
@@ -286,7 +327,7 @@ public class MainFragment extends Fragment {
         });
         rv.setAdapter(adapter);
 
-         adRequest = new AdRequest.Builder().build();
+        adRequest = new AdRequest.Builder().build();
 
         loadAddFullScrean();
     }
@@ -297,7 +338,7 @@ public class MainFragment extends Fragment {
         suitColor = myFragment.getView().findViewById(R.id.suit_color);
 
         suitCounter++;
-        if (suitCounter >=myObjects.getGradientArray().length){
+        if (suitCounter >= myObjects.getGradientArray().length) {
             suitCounter = 0;
         }
 
@@ -312,13 +353,13 @@ public class MainFragment extends Fragment {
         getActivity().getWindow().setAttributes(layout);
         brights++;
 
-        if(brights>=myObjects.getBrights().length){
-            brights=0;
+        if (brights >= myObjects.getBrights().length) {
+            brights = 0;
         }
     }
 
     public void turnOff() {
-        ((MainActivity)getActivity()).playMusic(0, false);
+        ((MainActivity) getActivity()).playMusic(0, false);
         getActivity().finish();
     }
 
@@ -351,9 +392,9 @@ public class MainFragment extends Fragment {
             suit.setVisibility(View.VISIBLE);
             mAdView.setVisibility(View.VISIBLE);
             lockButton.setAlpha(1f);
-            if(timerOn){
+            if (timerOn) {
                 timerText.setVisibility(View.VISIBLE);
-            }else{
+            } else {
 
             }
 
@@ -383,38 +424,37 @@ public class MainFragment extends Fragment {
     }
 
     public void startAnimation2(int imageViewAnimation) {
-        Log.i("startAnimation2", imageViewAnimation+"");
-        if(revolutionAnimationView==null){
+        Log.i("startAnimation2", imageViewAnimation + "");
+        if (revolutionAnimationView == null) {
             //Создаем анимацию
             revolutionAnimationView = new RevolutionAnimationView(getContext());
-            revolutionAnimationView.setZ(-1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                revolutionAnimationView.setZ(-1);
+            }
             main_constrain.addView(revolutionAnimationView);
-            revolutionAnimationView.changeImage(ContextCompat.getDrawable(getContext(),  imageViewAnimation));
+            revolutionAnimationView.changeImage(ContextCompat.getDrawable(getContext(), imageViewAnimation));
 
-        }else{
-            if(revolutionAnimationView.getParent() == null) {
+        } else {
+            if (revolutionAnimationView.getParent() == null) {
                 mainBg.addView(revolutionAnimationView);
             }
-            revolutionAnimationView.changeImage(ContextCompat.getDrawable(getContext(),  imageViewAnimation));
-            Log.i("startAnimation2", imageViewAnimation+" tyt");
+            revolutionAnimationView.changeImage(ContextCompat.getDrawable(getContext(), imageViewAnimation));
+            Log.i("startAnimation2", imageViewAnimation + " tyt");
         }
     }
 
-    public void deleteAnimation(){
+    public void deleteAnimation() {
         //Удаляем созданную вьюху с анимацией
-        ((ViewManager)revolutionAnimationView.getParent()).removeView(revolutionAnimationView);
+        ((ViewManager) revolutionAnimationView.getParent()).removeView(revolutionAnimationView);
         Log.i("anim", "анимация удалена");
 
     }
+
     private void showAd() {
 
-        new AlertDialog.Builder(ctx)
-                .setTitle("Open Nightlight")
-                .setMessage("Open nightlight for advertising")
-                .setIcon(R.drawable.presentold)
-                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        new AlertDialog.Builder(ctx).setTitle("Open Nightlight").setMessage("Open nightlight for advertising").setIcon(R.drawable.presentold).setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
 //                        if (mInterstitialAd.isLoaded()) {
 //                            mInterstitialAd.show();
@@ -422,32 +462,29 @@ public class MainFragment extends Fragment {
 //                            Log.d("TAG", "The interstitial wasn't loaded yet.");
 //                        }
 
-                        showed = true;
-                    }
-                })
-                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        pager.setCurrentItem(500);
-                    }
-                })
-                .setCancelable(true)
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        pager.setCurrentItem(500);
-                    }
-                })
-                .show();
+                showed = true;
+            }
+        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                pager.setCurrentItem(500);
+            }
+        }).setCancelable(true).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                pager.setCurrentItem(500);
+            }
+        }).show();
 
     }
+
     public void randomColor() {
-       // int intColor;
-       // Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
-       // imageView = myFragment.getView().findViewById(R.id.suit_color);
-       // Random random = new Random();
-       // intColor = random.nextInt(bgNlColors.length);
-       //imageView.setColorFilter(Color.parseColor(bgNlColors[intColor]));
+        // int intColor;
+        // Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
+        // imageView = myFragment.getView().findViewById(R.id.suit_color);
+        // Random random = new Random();
+        // intColor = random.nextInt(bgNlColors.length);
+        //imageView.setColorFilter(Color.parseColor(bgNlColors[intColor]));
     }
 
     public void changeRandomColor() {
@@ -457,17 +494,17 @@ public class MainFragment extends Fragment {
         Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
     }
 
-    private void startTimer(int hours, int minutes){
-        if(hours==0 && minutes==0){
+    private void startTimer(int hours, int minutes) {
+        if (hours == 0 && minutes == 0) {
             timerText.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             timerText.setVisibility(View.VISIBLE);
-            int mySeconds = (((hours*60*60)+(60*minutes))*1000);
-            offTimer =  new CountDownTimer(mySeconds, 1000) {
+            int mySeconds = (((hours * 60 * 60) + (60 * minutes)) * 1000);
+            offTimer = new CountDownTimer(mySeconds, 1000) {
                 @Override
                 public void onTick(long l) {
 
-                    timerText.setText(String.format("%02d:%02d:%02d", (l/1000)/3600, ((l/1000)%3600)/60, (l/1000)%60));
+                    timerText.setText(String.format("%02d:%02d:%02d", (l / 1000) / 3600, ((l / 1000) % 3600) / 60, (l / 1000) % 60));
                 }
 
                 @Override
@@ -481,27 +518,51 @@ public class MainFragment extends Fragment {
 
     }
 
-    private void openPrivatePolicy(){
-        getParentFragmentManager().beginTransaction().add(R.id.container,  MessageFragment.init(getString(R.string.open_policy), new DoThisAction() {
+    private void openPrivatePolicy() {
+        getParentFragmentManager().beginTransaction().add(R.id.container, MessageFragment.init(getString(R.string.open_policy), new DoThisAction() {
             @Override
             public void doThis() {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://paszzsap.github.io/nightlight2/politic.html"));
-                startActivity(browserIntent);
+
+                switch (hasConnection(getContext())) {
+                    case 0:
+                        getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init("Інтернет вимкнено. Для відображення політики конфіденційності підключіться до інтернету")).commit();
+
+                        break;
+                    case 1:
+
+                        startActivity(browserIntent);
+                        break;
+                    case 2:
+                        startActivity(browserIntent);
+
+                        break;
+                    case 3:
+                        changeBackgroundImage();
+                        break;
+                }
+
+
             }
 
             @Override
             public void doThis(int hours, int minutes) {
 
             }
+
+            @Override
+            public void doThat() {
+
+            }
         }), "MelodyListFragment").commit();
     }
 
-    private void setTimer(){
+    private void setTimer() {
 
-        if(offTimer!=null){
+        if (offTimer != null) {
             offTimer.cancel();
             timerText.setVisibility(View.INVISIBLE);
-            timerOn=false;
+            timerOn = false;
         }
 
         getParentFragmentManager().beginTransaction().add(R.id.container, TimerFragment.init(new DoThisAction() {
@@ -514,39 +575,74 @@ public class MainFragment extends Fragment {
             public void doThis(int hours, int minutes) {
 
                 startTimer(hours, minutes);
-                timerOn=true;
+                timerOn = true;
+            }
+
+            @Override
+            public void doThat() {
+
             }
         })).commit();
 
     }
 
-    private void changeBgColor(){
+    private void changeBgColor() {
 
         gradientCounter++;
-        if(gradientCounter>=myObjects.getGradient().length){
+        if (gradientCounter >= myObjects.getGradient().length) {
             gradientCounter = 0;
         }
         mainBg.setBackgroundResource(myObjects.getGradient()[gradientCounter]);
 
-        backgroundTumbler=true;
+
+        backgroundTumbler = true;
 
     }
 
-    private void changeBackgroundImage(){
+    private void changeBackgroundImage() {
 
-        anim_bg++;
+//        anim_bg++;
+//
+//        if(anim_bg>=myObjects.getBackground().length){
+//            anim_bg = 0;
+//        }
+//        mainBg.setBackgroundResource(myObjects.getBackground()[anim_bg]);
+//        backgroundTumbler=false;
 
-        if(anim_bg>=myObjects.getBackground().length){
-            anim_bg = 0;
-        }
-        mainBg.setBackgroundResource(myObjects.getBackground()[anim_bg]);
-        backgroundTumbler=false;
+        HatsFragment hatsFragment = new HatsFragment();
+        hatsFragment.setCallBack(new ChoseItem() {
+            @Override
+            public void setImage(String link) {
+                Picasso.get().load(link).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        mainBg.setBackground(new BitmapDrawable(getResources(), bitmap));
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
+            }
+        });
+
+
+//
+
+
+        getParentFragmentManager().beginTransaction().add(R.id.container, hatsFragment).commit();
 
     }
 
-    private void setMelody(){
+    private void setMelody() {
         getParentFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
-       // getParentFragmentManager().beginTransaction().add(R.id.container, new BackgroundsFragment(), "BackgroundsFragment").commit();
+        // getParentFragmentManager().beginTransaction().add(R.id.container, new BackgroundsFragment(), "BackgroundsFragment").commit();
     }
 
     @Override
@@ -565,13 +661,13 @@ public class MainFragment extends Fragment {
         realm.commitTransaction();
     }
 
-    public void setSettings(){
+    public void setSettings() {
 
         Realm.init(getContext());
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         MySettings settings = realm.where(MySettings.class).findFirst();
-        Log.i("Setting", "текущая сохраненная позиция"+ settings.getNightlightPosition());
+        Log.i("Setting", "текущая сохраненная позиция" + settings.getNightlightPosition());
         pager.setCurrentItem(settings.getNightlightPosition(), false);
 
         //ConstraintLayout constraintLayout = getActivity().findViewById(R.id.main_constrain);
@@ -587,17 +683,15 @@ public class MainFragment extends Fragment {
         backgroundTumbler = settings.getBackgroundTumbler();
 
 
-
-
-        if(backgroundTumbler){
+        if (backgroundTumbler) {
             mainBg.setBackgroundResource(myObjects.getGradient()[gradientCounter]);
-        }else{
+        } else {
             mainBg.setBackgroundResource(myObjects.getBackground()[anim_bg]);
         }
 
 
         //Показываем фрагмент где предлагается проголосовать за приложение и поставить оценку
-        switch (currentRate){
+        switch (currentRate) {
             case -1:
 
                 break;
@@ -623,8 +717,8 @@ public class MainFragment extends Fragment {
         }
 
         //Устанавливаем анимацию
-        Log.i("setSettings"," currentAnimation " + smImage);
-        if(smImage!=0){
+        Log.i("setSettings", " currentAnimation " + smImage);
+        if (smImage != 0) {
             startAnimation2(myObjects.getAnimationImage()[smImage]);
         }
 
@@ -632,27 +726,26 @@ public class MainFragment extends Fragment {
         realm.commitTransaction();
     }
 
-    private void loadAddFullScrean(){
-        InterstitialAd.load(getContext(),"ca-app-pub-3940256099942544/1033173712", adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
-                        mInterstitialAd = interstitialAd;
-                        Log.i("Add", "onAdLoaded");
-                    }
+    private void loadAddFullScrean() {
+        InterstitialAd.load(getContext(), "ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                // The mInterstitialAd reference will be null until
+                // an ad is loaded.
+                mInterstitialAd = interstitialAd;
+                Log.i("Add", "onAdLoaded");
+            }
 
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
-                        Log.d("Add", loadAdError.toString());
-                        mInterstitialAd = null;
-                    }
-                });
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                // Handle the error
+                Log.d("Add", loadAdError.toString());
+                mInterstitialAd = null;
+            }
+        });
     }
 
-    private void setMyAds(){
+    private void setMyAds() {
 
         MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
             @Override
@@ -661,10 +754,39 @@ public class MainFragment extends Fragment {
         });
 
 
-
         AdRequest adRequest = new AdRequest.Builder().build();
         //Реклама РАБОТАЕТ ПРОСТО ОТКЛЮЧИТЬ ТУТ
         mAdView.loadAd(adRequest);
     }
+
+    public interface ChoseItem {
+
+        public void setImage(String link);
+    }
+
+    public int hasConnection(final Context context) {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return 3;
+        } else {
+
+        }
+        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return 2;
+        } else {
+
+        }
+        wifiInfo = cm.getActiveNetworkInfo();
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return 1;
+        } else {
+
+        }
+        return 0;
+    }
+
 
 }
