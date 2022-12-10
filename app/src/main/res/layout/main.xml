@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constrain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+    android:background="#fff"
     tools:context=".MainActivity">
 
 
@@ -14,18 +14,67 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/player"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
 
-<!--        ads:layout_constraintTop_toBottomOf="@+id/adView" -->
+    <TextView
+        android:id="@+id/name_song"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        ads:layout_constraintBottom_toBottomOf="@+id/container"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/player"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <ImageView
+            android:id="@+id/melody_list"
+            android:layout_width="@dimen/play_buttons_size"
+            android:layout_height="@dimen/play_buttons_size"
+            android:layout_weight="1"
+            ads:srcCompat="@drawable/list" />
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="@dimen/play_buttons_size"
+            android:layout_height="@dimen/play_buttons_size"
+            ads:srcCompat="@drawable/left_p" />
 
+        <ImageView
+            android:id="@+id/play_p"
+            android:layout_width="@dimen/play_buttons_size"
+            android:layout_height="@dimen/play_buttons_size"
+            android:layout_weight="1"
+            ads:srcCompat="@drawable/bt_play" />
+
+        <ImageView
+            android:id="@+id/right_p"
+            android:layout_width="@dimen/play_buttons_size"
+            android:layout_height="@dimen/play_buttons_size"
+            ads:srcCompat="@drawable/right_p" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="@dimen/play_buttons_size"
+            android:layout_height="@dimen/play_buttons_size"
+            android:layout_weight="1"
+            ads:srcCompat="@drawable/random" />
+    </LinearLayout>
+
+    <!--        ads:layout_constraintTop_toBottomOf="@+id/adView" -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

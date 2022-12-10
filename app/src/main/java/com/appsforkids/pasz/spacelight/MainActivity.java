@@ -7,13 +7,17 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.appsforkids.pasz.spacelight.Fragments.MainFragment;
+import com.appsforkids.pasz.spacelight.Fragments.MelodyListFragment;
 import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 
@@ -21,6 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -37,13 +43,31 @@ public class MainActivity extends AppCompatActivity {
     String activeAudio = "";
     String previousAudio = "";
 
+    Boolean isLooping = false;
+
 
     SoundPool soundPool;
+
+
+    @BindView(R.id.right_p)
+    ImageView right_p;
+
+    @BindView(R.id.name_song)
+    TextView name_song;
+
+    @BindView(R.id.play_p)
+    ImageView play_p;
+
+    @BindView(R.id.melody_list)
+    ImageView melody_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        ButterKnife.bind(this);
+
 
          arrayList = getAudios();
 
@@ -75,6 +99,38 @@ public class MainActivity extends AppCompatActivity {
         //Відкриваємо MainFragment
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.container, new MainFragment(), "main_fragment").commit();
+
+
+        right_p.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                name_song.setText(playNextAudio());
+                play_p.setImageResource(R.drawable.bt_pause);
+
+            }
+        });
+
+        play_p.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //((MainActivity)getActivity()).startStop();
+                if(startStop()){
+                    play_p.setImageResource(R.drawable.bt_pause);
+                }else{
+                    play_p.setImageResource(R.drawable.bt_play);
+                }
+            }
+        });
+
+        melody_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
+            }
+        });
+
+
     }
 
     //Встановлюємо повно-екранний режим
@@ -127,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         if (play_status) {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setLooping(true);
+            mediaPlayer.setLooping(isLooping);
             try {
                 mediaPlayer.setDataSource(audioFile.getInternetLink());
                 mediaPlayer.prepare();
@@ -160,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         if (play_status) {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setLooping(true);
+            mediaPlayer.setLooping(isLooping);
             try {
                 mediaPlayer.setDataSource(link);
                 mediaPlayer.prepare();
@@ -173,6 +229,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
         activeAudio = link;
+
+        Toast.makeText(MainActivity.this, "here", Toast.LENGTH_SHORT).show();
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -195,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         if (play_status) {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setLooping(true);
+            mediaPlayer.setLooping(isLooping);
             try {
                 mediaPlayer.setDataSource(audioFile.getInternetLink());
                 mediaPlayer.prepare();
@@ -215,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         if (play_status) {
             mediaPlayer = MediaPlayer.create(this, id);
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setLooping(true);
+            mediaPlayer.setLooping(isLooping);
             mediaPlayer.start();
         }
     }
@@ -350,6 +408,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         return false;
+    }
+
+    public void playLoopingAudio(Boolean status){
+        isLooping = status;
     }
 
 }
