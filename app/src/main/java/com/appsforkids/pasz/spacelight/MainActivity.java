@@ -8,6 +8,7 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -138,6 +139,14 @@ public class MainActivity extends AppCompatActivity {
             savedAudioFile = audioFile.getInternetLink();
 
         }
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                playNextAudio();
+                Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void playLockalMusic(String link, Boolean play_status) {
@@ -164,6 +173,15 @@ public class MainActivity extends AppCompatActivity {
 
         }
         activeAudio = link;
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                playNextAudio();
+                Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     public void playInternetMusic(AudioFile audioFile, Boolean play_status) {
@@ -285,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
         return arrayList;
     }
 
-    public void playNextAudio(){
+    public String playNextAudio(){
 
         int allAudio = arrayList.size();
         Random random = new Random();
@@ -301,8 +319,37 @@ public class MainActivity extends AppCompatActivity {
                 playNextAudio();
             }else{
                 playLockalMusic(arrayList.get(randomAudioNumber).getLockalLink(), true);
+                return arrayList.get(randomAudioNumber).getNameSong();
             }
         }
+
+        return "";
+    }
+
+    public Boolean startStop(){
+        if(mediaPlayer!=null){
+
+            if(mediaPlayer.isPlaying()){
+                mediaPlayer.pause();
+                Log.i("isplay", " true");
+                return false;
+
+
+            }else{
+                Log.i("isplay", " false");
+                if(mediaPlayer!=null){
+                    mediaPlayer.start();
+                    Log.i("isplay", mediaPlayer+" false");
+                    return true;
+                }
+            }
+
+        }else{
+            playNextAudio();
+        }
+
+
+        return false;
     }
 
 }

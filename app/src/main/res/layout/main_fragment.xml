@@ -173,9 +173,9 @@
         <LinearLayout
             android:id="@+id/player"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            ads:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            ads:layout_constraintBottom_toTopOf="@+id/name_song"
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintStart_toStartOf="parent">
 
@@ -193,7 +193,7 @@
                 ads:srcCompat="@drawable/left_p" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/play_p"
                 android:layout_width="@dimen/buttons_size"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -212,6 +212,15 @@
                 android:layout_weight="1"
                 ads:srcCompat="@drawable/random" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/name_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

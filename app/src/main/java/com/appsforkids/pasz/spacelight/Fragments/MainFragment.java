@@ -88,6 +88,12 @@ public class MainFragment extends Fragment implements Serializable {
     @BindView(R.id.timer)
     TextView timerText;
 
+    @BindView(R.id.play_p)
+    ImageView play_p;
+
+    @BindView(R.id.name_song)
+    TextView name_song;
+
     @BindView(R.id.mainBg)
     FrameLayout mainBg;
 
@@ -164,10 +170,21 @@ public class MainFragment extends Fragment implements Serializable {
             @Override
             public void onClick(View view) {
 
-                ((MainActivity)getActivity()).playNextAudio();
+                name_song.setText(((MainActivity)getActivity()).playNextAudio());
+                play_p.setImageResource(R.drawable.bt_pause);
 
+            }
+        });
 
-
+        play_p.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //((MainActivity)getActivity()).startStop();
+                if(((MainActivity)getActivity()).startStop()){
+                    play_p.setImageResource(R.drawable.bt_pause);
+                }else{
+                    play_p.setImageResource(R.drawable.bt_play);
+                }
             }
         });
 
