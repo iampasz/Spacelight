@@ -1,111 +1,148 @@
 package com.appsforkids.pasz.spacelight;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+
 import com.appsforkids.pasz.spacelight.Fragments.MainFragment;
-import com.appsforkids.pasz.spacelight.Models.Nightlight;
 import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
+
 public class MainActivity extends AppCompatActivity {
 
     MediaPlayer mediaPlayer;
-    private static final String TAG = "MainActivity";
     private static final String MY_SETTINGS = "my_settings";
-    String nameSong = "";
+    private static final String MY_AUDIO = "my_audio";
+    String savedAudioFile = "";
+    ArrayList <AudioFile> arrayList;
 
+    String activeAudio = "";
+    String previousAudio = "";
+
+
+    SoundPool soundPool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setFullScrean();
-        setSettings();
         setContentView(R.layout.main);
 
+         arrayList = getAudios();
 
+
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        soundPool.load(this, R.raw.s1, 1);
+        soundPool.load(this, R.raw.s2, 1);
+        soundPool.load(this, R.raw.s3, 1);
+        soundPool.load(this, R.raw.s4, 1);
+        soundPool.load(this, R.raw.s5, 1);
+
+        //Встановлюємо повно-екранний режим
+        setFullScrean();
+
+        //Встановлюємо стандартні налаштунки
         if (!isFirstOpen()) {
-            //We add nightlights to realm at first time
-            addNlToReallm();
+            assert Realm.getDefaultConfiguration() != null;
+            Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
+            realm.beginTransaction();
+            realm.insert(getDefualtSettings());
+            realm.commitTransaction();
         }
 
-        //start MainFragment
+
+
+        //Якщо після виходу з додатку грала мелодія, вона буде грати при заходженні в додаток повторно
+         playSavedAudio();
+
+        //Відкриваємо MainFragment
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.container, new MainFragment(), "main_fragment").commit();
     }
 
-    private void addNlToReallm() {
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        for (int i = 400; i <= 600; i++) {
-            Nightlight nightlights = realm.createObject(Nightlight.class);
-            nightlights.setNumber(i);
-            nightlights.setTimer(60000);
-        }
-
-
-        //Перша мелодія яка яку не потрібно завантажувати з інтернету
-        AudioFile firstAudio = new AudioFile();
-        firstAudio.setResourseLink(R.raw.sound_file_3);
-        Log.i("FIRST2", R.raw.sound_file_3 + "    we are");
-        Log.i("FIRST2", firstAudio.getResourceLink() + "    we are");
-
-        firstAudio.setNameSong("Stream");
-        firstAudio.setAuthorSong("Twarres");
-        firstAudio.setStatus(true);
-        firstAudio.setLockalLink("plug");
-
-        realm.copyToRealm(firstAudio);
-
-        realm.commitTransaction();
-        RealmResults<Nightlight> realmResults = realm.where(Nightlight.class).findAll();
-
-
+    //Встановлюємо повно-екранний режим
+    private void setFullScrean() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    @SuppressLint("MissingPermission")
-    public static boolean hasConnection(final Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
+    //Перевірка на перше відкриття
+    private Boolean isFirstOpen() {
+        SharedPreferences sp = getSharedPreferences(MY_SETTINGS, Context.MODE_PRIVATE);
+        // проверяем, первый ли раз открывается программа
+        boolean hasVisited = sp.getBoolean("hasVisited", false);
+
+        if (!hasVisited) {
+            // выводим нужную активность
+            SharedPreferences.Editor e = sp.edit();
+            e.putBoolean("hasVisited", true);
+            e.commit(); // не забудьте подтвердить изменения
         }
-        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        wifiInfo = cm.getActiveNetworkInfo();
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        return false;
+
+        return hasVisited;
     }
 
-    //Use this methods from Melody list fragment or when we using save position after close the app
+    //Отримання стандартних налаштунків
+    public MySettings getDefualtSettings() {
+
+        MySettings mySettings = new MySettings();
+        mySettings.setAnimationPosition(0);
+        mySettings.setBright(0.5f);
+        mySettings.setBackgroundColor(0);
+        mySettings.createCoinse(500);
+        mySettings.setRate(0);
+        mySettings.setAdds(false);
+        mySettings.setCurrentMusic("");
+        mySettings.setTimerTime(-1);
+
+        return mySettings;
+    }
+
+    //Програвання музики
+    public void playLockalMusic(AudioFile audioFile, Boolean play_status) {
+
+        savedAudioFile = "";
+
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+
+        if (play_status) {
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setLooping(true);
+            try {
+                mediaPlayer.setDataSource(audioFile.getInternetLink());
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mediaPlayer.start();
+
+            savedAudioFile = audioFile.getInternetLink();
+
+        }
+    }
 
     public void playLockalMusic(String link, Boolean play_status) {
+
+        savedAudioFile = "";
 
         if (mediaPlayer != null) {
             mediaPlayer.stop();
@@ -122,16 +159,36 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             mediaPlayer.start();
-        } else {
+
+            savedAudioFile = link;
 
         }
-
-
+        activeAudio = link;
     }
-    public void playMusic(int id, Boolean play_status) {
 
-        Log.i("wearehere", "wearehere");
-        Log.i("wearehere", id+"wearehere");
+    public void playInternetMusic(AudioFile audioFile, Boolean play_status) {
+
+
+
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+
+        if (play_status) {
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setLooping(true);
+            try {
+                mediaPlayer.setDataSource(audioFile.getInternetLink());
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mediaPlayer.start();
+        }
+    }
+
+    public void playMusic(int id, Boolean play_status) {
 
         if (mediaPlayer != null) {
             mediaPlayer.stop();
@@ -142,179 +199,110 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setLooping(true);
             mediaPlayer.start();
-        } else {
+        }
+    }
+    private void playSavedAudio() {
+        Log.i("playSavedAudio", "playSavedAudio");
+        SharedPreferences spa = getSharedPreferences(MY_AUDIO, Context.MODE_PRIVATE);
+        String savedAudio = spa.getString("audioFile", "");
 
+        if (savedAudio == "") {
+            Log.i("playSavedAudio", "empty");
+        } else {
+            playLockalMusic(savedAudio, true);
+            Log.i("playSavedAudio", savedAudio+" savedAudio");
+            refreshSavingAudio(savedAudio);
         }
     }
 
-    public void setSettings() {
-        int currentAnimationPosition = 0;
+    private void refreshSavingAudio(String savedAudio) {
 
-        Realm.init(this);
-        Realm realm = Realm.getDefaultInstance();
+        assert Realm.getDefaultConfiguration() != null;
+        Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
         realm.beginTransaction();
+        AudioFile audioFile = realm.where(AudioFile.class).equalTo("lockalLink", savedAudio).findFirst();
         MySettings settings = realm.where(MySettings.class).findFirst();
-
-        Log.i("settings", settings + "");
-
-        if (settings == null) {
-            MySettings mySettings = new MySettings();
-            mySettings.setAnimationPosition(0);
-            mySettings.setBright(0.5f);
-            mySettings.setBackgroundColor(0);
-            mySettings.createCoinse(500);
-            mySettings.setRate(0);
-            mySettings.setAdds(false);
-            mySettings.setCurrentMusic("");
-            mySettings.setTimerTime(-1);
-
-            realm.insert(mySettings);
-        }
-
-
-        AddToRealm addToRealm = new AddToRealm(this);
-
-        //Отримую масив з JSON файла
-        // ArrayList<AudioFile> musicArray = addToRealm.getMusicItems();
-
-        // realm.insert(musicArray);
-
-        //  realm.commitTransaction();
-
-        //Отримую максимальний айді доданого останнього файлу. Останній файл і є максимальний
-//        if(realm.where(AudioFile.class).findFirst()!=null){
-//             maxId =  realm.where(AudioFile.class).max("id");
-//        }
-
-
-        //Порівнюю айдішніки, якщо в файлі джейсон є більший айді за максимально доступний, додаю нову позицію
-//       for(int i = 0; i<musicArray.size(); i++){
-//
-//           if(musicArray.get(i).getId()<=maxId.intValue()){
-//
-//           }else{
-//               realm.insert(musicArray.get(i));
-//           }
-//        }
-//
+        settings.setCurrentMusic(audioFile.getNameSong());
+        Log.i("playSavedAudio", savedAudio+" refreshSavingAudio");
         realm.commitTransaction();
-        addToRealm.getJsonFromURL();
-        if (settings == null) {
-            Log.i("Hello", "AddToRealm 2" + settings);
-            //Запускаем первую анимацию (первый запуск приложения)
-            //startAnimation(R.drawable.sm_1);
-        } else {
-            Log.i("Hello", "No AddToRealm" + settings);
-            MyObjects myObjects = new MyObjects(this);
-            nameSong = settings.getCurrentMusic();
-
-            Log.i("WHAT", "mySettings " + settings);
-            Log.i("WHAT", "nameSong " + nameSong);
-
-            AudioFile audioFile = getAudios().where().equalTo("nameSong", nameSong).findFirst();
-
-            Log.i("WHAT", audioFile+"  fffff  ");
-//            Log.i("WHAT", audioFile.getNameSong()+"  fffff2  ");
-
-            if (audioFile != null) {
-
-                Log.i("WHAT", audioFile.nameSong+"");
-
-                if(audioFile.getResourceLink()!=0){
-                    playMusic(audioFile.getResourceLink(), true);
-                }else{
-                    if(audioFile.getLockalLink()!=null){
-                        playLockalMusic(audioFile.getLockalLink(),true);
-                    }else{
-                        playLockalMusic(audioFile.getInternetLink(),true);
-                    }
-                }
-
-                //playLockalMusic(getAudios().get(currentMusicPosition).getInternetLink(), true);
-            }
-
-            if (currentAnimationPosition == -1) {
-                //Анимация отключена в настройках
-            } else {
-                //Запускаем сохраненную анимацию
-                // startAnimation(myObjects.getAnimationImage()[currentAnimationPosition]);
-            }
-        }
     }
 
-    public RealmResults<AudioFile> getAudios() {
-
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        RealmResults<AudioFile> realmResults = realm.where(AudioFile.class).sort("status", Sort.DESCENDING).findAll();
-        realm.commitTransaction();
-
-        return realmResults;
+    //Збереження мелодії після виходу з додатку
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveAudio();
     }
+    private void saveAudio() {
+        SharedPreferences spa = getSharedPreferences(MY_AUDIO, Context.MODE_PRIVATE);
 
-    private void setFullScrean() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-    }
-
-    private Boolean isFirstOpen() {
-
-        Log.i("FIRST", "Is a first open");
-        SharedPreferences sp = getSharedPreferences(MY_SETTINGS,
-                Context.MODE_PRIVATE);
-        // проверяем, первый ли раз открывается программа
-        boolean hasVisited = sp.getBoolean("hasVisited", false);
-
-        if (!hasVisited) {
+        if (savedAudioFile != "") {
             // выводим нужную активность
-            SharedPreferences.Editor e = sp.edit();
-            e.putBoolean("hasVisited", true);
+            SharedPreferences.Editor e = spa.edit();
+            e.putString("audioFile", savedAudioFile);
             e.commit(); // не забудьте подтвердить изменения
         }
-
-        Log.i("FIRST", "Is a first open");
-
-        return hasVisited;
     }
 
 
 
-    private void loadBanner() {
-//        AdRequest adRequest = new AdRequest.Builder().addTestDevice ("DF666E0D371B0FD388029A01F5323F05").addTestDevice("4642B5D65FCEE3D701A93A8A6ED589EA")
-//                .build();
-//        AdSize adSize = getAdSize();
-//        mAdView.setAdSize(adSize);
-//        mAdView.loadAd(adRequest);
+    public void platSPool(int position){
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        float curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float leftVolume = curVolume / maxVolume;
+        float rightVolume = curVolume / maxVolume;
+        int priority = 1;
+        int no_loop = 0;
+        float normal_playback_rate = 1f;
+        soundPool.play(position, leftVolume, rightVolume, priority, no_loop,
+                normal_playback_rate);
+
     }
 
-    //    public void playMusic(int id, Boolean play_status){
-//
-//        if(mediaPlayer!=null){
-//            mediaPlayer.stop();
-//        }
-//
-//        if(play_status){
-//            mediaPlayer = MediaPlayer.create(this, id);
-//            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//            mediaPlayer.setLooping(true);
-//            mediaPlayer.start();
-//        }else{
-//
-//        }
-//    }
-    //    private AdSize getAdSize() {
-//        // Step 2 - Determine the screen width (less decorations) to use for the ad width.
-//        Display display = getWindowManager().getDefaultDisplay();
-//        DisplayMetrics outMetrics = new DisplayMetrics();
-//        display.getMetrics(outMetrics);
-//
-//        float widthPixels = outMetrics.widthPixels;
-//        float density = outMetrics.density;
-//
-//        int adWidth = (int) (widthPixels / density);
-//
-//        // Step 3 - Get adaptive ad size and return for setting on the ad view.
-//        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
-//    }
+    private ArrayList<AudioFile> getAudios(){
+
+
+        ArrayList<AudioFile> arrayList = new ArrayList<>();
+
+        assert Realm.getDefaultConfiguration() != null;
+        Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
+        RealmResults<AudioFile> realmResults;
+        //RealmResults<AudioFile> realmResults = realm.where(AudioFile.class).findAll();
+
+        //Перша мелодія яка яку не потрібно завантажувати з інтернету
+        AudioFile firstAudio = new AudioFile();
+        firstAudio.setResourseLink(R.raw.sound_file_3);
+        firstAudio.setNameSong("Stream");
+        firstAudio.setAuthorSong("Twarres");
+        firstAudio.setStatus(true);
+        firstAudio.setLockalLink("plug");
+
+        arrayList.add(firstAudio);
+        realmResults = realm.where(AudioFile.class).equalTo("status", true).findAll();
+        arrayList.addAll(realmResults);
+
+        return arrayList;
+    }
+
+    public void playNextAudio(){
+
+        int allAudio = arrayList.size();
+        Random random = new Random();
+        int randomAudioNumber = random.nextInt(allAudio);
+        previousAudio = activeAudio;
+
+        Log.i("next", allAudio+" allAudio");
+        Log.i("next", randomAudioNumber+" randomAudioNumber");
+        Log.i("next", previousAudio+" previousAudio");
+
+        if(allAudio>2){
+            if(arrayList.get(randomAudioNumber).getLockalLink().equals(activeAudio) || arrayList.get(randomAudioNumber).getLockalLink().equals(previousAudio) ){
+                playNextAudio();
+            }else{
+                playLockalMusic(arrayList.get(randomAudioNumber).getLockalLink(), true);
+            }
+        }
+    }
+
 }

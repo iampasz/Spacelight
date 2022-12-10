@@ -1,49 +1,42 @@
 package com.appsforkids.pasz.spacelight;
 
 import android.content.Context;
+import android.graphics.Color;
 
-import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
-//import com.appsforkids.pasz.spacelight.RealmObjects.Nightlight;
-import com.appsforkids.pasz.spacelight.RealmObjects.ShopItems;
+import com.appsforkids.pasz.spacelight.Objects.MenuButton;
+import com.appsforkids.pasz.spacelight.Objects.Nightlighter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class MyObjects {
 
     Context ctx;
 
+    private static final int SOUNDS = 1;
+    private static final int BGCOLOR = 2;
+    private static final int NLCOLOR = 3;
+    private static final int NIGHTLIGHT = 4;
+    private static final int TIMER = 5;
+    private static final int BRIGHTS = 6;
+
+    private static final int EMPTY_SOUND = 7;
+    private static final int FIRST_SOUND = 8;
+    private static final int SECOND_SOUND = 9;
+
+    private static final int RED_COLOR = 10;
+    private static final int WHITE_COLOR = 11;
+    private static final int BLACK_COLOR = 12;
+    private static final int ORANGE_COLOR = 13;
+    private static final int YELLOW_COLOR = 14;
+    private static final int GREEN_COLOR = 15;
+    private static final int CANYAN_COLOR = 16;
+    private static final int BLUE_COLOR = 17;
+    private static final int MOOD_COLOR = 18;
+
+
     public MyObjects(Context ctx){
         this.ctx = ctx;
     }
-
-//    public RealmResults<Nightlight> getNightlightersArrayList(){
-//            Realm.init(ctx);
-//            Realm realm = Realm.getDefaultInstance();
-//            realm.beginTransaction();
-//            RealmResults nightlightsResult = realm.where(Nightlight.class).findAll();
-//            realm.commitTransaction();
-//            return nightlightsResult;
-//        }
-
-    public RealmResults<AudioFile> getMelodyArrayList(){
-        Realm.init(ctx);
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        RealmResults melodyResult = realm.where(AudioFile.class).findAll();
-        realm.commitTransaction();
-        return melodyResult;
-    }
-
-
-
-
-    public String[]   getColors(){
-            return ctx.getResources().getStringArray(R.array.myColors);
-        }
 
 
     public int[]   getAnimationImage(){
@@ -61,19 +54,6 @@ public class MyObjects {
                 R.drawable.sm_11,
                 R.drawable.sm_12,
                 R.drawable.sm_13,
-                //R.drawable.sm_14,
-               // R.drawable.sm_15,
-                //R.drawable.sm_16,
-                //R.drawable.sm_17,
-                //R.drawable.sm_18,
-               // R.drawable.sm_19,
-                //R.drawable.sm_20,
-               // R.drawable.sm_21,
-               // R.drawable.sm_22,
-               // R.drawable.sm_23,
-               // R.drawable.sm_24,
-               // R.drawable.sm_25,
-               // R.drawable.sm_26
         };
 
         return randomImage;
@@ -116,38 +96,10 @@ public class MyObjects {
 
     public int[]   getGradientArray(){
 
-        int[] gradientArray =  {R.drawable.grad_blue_1,
-              //  R.drawable.grad_blue_2,
-               // R.drawable.grad_blue_3,
-               // R.drawable.grad_blue_4,
-              //  R.drawable.grad_blue_5,
+        int[] gradientArray =  {
+                R.drawable.grad_blue_1,
                 R.drawable.grad_blue_6,
-               // R.drawable.grad_blue_7,
-              //  R.drawable.grad_blue_8,
-              //  R.drawable.grad_blue_9,
-               // R.drawable.grad_blue_10,
-               // R.drawable.grad_blue_11,
-              //  R.drawable.grad_blue_12,
-               // R.drawable.grad_pink_1,
-               // R.drawable.grad_pink_2,
-              //  R.drawable.grad_pink_3,
-               // R.drawable.grad_pink_4,
-               // R.drawable.grad_pink_5,
-               // R.drawable.grad_pink_6,
-               // R.drawable.grad_pink_7,
-               // R.drawable.grad_pink_8,
-               // R.drawable.grad_pink_9,
-               // R.drawable.grad_pink_10,
-               // R.drawable.grad_pink_11,
-               // R.drawable.grad_pink_12,
-               // R.drawable.grad_pink_13,
-               // R.drawable.grad_pink_14,
-                //R.drawable.grad_pink_15,
-                //R.drawable.grad_pink_16,
                 R.drawable.grad_pink_17,
-                //R.drawable.grad_pink_18,
-                //R.drawable.grad_pink_19,
-               // R.drawable.grad_pink_20,
         };
         return gradientArray;
 
@@ -155,34 +107,8 @@ public class MyObjects {
 
     public int[] getBackground(){
         int[] backgrounds = {
-               //R.drawable.bg_001,
                 R.drawable.bg_002,
-               // R.drawable.bg_003,
-               // R.drawable.bg_004,
-                //R.drawable.bg_005,
-               // R.drawable.bg_006,
-               // R.drawable.bg_007,
-                //R.drawable.bg_008,
-                //R.drawable.bg_009,
-                //R.drawable.bg_010,
-                //R.drawable.bg_011,
-                //R.drawable.bg_012,
-                //R.drawable.bg_013,
-                //R.drawable.bg_014,
-                //R.drawable.bg_015,
                 R.drawable.bg_016,
-                //R.drawable.bg_017,
-                //R.drawable.bg_019,
-                //R.drawable.bg_020,
-                //R.drawable.bg_021,
-                //R.drawable.bg_022,
-                //R.drawable.bg_023,
-                //R.drawable.bg_024,
-                //R.drawable.bg_025,
-                //R.drawable.bg_026,
-                //R.drawable.bg_027,
-                //R.drawable.bg_028
-
         };
         return backgrounds;
     }
@@ -196,56 +122,61 @@ public class MyObjects {
                 0.8f,
                 1f
         };
-
         return brights;
     }
 
-//    public ArrayList<Card> getCards(){
-//        ArrayList<Card> cardArrayList = new ArrayList<>();
-//        Card card1 = new Card();
-//        card1.setImage(R.drawable.an_bear);
-//        card1.setName("an_bear");
-//        Card card2 = new Card();
-//        card2.setImage(R.drawable.an_dear);
-//        card2.setName("an_dear");
-//        Card card3 = new Card();
-//        card3.setImage(R.drawable.an_rabbit);
-//        card3.setName("an_rabbit");
-//        Card card4 = new Card();
-//        card4.setImage(R.drawable.an_elephan);
-//        card4.setName("an_elephan");
-//        Card card5 = new Card();
-//        card5.setImage(R.drawable.an_fox);
-//        card5.setName("an_fox");
-//        Card card6 = new Card();
-//        card6.setImage(R.drawable.an_cheetah);
-//        card6.setName("an_cheetah");
-//        Card card7 = new Card();
-//        card7.setImage(R.drawable.an_squirrel);
-//        card7.setName("an_squirrel");
-//        Card card8 = new Card();
-//        card8.setImage(R.drawable.an_hedgehog);
-//        card8.setName("an_hedgehog");
-//        cardArrayList.add(card1);
-//        cardArrayList.add(card1);
-//        cardArrayList.add(card2);
-//        cardArrayList.add(card2);
-//        cardArrayList.add(card3);
-//        cardArrayList.add(card3);
-//        cardArrayList.add(card4);
-//        cardArrayList.add(card4);
-//        cardArrayList.add(card5);
-//        cardArrayList.add(card5);
-//        cardArrayList.add(card6);
-//        cardArrayList.add(card6);
-//        cardArrayList.add(card7);
-//        cardArrayList.add(card7);
-//        cardArrayList.add(card8);
-//        cardArrayList.add(card8);
-//
-//        Collections.shuffle(cardArrayList);
-//        return cardArrayList;
-//    }
+
+    public ArrayList<Nightlighter> getNightlighters(){
+        ArrayList<Nightlighter> list = new ArrayList<>();
+        list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_hippo, R.string.hippo));
+        list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_cat, R.string.cat));
+        list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_koala, R.string.koala));
+        list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_cow, R.string.cow));
+        list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_monkey, R.string.monkey));
+        list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_panda, R.string.panda));
+        list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_racoon, R.string.raccoon));
+        list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_pig, R.string.pig));
+        list.add(new Nightlighter(R.drawable.moon, R.drawable.suit, R.drawable.suit_color, R.drawable.an_bear, R.string.bear));
+        return list;
+    }
+
+    public ArrayList<MenuButton> getMenuButtons(String [] colors){
+        final ArrayList<MenuButton> menuButtons = new ArrayList<>();
+        menuButtons.add(new MenuButton(Color.parseColor(colors[0]), R.drawable.ic_sound, R.string.sounds, 1));
+        menuButtons.add(new MenuButton(Color.parseColor(colors[1]), R.drawable.ic_paint, R.string.bg_color, 2));
+        menuButtons.add(new MenuButton(Color.parseColor(colors[2]), R.drawable.ic_bear, R.string.ng_color, 3));
+        menuButtons.add(new MenuButton(Color.parseColor(colors[3]), R.drawable.ic_stsrs, R.string.ng, 6));
+        menuButtons.add(new MenuButton(Color.parseColor(colors[4]), R.drawable.ic_anim, R.string.animation, 4));
+        menuButtons.add(new MenuButton(Color.parseColor(colors[5]), R.drawable.ic_time, R.string.timer, 5));
+        menuButtons.add(new MenuButton(Color.parseColor(colors[6]), R.drawable.ic_light, R.string.brightness, 7));
+        menuButtons.add(new MenuButton(Color.parseColor(colors[0]), R.drawable.politic_button, R.string.politica, 8));
+        return menuButtons;
+    }
+
+    public ArrayList<MenuButton> getSoundsButtons(){
+        final ArrayList<MenuButton> soundsButtons = new ArrayList<>();
+
+        soundsButtons.add(new MenuButton(Color.YELLOW, R.drawable.none, R.string.brightness, EMPTY_SOUND));
+        soundsButtons.add(new MenuButton(Color.GREEN, R.drawable.ic_sound, R.string.brightness, FIRST_SOUND));
+        soundsButtons.add(new MenuButton(Color.BLUE, R.drawable.ic_sound, R.string.brightness, SECOND_SOUND));
+        return soundsButtons;
+    }
 
 
+    public ArrayList<MenuButton> getBgColorsButtons(String [] colors){
+        final ArrayList<MenuButton> bgColors = new ArrayList<>();
+        bgColors.add(new MenuButton(Color.parseColor(colors[0]), 0, R.string.ng_color, RED_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[1]), 0, R.string.ng_color, ORANGE_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[2]), 0, R.string.ng_color, YELLOW_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[3]), 0, R.string.ng_color, GREEN_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[4]), 0, R.string.ng_color, CANYAN_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[5]), 0, R.string.ng_color, BLUE_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[6]), 0, R.string.ng_color, MOOD_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[7]), 0, R.string.ng_color, BLACK_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[8]), 0, R.string.ng_color, BLACK_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[9]), 0, R.string.ng_color, BLACK_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[10]), 0, R.string.ng_color, BLACK_COLOR));
+        bgColors.add(new MenuButton(Color.parseColor(colors[11]), 0, R.string.ng_color, BLACK_COLOR));
+        return bgColors;
+    }
 }

@@ -55,13 +55,8 @@
 
     <string name="lock">Lock</string>
     <string name="unlock">Unlock</string>
-
     <string name="animation">Animation</string>
-
-
     <string name="politica">Privacy Policy</string>
-
-
 
     <string name="title_ad">Congratulations</string>
     <string name="text_ad">You opened secret Night Light!</string>
@@ -69,6 +64,10 @@
     <string name="minutes">minutes</string>
     <string name="hours">hours</string>
 
+    <string name="message_1">Internet is disabled. Connect to the Internet</string>
+    <string name="message_2">We recommend downloading a melody to your phone</string>
+    <string name="message_3">The Internet is connected to the mobile network. Continue?</string>
 
+    <string name="dont_show">Don\’t show again</string>
 
 </resources>

@@ -1,7 +1,6 @@
 package com.appsforkids.pasz.spacelight;
 
-import android.app.Application;
-import android.view.WindowManager;
+import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
@@ -25,6 +24,8 @@ public class App extends MultiDexApplication {
 
         Realm.setDefaultConfiguration(config);
     }
+
+
 
 
 }

@@ -1,14 +1,10 @@
 package com.appsforkids.pasz.spacelight;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 
 import com.appsforkids.pasz.spacelight.Interfaces.GetJson;
 import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
 import com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile;
-import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
-import com.appsforkids.pasz.spacelight.RealmObjects.ShopItems;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,16 +18,18 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 
-class AddToRealm {
+public class AddToRealm {
 
     Context ctx;
     Number maxId = 0;
 
-    AddToRealm(Context ctx) {
-
+    public AddToRealm(Context ctx) {
         this.ctx = ctx;
     }
 
+    public AddToRealm() {
+
+    }
 
 
     private static String readText(Context context, int resId) throws IOException {
@@ -47,13 +45,13 @@ class AddToRealm {
     }
 
 
-    public void getJsonFromURL(){
+    public void addJsonToRealm(){
+
+        ArrayList<AudioFile> musicItemArrayList = new ArrayList<>();
 
         ReadJson readJson = new ReadJson(new GetJson() {
             @Override
             public void getJson(String result) {
-
-                ArrayList<AudioFile> musicItemArrayList = new ArrayList<>();
 
                 try {
 
@@ -73,14 +71,8 @@ class AddToRealm {
                         audioFile.setAuthorSong(jsonArray.getJSONObject(i).getString("author"));
                         audioFile.setInternetLink(jsonArray.getJSONObject(i).getString("internet_link"));
                         audioFile.setStatus( jsonArray.getJSONObject(i).getBoolean("status"));
-
-                        //Toast.makeText(context, jsonArray.getJSONObject(0).getString("name")+"55", Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(context, musicItem.getName()+"55", Toast.LENGTH_SHORT).show();
-
                         musicItemArrayList.add(audioFile);
-
                     }
-
 
                     Realm.init(ctx);
                     Realm realm = Realm.getDefaultInstance();
@@ -108,8 +100,8 @@ class AddToRealm {
         });
 
         readJson.execute("https://koko-oko.com/audio/music.json");
-    }
 
+    }
 
     public void getImgJsonFromURL(){
 
@@ -125,22 +117,10 @@ class AddToRealm {
 
                     JSONObject jsonRoot = new JSONObject(jsonText);
                     JSONArray jsonArray = jsonRoot.getJSONArray("music");
-
-                    //Toast.makeText(context, jsonArray.length()+" ", Toast.LENGTH_SHORT).show();
                     for(int i = 0; jsonArray.length()>i; i++){
 
                         ImageBgFile imageBgFile = new ImageBgFile();
-
                       //  imageBgFile.setId(jsonArray.getJSONObject(i).getInt("id"));
-
-
-
-
-
-
-                        //Toast.makeText(context, jsonArray.getJSONObject(0).getString("name")+"55", Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(context, musicItem.getName()+"55", Toast.LENGTH_SHORT).show();
-
                         imageItemArrayList.add(imageBgFile);
 
                     }
@@ -173,5 +153,4 @@ class AddToRealm {
 
         readJson.execute("https://koko-oko.com/audio/music.json");
     }
-
 }

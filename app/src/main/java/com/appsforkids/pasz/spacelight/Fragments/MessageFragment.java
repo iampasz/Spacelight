@@ -1,9 +1,11 @@
 package com.appsforkids.pasz.spacelight.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -21,10 +23,12 @@ import com.easyandroidanimations.library.FadeInAnimation;
 import com.easyandroidanimations.library.FadeOutAnimation;
 import com.easyandroidanimations.library.ScaleInAnimation;
 
+import java.io.Serializable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MessageFragment extends Fragment {
+public class MessageFragment extends Fragment implements Serializable {
 
     @BindView(R.id.no_button)
     FrameLayout no_button;
@@ -38,7 +42,7 @@ public class MessageFragment extends Fragment {
     @BindView(R.id.frame_constraine)
     ConstraintLayout frame_constraine;
 
-
+    DoThisAction doThisAction;
 
     public static MessageFragment init(String message, DoThisAction doThisAction){
 
@@ -69,8 +73,7 @@ public class MessageFragment extends Fragment {
         new FadeInAnimation(view).setDuration(300).animate();
         new ScaleInAnimation(view).setDuration(500).animate();
 
-        DoThisAction doThisAction = (DoThisAction)  getArguments().getSerializable("do_this");
-
+        doThisAction = (DoThisAction)  getArguments().getSerializable("do_this");
 
         no_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,8 +95,6 @@ public class MessageFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
-
                 new FadeOutAnimation(frame_constraine).setDuration(200).setListener(new AnimationListener() {
                     @Override
                     public void onAnimationEnd(Animation animation) {
@@ -107,6 +108,10 @@ public class MessageFragment extends Fragment {
             }
         });
 
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

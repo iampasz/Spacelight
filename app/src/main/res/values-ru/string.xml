@@ -69,6 +69,10 @@
     <string name="minutes">минуты</string>
     <string name="hours">часы</string>
 
+    <string name="message_1">Интернет отключен. Подключитесь к интернету</string>
+    <string name="message_2">Советуем загрузить мелидию в телефон</string>
+    <string name="message_3">Интернет подключен к мобильной сети. Продолжить?</string>
 
+    <string name="dont_show">Больше не показывать </string>
 
 </resources>

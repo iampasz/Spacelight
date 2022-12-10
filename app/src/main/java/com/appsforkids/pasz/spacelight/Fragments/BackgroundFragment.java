@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +18,6 @@ import com.appsforkids.pasz.spacelight.Interfaces.GetActionFromAdapter;
 import com.appsforkids.pasz.spacelight.Interfaces.GetJson;
 import com.appsforkids.pasz.spacelight.R;
 import com.appsforkids.pasz.spacelight.ReadJson;
-import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
 import com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile;
 
 import org.json.JSONArray;
@@ -28,9 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import io.realm.Realm;
-
-public class HatsFragment extends Fragment  {
+public class BackgroundFragment extends Fragment  {
 
     GridLayoutManager gm;
 
@@ -103,7 +99,7 @@ public class HatsFragment extends Fragment  {
 
             choseItem.setImage(link);
         }
-        getParentFragmentManager().beginTransaction().remove(HatsFragment.this).commit();
+        getParentFragmentManager().beginTransaction().remove(BackgroundFragment.this).commit();
 
     }
 
@@ -149,12 +145,6 @@ public class HatsFragment extends Fragment  {
                 closeFragment(link);
             }
 
-            @Override
-            public void doAnother(int position) {
-
-                // ((MainActivity)getActivity()).renewCoins(0);
-
-            }
         }));
     }
 

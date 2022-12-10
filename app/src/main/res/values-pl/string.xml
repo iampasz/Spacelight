@@ -70,6 +70,11 @@
     <string name="minutes">minuty</string>
     <string name="hours">godziny</string>
 
+    <string name="message_1">Internet jest wyłączony. Połącz z internetem</string>
+    <string name="message_2">Zalecamy pobranie melodii na telefon</string>
+    <string name="message_3">Internet jest podłączony do sieci komórkowej. Kontynuować?</string>
+
+    <string name="dont_show">Nie pokazuj ponownie</string>
 
 
 </resources>

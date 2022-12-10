@@ -1,11 +1,9 @@
 package com.appsforkids.pasz.spacelight.Fragments;
 
-
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -27,21 +25,20 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.appsforkids.pasz.spacelight.Adapters.MyPagerAdapter;
 import com.appsforkids.pasz.spacelight.Adapters.RecyclerViewAdapter;
-import com.appsforkids.pasz.spacelight.Fabrica.MyMenuItems;
+import com.appsforkids.pasz.spacelight.AddToRealm;
 import com.appsforkids.pasz.spacelight.Interfaces.ChangeColors;
 import com.appsforkids.pasz.spacelight.Interfaces.DoThisAction;
 import com.appsforkids.pasz.spacelight.MainActivity;
@@ -51,21 +48,19 @@ import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 import com.appsforkids.pasz.spacelight.RevolutionAnimationView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.Serializable;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MainFragment extends Fragment implements Serializable {
 
@@ -83,6 +78,9 @@ public class MainFragment extends Fragment implements Serializable {
 
     @BindView(R.id.presents)
     ImageView presents;
+
+    @BindView(R.id.right_p)
+    ImageView right_p;
 
     @BindView(R.id.animateBg)
     ImageView animateBg;
@@ -103,10 +101,7 @@ public class MainFragment extends Fragment implements Serializable {
     RecyclerView rv;
 
     MyPagerAdapter pagerAdapter;
-    // MediaPlayer mediaPlayer;
-
     private AdView mAdView;
-
     RecyclerViewAdapter adapter;
 
     Boolean show = true;
@@ -116,8 +111,8 @@ public class MainFragment extends Fragment implements Serializable {
     public RevolutionAnimationView revolutionAnimationView;
 
     Context ctx;
-    MyMenuItems menuItems;
     boolean chekMenu = true;
+    boolean chekStatus = true;
 
     String[] colors;
     String[] bgColors;
@@ -130,16 +125,12 @@ public class MainFragment extends Fragment implements Serializable {
     int brights = 0;
     int smImage = -1;
 
+    String MY_CHEKBOX = "my_chekbox";
+
     ImageView suitColor;
-    Realm realm;
-    boolean showed;
     MyObjects myObjects;
     CountDownTimer offTimer;
-
     CountDownTimer hideLockTimer;
-
-    private InterstitialAd mInterstitialAd;
-
     AdRequest adRequest;
 
     @Nullable
@@ -157,27 +148,54 @@ public class MainFragment extends Fragment implements Serializable {
         super.onViewCreated(view, savedInstanceState);
 
         ctx = view.getContext();
-        FragmentActivity main = getActivity();
-
-        menuItems = new MyMenuItems();
-
-        // mySuitColor = myObjects.getGradientArray()[suitCounter];
-        pagerAdapter = new MyPagerAdapter(getParentFragmentManager(), menuItems.getNightlighters());
-
-        pager.setAdapter(pagerAdapter);
-        pager.setCurrentItem(500);
 
         myObjects = new MyObjects(getContext());
 
+        pagerAdapter = new MyPagerAdapter(getParentFragmentManager(), myObjects.getNightlighters());
+        pager.setAdapter(pagerAdapter);
+        pager.setCurrentItem(500);
+
+        //Реклама
         mAdView = view.findViewById(R.id.adView);
-
         setMyAds();
+        adRequest = new AdRequest.Builder().build();
 
+        right_p.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ((MainActivity)getActivity()).playNextAudio();
+
+
+
+            }
+        });
+
+
+        //Налаштунки
         setSettings();
+
+        //Оновлення мелодій з інтернету
+        AddToRealm addToRealm = new AddToRealm();
+
+        switch (hasConnection(getContext())) {
+            case 0:
+                break;
+            case 1:
+                addToRealm.addJsonToRealm();
+                break;
+            case 2:
+                addToRealm.addJsonToRealm();
+                break;
+            case 3:
+                addToRealm.addJsonToRealm();
+                break;
+        }
 
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
         rv.setLayoutManager(llm);
         Resources res = getResources();
+
         colors = res.getStringArray(R.array.myColors);
         bgColors = res.getStringArray(R.array.bgColors);
         bgNlColors = res.getStringArray(R.array.bgNlColors);
@@ -186,22 +204,15 @@ public class MainFragment extends Fragment implements Serializable {
         hideLockTimer = new CountDownTimer(3000, 3000) {
             @Override
             public void onTick(long l) {
-
             }
 
             @Override
             public void onFinish() {
                 lockButton.setVisibility(View.GONE);
-                //suit.setVisibility(View.GONE);
             }
         };
 
-
-        //  pager.setZ(1);
-        //  suit.setZ(1);
-        // lockButton.setZ(1);
-        // lock_frame.setZ(1);
-
+        //Блокуванян екрану
         lock_frame.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -214,6 +225,8 @@ public class MainFragment extends Fragment implements Serializable {
                 return false;
             }
         });
+
+        //Кнопка костюму
         suit.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -237,6 +250,8 @@ public class MainFragment extends Fragment implements Serializable {
                 return true;
             }
         });
+
+        //Кнопка бокування
         lockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,16 +259,14 @@ public class MainFragment extends Fragment implements Serializable {
             }
         });
 
-        Realm.init(ctx);
-        realm = Realm.getDefaultInstance();
-        adapter = new RecyclerViewAdapter(menuItems.getMenuButtons(colors), menuColors);
+        //Кнопки меню
+        adapter = new RecyclerViewAdapter(myObjects.getMenuButtons(colors), menuColors);
         adapter.MyOnclick(new ChangeColors() {
             @Override
             public void onclick(int button) {
                 switch (button) {
                     case 1:
-                        //playSound();
-                        setMelody();
+                        getParentFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
                         break;
                     case 2:
                         changeBgColor();
@@ -263,7 +276,6 @@ public class MainFragment extends Fragment implements Serializable {
                         break;
                     case 4:
                         if (smImage == -1) {
-
                         } else {
                             startAnimation2(myObjects.getAnimationImage()[smImage]);
                             smImage++;
@@ -272,48 +284,46 @@ public class MainFragment extends Fragment implements Serializable {
                                 smImage = 0;
                             }
                         }
-
+                        break;
+                    case 5:
+                        setTimer();
                         break;
                     case 6:
-
                         switch (hasConnection(getContext())) {
                             case 0:
-                                getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init("Для відображення фонів нічника, під'єднайтесь до інтернету")).commit();
-
+                                    getParentFragmentManager()
+                                            .beginTransaction()
+                                            .add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
+                                            .commit();
                                 break;
                             case 1:
                                 changeBackgroundImage();
                                 break;
                             case 2:
-                                getParentFragmentManager().beginTransaction().add(R.id.container, MessageFragment.init("Інтернет підключенно по мобільному, використовувати мобільний інтернет?",
-                                        new DoThisAction() {
-                                            @Override
-                                            public void doThis() {
-                                                changeBackgroundImage();
-                                            }
 
-                                            @Override
-                                            public void doThis(int hours, int minutes) {
+                                    getParentFragmentManager()
+                                            .beginTransaction()
+                                            .add(R.id.container, MessageFragment.init(getResources().getString(R.string.message_3), new DoThisAction() {
+                                                @Override
+                                                public void doThis() {
+                                                    changeBackgroundImage();
+                                                }
+                                                @Override
+                                                public void doThis(int hours, int minutes) {
+                                                }
+                                                @Override
+                                                public void doThat() {
 
-                                            }
+                                                }
+                                            }), "MelodyListFragment")
+                                            .commit();
 
-                                            @Override
-                                            public void doThat() {
-
-                                            }
-
-                                        }), "MelodyListFragment").commit();
 
                                 break;
                             case 3:
                                 changeBackgroundImage();
                                 break;
                         }
-
-
-                        break;
-                    case 5:
-                        setTimer();
                         break;
                     case 7:
                         changeBrighest();
@@ -323,13 +333,8 @@ public class MainFragment extends Fragment implements Serializable {
                         break;
                 }
             }
-
         });
         rv.setAdapter(adapter);
-
-        adRequest = new AdRequest.Builder().build();
-
-        loadAddFullScrean();
     }
 
     private void changeSuitColor() {
@@ -415,14 +420,6 @@ public class MainFragment extends Fragment implements Serializable {
 
     }
 
-    private void lockFrame() {
-        if (chekMenu) {
-            rv.setVisibility(View.VISIBLE);
-        }
-        lockButton.setVisibility(View.VISIBLE);
-        hideLockTimer.start();
-    }
-
     public void startAnimation2(int imageViewAnimation) {
         Log.i("startAnimation2", imageViewAnimation + "");
         if (revolutionAnimationView == null) {
@@ -450,50 +447,6 @@ public class MainFragment extends Fragment implements Serializable {
 
     }
 
-    private void showAd() {
-
-        new AlertDialog.Builder(ctx).setTitle("Open Nightlight").setMessage("Open nightlight for advertising").setIcon(R.drawable.presentold).setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-//                        if (mInterstitialAd.isLoaded()) {
-//                            mInterstitialAd.show();
-//                        } else {
-//                            Log.d("TAG", "The interstitial wasn't loaded yet.");
-//                        }
-
-                showed = true;
-            }
-        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pager.setCurrentItem(500);
-            }
-        }).setCancelable(true).setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                pager.setCurrentItem(500);
-            }
-        }).show();
-
-    }
-
-    public void randomColor() {
-        // int intColor;
-        // Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
-        // imageView = myFragment.getView().findViewById(R.id.suit_color);
-        // Random random = new Random();
-        // intColor = random.nextInt(bgNlColors.length);
-        //imageView.setColorFilter(Color.parseColor(bgNlColors[intColor]));
-    }
-
-    public void changeRandomColor() {
-        Random random = new Random();
-        int NLRColor = random.nextInt(8);
-        int BGNLRColor = random.nextInt(8);
-        Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
-    }
-
     private void startTimer(int hours, int minutes) {
         if (hours == 0 && minutes == 0) {
             timerText.setVisibility(View.INVISIBLE);
@@ -519,42 +472,45 @@ public class MainFragment extends Fragment implements Serializable {
     }
 
     private void openPrivatePolicy() {
-        getParentFragmentManager().beginTransaction().add(R.id.container, MessageFragment.init(getString(R.string.open_policy), new DoThisAction() {
-            @Override
-            public void doThis() {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://paszzsap.github.io/nightlight2/politic.html"));
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container, MessageFragment.init(getString(R.string.open_policy), new DoThisAction() {
+                            @Override
+                            public void doThis() {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://paszzsap.github.io/nightlight2/politic.html"));
 
-                switch (hasConnection(getContext())) {
-                    case 0:
-                        getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init("Інтернет вимкнено. Для відображення політики конфіденційності підключіться до інтернету")).commit();
+                                switch (hasConnection(getContext())) {
+                                    case 0:
+                                        getParentFragmentManager()
+                                                .beginTransaction()
+                                                .add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
+                                                .commit();
+                                        break;
+                                    case 1:
+                                        startActivity(browserIntent);
+                                        break;
+                                    case 2:
+                                        startActivity(browserIntent);
 
-                        break;
-                    case 1:
-
-                        startActivity(browserIntent);
-                        break;
-                    case 2:
-                        startActivity(browserIntent);
-
-                        break;
-                    case 3:
-                        changeBackgroundImage();
-                        break;
-                }
+                                        break;
+                                    case 3:
+                                        changeBackgroundImage();
+                                        break;
+                                }
 
 
-            }
+                            }
 
-            @Override
-            public void doThis(int hours, int minutes) {
+                            @Override
+                            public void doThis(int hours, int minutes) {
 
-            }
+                            }
 
-            @Override
-            public void doThat() {
-
-            }
-        }), "MelodyListFragment").commit();
+                            @Override
+                            public void doThat() {
+                            }
+                        }), "MelodyListFragment")
+                    .commit();
     }
 
     private void setTimer() {
@@ -601,16 +557,9 @@ public class MainFragment extends Fragment implements Serializable {
 
     private void changeBackgroundImage() {
 
-//        anim_bg++;
-//
-//        if(anim_bg>=myObjects.getBackground().length){
-//            anim_bg = 0;
-//        }
-//        mainBg.setBackgroundResource(myObjects.getBackground()[anim_bg]);
-//        backgroundTumbler=false;
 
-        HatsFragment hatsFragment = new HatsFragment();
-        hatsFragment.setCallBack(new ChoseItem() {
+        BackgroundFragment backgroundFragment = new BackgroundFragment();
+        backgroundFragment.setCallBack(new ChoseItem() {
             @Override
             public void setImage(String link) {
                 Picasso.get().load(link).into(new Target() {
@@ -632,17 +581,8 @@ public class MainFragment extends Fragment implements Serializable {
             }
         });
 
+        getParentFragmentManager().beginTransaction().add(R.id.container, backgroundFragment).commit();
 
-//
-
-
-        getParentFragmentManager().beginTransaction().add(R.id.container, hatsFragment).commit();
-
-    }
-
-    private void setMelody() {
-        getParentFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
-        // getParentFragmentManager().beginTransaction().add(R.id.container, new BackgroundsFragment(), "BackgroundsFragment").commit();
     }
 
     @Override
@@ -667,21 +607,12 @@ public class MainFragment extends Fragment implements Serializable {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         MySettings settings = realm.where(MySettings.class).findFirst();
-        Log.i("Setting", "текущая сохраненная позиция" + settings.getNightlightPosition());
         pager.setCurrentItem(settings.getNightlightPosition(), false);
 
-        //ConstraintLayout constraintLayout = getActivity().findViewById(R.id.main_constrain);
-
         smImage = settings.getAnimationPosition();
-        int currentRate = settings.getRate();
         gradientCounter = settings.getGradientColor();
         anim_bg = settings.getBackgroundColor();
-        int currentNightlightPosition = settings.getNightlightPosition();
-        int currentNightligh = settings.getNightlight();
-        boolean currentAdds = settings.getAdds();
-        float currentBright = settings.getBright();
         backgroundTumbler = settings.getBackgroundTumbler();
-
 
         if (backgroundTumbler) {
             mainBg.setBackgroundResource(myObjects.getGradient()[gradientCounter]);
@@ -689,61 +620,14 @@ public class MainFragment extends Fragment implements Serializable {
             mainBg.setBackgroundResource(myObjects.getBackground()[anim_bg]);
         }
 
-
-        //Показываем фрагмент где предлагается проголосовать за приложение и поставить оценку
-        switch (currentRate) {
-            case -1:
-
-                break;
-
-            case 3:
-                //проверяем интернет подключение
-//                if(hasConnection(getContext())){
-//                    getParentFragmentManager()
-//                            .beginTransaction()
-//                            .setCustomAnimations(R.animator.appearance, R.animator.disappearance)
-//                            .add(R.id.main, new RateFragment())
-//                            .commit();
-//
-//                    settings.setRate(0);
-//                }
-
-                break;
-
-            default:
-                currentRate++;
-                settings.setRate(currentRate);
-                break;
-        }
-
         //Устанавливаем анимацию
-        Log.i("setSettings", " currentAnimation " + smImage);
         if (smImage != 0) {
             startAnimation2(myObjects.getAnimationImage()[smImage]);
         }
 
-        // ((MainActivity)getActivity()).revolutionAnimationView.changeImage(ContextCompat.getDrawable(getContext(), myObjects.getAnimationImage()[currentAnimation]));
         realm.commitTransaction();
     }
 
-    private void loadAddFullScrean() {
-        InterstitialAd.load(getContext(), "ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
-            @Override
-            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                // The mInterstitialAd reference will be null until
-                // an ad is loaded.
-                mInterstitialAd = interstitialAd;
-                Log.i("Add", "onAdLoaded");
-            }
-
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                // Handle the error
-                Log.d("Add", loadAdError.toString());
-                mInterstitialAd = null;
-            }
-        });
-    }
 
     private void setMyAds() {
 
@@ -788,5 +672,24 @@ public class MainFragment extends Fragment implements Serializable {
         return 0;
     }
 
-
+//    private boolean getChekBoxStatus(String preferences) {
+//        SharedPreferences spa = getActivity().getSharedPreferences(MY_CHEKBOX, Context.MODE_PRIVATE);
+//        chekStatus = spa.getBoolean(preferences, true);
+//
+//        if (chekStatus) {
+//            Log.i("chhh", "true");
+//            return true;
+//        } else {
+//            Log.i("chhh", "false");
+//            return false;
+//        }
+//    }
+//
+//    public void setChekBoxStatus(String preferences) {
+//        SharedPreferences spa = getActivity().getSharedPreferences(MY_CHEKBOX, Context.MODE_PRIVATE);
+//        // выводим нужную активность
+//        SharedPreferences.Editor e = spa.edit();
+//        e.putBoolean(preferences, false);
+//        e.commit(); // не забудьте подтвердить изменения
+//    }
 }

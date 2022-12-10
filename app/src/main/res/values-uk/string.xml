@@ -69,6 +69,9 @@
     <string name="minutes">хвилини</string>
     <string name="hours">години</string>
 
+    <string name="message_1">Інтернет вимкнено. Під\’єднайтесь до інтернету</string>
+    <string name="message_2">Рекомендуємо завантажити мелодію на мобільний пристрій</string>
+    <string name="message_3">Інтернет підключено до мобільної мережі. Продовжити?</string>
 
-
+    <string name="dont_show">Більше не показувати</string>
 </resources>

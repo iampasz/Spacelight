@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ public class SimpleMessageFragment extends Fragment {
 
     @BindView(R.id.dialog_message)
     TextView dialog_message;
+
 
     public static SimpleMessageFragment init(String message){
 
@@ -52,6 +54,8 @@ public class SimpleMessageFragment extends Fragment {
         new FadeInAnimation(view).setDuration(300).animate();
         new ScaleInAnimation(view).setDuration(500).animate();
 
+
+
         ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +66,12 @@ public class SimpleMessageFragment extends Fragment {
             }
         });
 
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
     }
 }

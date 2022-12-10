@@ -70,6 +70,12 @@
     <string name="minutes">minutos</string>
     <string name="hours">horas</string>
 
+    <string name="message_1">Internet está deshabilitado. Conectar a internet</string>
+    <string name="message_2">Recomendamos descargar una melodía a su teléfono</string>
+    <string name="message_3">Internet está conectado a la red móvil. ¿Continuar?</string>
+
+    <string name="dont_show">No volver a mostrar</string>
+
 
 
 </resources>

@@ -116,9 +116,6 @@ public class PagerFragment extends Fragment {
                // YoYo.with(techniques.get(i))
                //         .duration(700)
                  //       .playOn(underImg);
-
-
-
             }
         });
 

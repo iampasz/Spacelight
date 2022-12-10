@@ -69,6 +69,10 @@
     <string name="minutes">Minuten </string>
     <string name="hours">Stunden</string>
 
+    <string name="message_1">Internet ist deaktiviert. Mit dem Internet verbinden</string>
+    <string name="message_2">Wir empfehlen, eine Melodie auf Ihr Telefon herunterzuladen</string>
+    <string name="message_3">Das Internet ist mit dem Mobilfunknetz verbunden. Fortsetzen?</string>
 
+    <string name="dont_show">Nicht mehr anzeigen</string>
 
 </resources>
