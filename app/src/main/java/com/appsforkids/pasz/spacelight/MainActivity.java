@@ -1,5 +1,6 @@
 package com.appsforkids.pasz.spacelight;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
@@ -10,10 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 
 import com.appsforkids.pasz.spacelight.Fragments.MainFragment;
@@ -29,7 +31,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
-import io.realm.Sort;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
     Boolean isLooping = false;
 
+    public ConstraintLayout constrain;
+
 
     SoundPool soundPool;
 
@@ -52,8 +55,14 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.right_p)
     ImageView right_p;
 
+    @BindView(R.id.show_menu)
+    ImageView show_menu;
+
     @BindView(R.id.name_song)
     TextView name_song;
+
+    @BindView(R.id.player)
+    LinearLayout player;
 
     @BindView(R.id.play_p)
     ImageView play_p;
@@ -79,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         soundPool.load(this, R.raw.s4, 1);
         soundPool.load(this, R.raw.s5, 1);
 
+        constrain = (ConstraintLayout) findViewById(R.id.constrain);
+
         //Встановлюємо повно-екранний режим
         setFullScrean();
 
@@ -97,8 +108,10 @@ public class MainActivity extends AppCompatActivity {
          playSavedAudio();
 
         //Відкриваємо MainFragment
+
+        MainFragment mainFragment = new MainFragment();
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().add(R.id.container, new MainFragment(), "main_fragment").commit();
+        fm.beginTransaction().add(R.id.container, mainFragment, "main_fragment").commit();
 
 
         right_p.setOnClickListener(new View.OnClickListener() {
@@ -111,15 +124,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        show_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainFragment.rv.setVisibility(View.VISIBLE);
+                mainFragment.rv.animate().alpha(1f).setDuration(1000);
+                hidePlayer();
+            }
+        });
+
         play_p.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //((MainActivity)getActivity()).startStop();
-                if(startStop()){
-                    play_p.setImageResource(R.drawable.bt_pause);
-                }else{
-                    play_p.setImageResource(R.drawable.bt_play);
-                }
+                startStop();
             }
         });
 
@@ -194,13 +212,18 @@ public class MainActivity extends AppCompatActivity {
 
             savedAudioFile = audioFile.getInternetLink();
 
+            play_p.setImageResource(R.drawable.bt_pause);
+            name_song.setText(audioFile.nameSong);
+
+        }else{
+            play_p.setImageResource(R.drawable.bt_play);
         }
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 playNextAudio();
-                Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -227,16 +250,22 @@ public class MainActivity extends AppCompatActivity {
 
             savedAudioFile = link;
 
+            play_p.setImageResource(R.drawable.bt_pause);
+
+            name_song.setText(link);
+
+        }else{
+            play_p.setImageResource(R.drawable.bt_play);
         }
         activeAudio = link;
 
-        Toast.makeText(MainActivity.this, "here", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MainActivity.this, "here", Toast.LENGTH_SHORT).show();
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 playNextAudio();
-                Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -244,13 +273,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void playInternetMusic(AudioFile audioFile, Boolean play_status) {
 
-
-
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
 
         if (play_status) {
+            play_p.setImageResource(R.drawable.bt_pause);
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setLooping(isLooping);
@@ -261,6 +289,9 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             mediaPlayer.start();
+            name_song.setText(audioFile.nameSong);
+        }else{
+            play_p.setImageResource(R.drawable.bt_play);
         }
     }
 
@@ -275,6 +306,8 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setLooping(isLooping);
             mediaPlayer.start();
+        }else{
+            play_p.setImageResource(R.drawable.bt_play);
         }
     }
     private void playSavedAudio() {
@@ -389,6 +422,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(mediaPlayer.isPlaying()){
                 mediaPlayer.pause();
+                play_p.setImageResource(R.drawable.bt_play);
                 Log.i("isplay", " true");
                 return false;
 
@@ -397,6 +431,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("isplay", " false");
                 if(mediaPlayer!=null){
                     mediaPlayer.start();
+                    play_p.setImageResource(R.drawable.bt_pause);
                     Log.i("isplay", mediaPlayer+" false");
                     return true;
                 }
@@ -412,6 +447,56 @@ public class MainActivity extends AppCompatActivity {
 
     public void playLoopingAudio(Boolean status){
         isLooping = status;
+    }
+
+    public void hidePlayer(){
+        player.animate().translationY(200).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                player.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+
+    }
+
+    public void showPlayer(){
+        player.setVisibility(View.VISIBLE);
+        player.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                player.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
     }
 
 }

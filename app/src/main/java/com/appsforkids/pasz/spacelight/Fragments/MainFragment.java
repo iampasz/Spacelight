@@ -85,8 +85,7 @@ public class MainFragment extends Fragment implements Serializable {
     @BindView(R.id.timer)
     TextView timerText;
 
-    @BindView(R.id.mainBg)
-    FrameLayout mainBg;
+    ConstraintLayout mainBg;
 
     @BindView(R.id.main_constrain)
     ConstraintLayout main_constrain;
@@ -95,7 +94,7 @@ public class MainFragment extends Fragment implements Serializable {
     FrameLayout lock_frame;
 
     @BindView(R.id.rv)
-    RecyclerView rv;
+    public RecyclerView rv;
 
     MyPagerAdapter pagerAdapter;
     private AdView mAdView;
@@ -110,6 +109,8 @@ public class MainFragment extends Fragment implements Serializable {
     Context ctx;
     boolean chekMenu = true;
     boolean chekStatus = true;
+
+    boolean playerStatus =  true;
 
     String[] colors;
     String[] bgColors;
@@ -135,6 +136,9 @@ public class MainFragment extends Fragment implements Serializable {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, null);
         ButterKnife.bind(this, view);
+
+        mainBg = ((MainActivity)getActivity()).constrain;
+
         return view;
     }
 
@@ -254,7 +258,19 @@ public class MainFragment extends Fragment implements Serializable {
             public void onclick(int button) {
                 switch (button) {
                     case 1:
-                        getParentFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
+                       // getParentFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
+                        if(playerStatus){
+                            ((MainActivity)getActivity()).hidePlayer();
+                            rv.animate().alpha(1f).setDuration(1000);
+                            playerStatus=false;
+                        }else{
+
+                            //rv.setVisibility(View.GONE);
+                            rv.animate().alpha(0f).setDuration(1000);
+                            ((MainActivity)getActivity()).showPlayer();
+                            playerStatus=true;
+                        }
+
                         break;
                     case 2:
                         changeBgColor();
@@ -416,7 +432,7 @@ public class MainFragment extends Fragment implements Serializable {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 revolutionAnimationView.setZ(-1);
             }
-            main_constrain.addView(revolutionAnimationView);
+            mainBg.addView(revolutionAnimationView);
             revolutionAnimationView.changeImage(ContextCompat.getDrawable(getContext(), imageViewAnimation));
 
         } else {
@@ -544,7 +560,6 @@ public class MainFragment extends Fragment implements Serializable {
     }
 
     private void changeBackgroundImage() {
-
 
         BackgroundFragment backgroundFragment = new BackgroundFragment();
         backgroundFragment.setCallBack(new ChoseItem() {
