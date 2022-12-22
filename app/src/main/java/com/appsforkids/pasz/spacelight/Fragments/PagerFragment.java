@@ -19,10 +19,13 @@ import com.appsforkids.pasz.spacelight.MyObjects;
 import com.appsforkids.pasz.spacelight.Objects.Nightlighter;
 import com.appsforkids.pasz.spacelight.R;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 //mport com.daimajia.androidanimations.library.Techniques;
 //import com.daimajia.androidanimations.library.YoYo;
 
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import io.realm.Realm;
@@ -81,16 +84,16 @@ public class PagerFragment extends Fragment {
         suitColorImg.setImageResource(R.drawable.grad_blue_1);
         animalImg.setImageResource(myNightlighter.getAnimalImg());
 
-      //  final ArrayList<Techniques> techniques = new ArrayList<>();
-       //// techniques.add(Techniques.Bounce);
-       // techniques.add(Techniques.BounceIn);
-       // techniques.add(Techniques.FadeIn);
-       //// techniques.add(Techniques.DropOut);
-       // techniques.add(Techniques.Shake);
-       // techniques.add(Techniques.Flash);
-       // techniques.add(Techniques.SlideInLeft);
-       // techniques.add(Techniques.Swing);
-       // techniques.add(Techniques.FlipInY);
+        final ArrayList<Techniques> techniques = new ArrayList<>();
+       // techniques.add(Techniques.Bounce);
+        techniques.add(Techniques.BounceIn);
+        techniques.add(Techniques.FadeIn);
+       // techniques.add(Techniques.DropOut);
+        techniques.add(Techniques.Shake);
+        techniques.add(Techniques.Flash);
+        techniques.add(Techniques.SlideInLeft);
+        techniques.add(Techniques.Swing);
+        techniques.add(Techniques.FlipInY);
 
 
         nameNightlight.setOnLongClickListener(new View.OnLongClickListener() {
@@ -107,15 +110,15 @@ public class PagerFragment extends Fragment {
                 Random random = new Random();
 
 
-          //     int i =  random.nextInt(techniques.size());
+               int i =  random.nextInt(techniques.size());
 
-               // YoYo.with(techniques.get(i))
-               //         .duration(700)
-               //         .playOn(upImg);
+                YoYo.with(techniques.get(i))
+                        .duration(700)
+                        .playOn(moonImg);
 
-               // YoYo.with(techniques.get(i))
-               //         .duration(700)
-                 //       .playOn(underImg);
+                YoYo.with(techniques.get(i))
+                        .duration(700)
+                        .playOn(moonImg);
             }
         });
 

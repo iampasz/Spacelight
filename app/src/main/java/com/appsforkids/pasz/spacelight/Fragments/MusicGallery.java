@@ -56,7 +56,7 @@ public class MusicGallery extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Set View container and add buterknife library
-        View view = inflater.inflate(R.layout.play_l, container, false);
+        View view = inflater.inflate(R.layout.galery_l, container, false);
         ButterKnife.bind(this, view);
         arrayList = new ArrayList<>();
         return view;
@@ -99,17 +99,17 @@ public class MusicGallery extends Fragment {
                             case 0:
                                 getParentFragmentManager()
                                         .beginTransaction()
-                                        .add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
+                                        .add(R.id.audio_content, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
                                         .commit();
                                 break;
                             case 1:
-                                getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_2))).commit();
+                                getParentFragmentManager().beginTransaction().add(R.id.audio_content, SimpleMessageFragment.init(getResources().getString(R.string.message_2))).commit();
                                 pressPlay(position, play_status);
                                 break;
                             case 2:
                                 getParentFragmentManager()
                                         .beginTransaction()
-                                        .add(R.id.container,
+                                        .add(R.id.audio_content,
                                                 MessageFragment.init(getResources().getString(R.string.message_1), new DoThisAction() {
                                                     @Override
                                                     public void doThis() {
@@ -126,7 +126,7 @@ public class MusicGallery extends Fragment {
                                                 })).commit();
                                 break;
                             case 3:
-                                getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_2))).commit();
+                                getParentFragmentManager().beginTransaction().add(R.id.audio_content, SimpleMessageFragment.init(getResources().getString(R.string.message_2))).commit();
                                 pressPlay(position, play_status);
                                 break;
                         }
@@ -289,25 +289,8 @@ public class MusicGallery extends Fragment {
         Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
         RealmResults<AudioFile> realmResults;
         //RealmResults<AudioFile> realmResults = realm.where(AudioFile.class).findAll();
+        realmResults = realm.where(AudioFile.class).equalTo("status", false).findAll();
 
-        //Перша мелодія яка яку не потрібно завантажувати з інтернету
-        AudioFile firstAudio = new AudioFile();
-        firstAudio.setResourseLink(R.raw.sound_file_3);
-        firstAudio.setNameSong("Stream");
-        firstAudio.setAuthorSong("Twarres");
-        firstAudio.setStatus(true);
-        firstAudio.setLockalLink("plug");
-
-        arrayList.add(firstAudio);
-
-        switch (hasConnection(getContext())){
-            case 0:
-                realmResults = realm.where(AudioFile.class).equalTo("status", true).findAll();
-
-                break;
-            default:
-                realmResults = realm.where(AudioFile.class).sort("status", Sort.DESCENDING).findAll();
-        }
 
         // realm.commitTransaction();//??
 

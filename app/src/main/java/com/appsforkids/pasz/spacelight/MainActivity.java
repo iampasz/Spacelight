@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
 
                 //name_song.setText(playNextAudio());
-                play_p.setImageResource(R.drawable.bt_pause);
+                play_p.setImageResource(R.drawable.paint_vector_gradient);
 
             }
         });
@@ -280,11 +280,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             savedAudioFile = audioFile.getInternetLink();
 
-            play_p.setImageResource(R.drawable.bt_pause);
+            play_p.setImageResource(R.drawable.paint_vector_gradient);
             //name_song.setText(audioFile.nameSong);
 
         }else{
-            play_p.setImageResource(R.drawable.bt_play);
+            play_p.setImageResource(R.drawable.play_vector_gradient);
         }
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -318,12 +318,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             savedAudioFile = link;
 
-            play_p.setImageResource(R.drawable.bt_pause);
+            play_p.setImageResource(R.drawable.paint_vector_gradient);
 
             //name_song.setText(link);
 
         }else{
-            play_p.setImageResource(R.drawable.bt_play);
+            play_p.setImageResource(R.drawable.play_vector_gradient);
         }
         activeAudio = link;
 
@@ -346,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (play_status) {
-            play_p.setImageResource(R.drawable.bt_pause);
+            play_p.setImageResource(R.drawable.paint_vector_gradient);
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setLooping(isLooping);
@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mediaPlayer.start();
             //name_song.setText(audioFile.nameSong);
         }else{
-            play_p.setImageResource(R.drawable.bt_play);
+            play_p.setImageResource(R.drawable.play_vector_gradient);
         }
     }
 
@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mediaPlayer.setLooping(isLooping);
             mediaPlayer.start();
         }else{
-            play_p.setImageResource(R.drawable.bt_play);
+            play_p.setImageResource(R.drawable.play_vector_gradient);
         }
     }
 
@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if(mediaPlayer.isPlaying()){
                 mediaPlayer.pause();
-                play_p.setImageResource(R.drawable.bt_play);
+                play_p.setImageResource(R.drawable.play_vector_gradient);
                 Log.i("isplay", " true");
                 return false;
 
@@ -499,7 +499,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("isplay", " false");
                 if(mediaPlayer!=null){
                     mediaPlayer.start();
-                    play_p.setImageResource(R.drawable.bt_pause);
+                    play_p.setImageResource(R.drawable.pause_vector_gradient);
                     Log.i("isplay", mediaPlayer+" false");
                     return true;
                 }
