@@ -12,6 +12,10 @@
   <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="0dp"
       android:layout_height="0dp"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginEnd="5dp"
+      android:layout_marginBottom="70dp"
       android:background="@drawable/shape_menu"
       android:padding="10dp"
       app:layout_constraintBottom_toBottomOf="parent"

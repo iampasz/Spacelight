@@ -3,6 +3,7 @@ package com.appsforkids.pasz.spacelight;
 import android.animation.TimeAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -81,6 +82,11 @@ public class RevolutionAnimationView extends View {
     public void changeImage(Drawable drawable){
 
         mDrawable = drawable;
+    }
+
+    public void changeColorImage(Drawable drawable, int color){
+
+        drawable.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
     }
 
     private void initializeSerpMolot(SerpMolot serpMolot, int viewWidth, int viewHeight) {

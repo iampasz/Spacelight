@@ -22,7 +22,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clickable="true"
-            ads:layout_constraintTop_toBottomOf="@+id/adView"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -30,6 +29,16 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="SpeakableTextPresentCheck">
 
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/again"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.viewpager.widget.ViewPager>
 
         <FrameLayout
@@ -37,7 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="false"
-            ads:layout_constraintTop_toTopOf="@+id/adView">
+            tools:ignore="SpeakableTextPresentCheck"
+            tools:layout_editor_absoluteX="4dp">
 
         </FrameLayout>
 
@@ -51,25 +61,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="DuplicateClickableBoundsCheck,SpeakableTextPresentCheck" />
 
         <ImageView
             android:id="@+id/suit"
-            android:layout_width="@dimen/buttons_size"
-            android:layout_height="@dimen/buttons_size"
+            android:layout_width="@dimen/play_buttons_size"
+            android:layout_height="@dimen/play_buttons_size"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="100dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_suit" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            ads:srcCompat="@drawable/suit_vector_gradient"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,11 +80,11 @@
             android:layout_width="0dp"
             android:layout_height="77dp"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="542dp">
+            app:layout_constraintStart_toStartOf="parent">
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -109,18 +110,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <FrameLayout
-                android:layout_width="@dimen/buttons_size"
-                android:layout_height="@dimen/buttons_size"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:id="@+id/lock_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/ic_unlock" />
-
-            </FrameLayout>
+            <ImageView
+                android:id="@+id/lock_button"
+                android:layout_width="@dimen/play_buttons_size"
+                android:layout_height="@dimen/play_buttons_size"
+                ads:srcCompat="@drawable/unlock_vector_gradient" />
 
             <ImageView
                 android:id="@+id/presents"
@@ -155,18 +149,6 @@
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:visibility="visible"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-1237459888817948/8632786725"
-            ads:layout_constraintEnd_toEndOf="parent"
-            ads:layout_constraintStart_toStartOf="parent"
-            ads:layout_constraintTop_toTopOf="parent"></com.google.android.gms.ads.AdView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

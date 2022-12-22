@@ -70,4 +70,8 @@
 
     <string name="dont_show">Don\’t show again</string>
 
+
+    <string name="downloaded">Downloaded</string>
+    <string name="galery">Galery</string>
+
 </resources>

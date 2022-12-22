@@ -74,4 +74,8 @@
     <string name="message_3">Інтернет підключено до мобільної мережі. Продовжити?</string>
 
     <string name="dont_show">Більше не показувати</string>
+
+    <string name="downloaded">Downloaded</string>
+    <string name="galery">Galery</string>
+
 </resources>

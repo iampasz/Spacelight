@@ -76,6 +76,8 @@
 
     <string name="dont_show">No volver a mostrar</string>
 
+    <string name="downloaded">Downloaded</string>
+    <string name="galery">Galery</string>
 
 
 </resources>

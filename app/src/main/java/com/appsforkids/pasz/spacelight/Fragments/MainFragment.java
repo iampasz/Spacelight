@@ -3,9 +3,9 @@ package com.appsforkids.pasz.spacelight.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,7 +26,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -60,9 +60,10 @@ import java.io.Serializable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import io.realm.RealmResults;
 
-public class MainFragment extends Fragment implements Serializable {
+public class MainFragment extends Fragment implements Serializable, View.OnClickListener {
+
+
 
     @BindView(R.id.pager)
     ViewPager pager;
@@ -97,7 +98,7 @@ public class MainFragment extends Fragment implements Serializable {
     public RecyclerView rv;
 
     MyPagerAdapter pagerAdapter;
-    private AdView mAdView;
+
     RecyclerViewAdapter adapter;
 
     Boolean show = true;
@@ -111,6 +112,8 @@ public class MainFragment extends Fragment implements Serializable {
     boolean chekStatus = true;
 
     boolean playerStatus =  true;
+
+    Drawable mDrawable;
 
     String[] colors;
     String[] bgColors;
@@ -129,7 +132,7 @@ public class MainFragment extends Fragment implements Serializable {
     MyObjects myObjects;
     CountDownTimer offTimer;
     CountDownTimer hideLockTimer;
-    AdRequest adRequest;
+
 
     @Nullable
     @Override
@@ -156,11 +159,15 @@ public class MainFragment extends Fragment implements Serializable {
         pager.setAdapter(pagerAdapter);
         pager.setCurrentItem(500);
 
-        //Реклама
-        mAdView = view.findViewById(R.id.adView);
-        setMyAds();
-        adRequest = new AdRequest.Builder().build();
 
+
+        float dip = 70f;
+        Resources r = getResources();
+        float px = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dip,
+                r.getDisplayMetrics()
+        );
 
 
 
@@ -341,7 +348,7 @@ public class MainFragment extends Fragment implements Serializable {
         rv.setAdapter(adapter);
     }
 
-    private void changeSuitColor() {
+    public void changeSuitColor() {
 
         Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
         suitColor = myFragment.getView().findViewById(R.id.suit_color);
@@ -387,7 +394,8 @@ public class MainFragment extends Fragment implements Serializable {
             lockButton.setAlpha(0.3f);
             lock_frame.setClickable(true);
 
-            mAdView.setVisibility(View.GONE);
+
+            ((MainActivity)getActivity()).hideAddView();
 
             chekMenu = false;
             show = false;
@@ -399,7 +407,9 @@ public class MainFragment extends Fragment implements Serializable {
             rv.setVisibility(View.VISIBLE);
             textView.setVisibility(View.VISIBLE);
             suit.setVisibility(View.VISIBLE);
-            mAdView.setVisibility(View.VISIBLE);
+
+            ((MainActivity)getActivity()).showAddView();
+
             lockButton.setAlpha(1f);
             if (timerOn) {
                 timerText.setVisibility(View.VISIBLE);
@@ -451,7 +461,7 @@ public class MainFragment extends Fragment implements Serializable {
 
     }
 
-    private void startTimer(int hours, int minutes) {
+    public void startTimer(int hours, int minutes) {
         if (hours == 0 && minutes == 0) {
             timerText.setVisibility(View.INVISIBLE);
         } else {
@@ -475,7 +485,7 @@ public class MainFragment extends Fragment implements Serializable {
 
     }
 
-    private void openPrivatePolicy() {
+    public void openPrivatePolicy() {
             getParentFragmentManager()
                     .beginTransaction()
                     .add(R.id.container, MessageFragment.init(getString(R.string.open_policy), new DoThisAction() {
@@ -517,7 +527,7 @@ public class MainFragment extends Fragment implements Serializable {
                     .commit();
     }
 
-    private void setTimer() {
+    public void setTimer() {
 
         if (offTimer != null) {
             offTimer.cancel();
@@ -546,7 +556,7 @@ public class MainFragment extends Fragment implements Serializable {
 
     }
 
-    private void changeBgColor() {
+    public void changeBgColor() {
 
         gradientCounter++;
         if (gradientCounter >= myObjects.getGradient().length) {
@@ -559,7 +569,7 @@ public class MainFragment extends Fragment implements Serializable {
 
     }
 
-    private void changeBackgroundImage() {
+    public void changeBackgroundImage() {
 
         BackgroundFragment backgroundFragment = new BackgroundFragment();
         backgroundFragment.setCallBack(new ChoseItem() {
@@ -632,18 +642,54 @@ public class MainFragment extends Fragment implements Serializable {
     }
 
 
-    private void setMyAds() {
+    @Override
+    public void onClick(View view) {
 
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
+        switch (view.getId()){
+
+            case R.id.time_b:
+
+                setTimer();
+
+                break;
+            case R.id.anim_b:
+
+                if (smImage == -1) {
+                } else {
+                    startAnimation2(myObjects.getAnimationImage()[smImage]);
+                    smImage++;
+                    if (smImage >= myObjects.getAnimationImage().length) {
+                        deleteAnimation();
+                        smImage = 0;
+                    }
+                }
+
+                break;
+            case R.id.light_b:
+                changeBrighest();
+                break;
 
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        //Реклама РАБОТАЕТ ПРОСТО ОТКЛЮЧИТЬ ТУТ
-        mAdView.loadAd(adRequest);
+            case R.id.image_b:
+                changeBackgroundImage();
+                break;
+
+            case R.id.suit_b:
+                changeSuitColor();
+                break;
+
+            case R.id.paint2_b:
+                changeBgColor();
+                break;
+
+            case R.id.anim2_b:
+
+                int image = myObjects.getAnimationImage()[smImage];
+                revolutionAnimationView.changeColorImage(ContextCompat.getDrawable(getContext(), image), Color.YELLOW );
+                break;
+
+        }
+
     }
 
     public interface ChoseItem {
@@ -695,4 +741,32 @@ public class MainFragment extends Fragment implements Serializable {
 //        e.putBoolean(preferences, false);
 //        e.commit(); // не забудьте подтвердить изменения
 //    }
+
+    private void showPlayer(){
+
+        ((MainActivity)getActivity()).showPlayer();
+
+    }
+
+
+
+
+
+    public void changeAnimColor(){
+
+        int image = myObjects.getAnimationImage()[smImage];
+        revolutionAnimationView.changeColorImage(ContextCompat.getDrawable(getContext(), image), Color.YELLOW );
+    }
+
+    public void  startAnim(){
+        if (smImage == -1) {
+        } else {
+            startAnimation2(myObjects.getAnimationImage()[smImage]);
+            smImage++;
+            if (smImage >= myObjects.getAnimationImage().length) {
+                deleteAnimation();
+                smImage = 0;
+            }
+        }
+    }
 }

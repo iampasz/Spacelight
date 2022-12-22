@@ -3,25 +3,36 @@ package com.appsforkids.pasz.spacelight;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
+import com.appsforkids.pasz.spacelight.Fragments.AudioListFragment;
 import com.appsforkids.pasz.spacelight.Fragments.MainFragment;
 import com.appsforkids.pasz.spacelight.Fragments.MelodyListFragment;
 import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,33 +44,62 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     MediaPlayer mediaPlayer;
     private static final String MY_SETTINGS = "my_settings";
     private static final String MY_AUDIO = "my_audio";
     String savedAudioFile = "";
     ArrayList <AudioFile> arrayList;
-
     String activeAudio = "";
     String previousAudio = "";
-
     Boolean isLooping = false;
-
     public ConstraintLayout constrain;
-
-
     SoundPool soundPool;
+    private AdView mAdView;
+    AdRequest adRequest;
 
+    @BindView(R.id.main_m)
+    public LinearLayout main_m;
+
+    @BindView(R.id.paint_m)
+    LinearLayout paint_menu;
+
+    @BindView(R.id.player_b)
+    ImageView player_b;
+
+    @BindView(R.id.anim2_b)
+    ImageView anim2_b;
+
+    @BindView(R.id.paint_b)
+    ImageView paint_b;
+
+    @BindView(R.id.suit_b)
+    ImageView suit_b;
+
+    @BindView(R.id.image_b)
+    ImageView image_b;
+
+    @BindView(R.id.time_b)
+    ImageView time_b;
+
+    @BindView(R.id.anim_b)
+    ImageView anim_b;
+
+    @BindView(R.id.paint2_b)
+    ImageView paint2_b;
+
+    @BindView(R.id.light_b)
+    ImageView light_b;
+
+    @BindView(R.id.home_b)
+    ImageView home_b;
+
+    @BindView(R.id.home_b2)
+    ImageView home_b2;
 
     @BindView(R.id.right_p)
     ImageView right_p;
-
-    @BindView(R.id.show_menu)
-    ImageView show_menu;
-
-    @BindView(R.id.name_song)
-    TextView name_song;
 
     @BindView(R.id.player)
     LinearLayout player;
@@ -70,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.melody_list)
     ImageView melody_list;
 
+    MainFragment mainFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +119,33 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        float dip = 70f;
+        Resources r = getResources();
+        float px = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dip,
+                r.getDisplayMetrics()
+        );
 
-         arrayList = getAudios();
+        player.setY(px);
+
+        home_b.setOnClickListener(this);
+
+        paint_menu.setY(px);
+
+        player_b.setOnClickListener(this::onClick);
+        paint_b.setOnClickListener(this::onClick);
+        time_b.setOnClickListener(this::onClick);
+        anim_b.setOnClickListener(this::onClick);
+        light_b.setOnClickListener(this::onClick);
+        home_b.setOnClickListener(this::onClick);
+        home_b2.setOnClickListener(this::onClick);
+        image_b.setOnClickListener(this::onClick);
+        suit_b.setOnClickListener(this::onClick);
+        paint2_b.setOnClickListener(this::onClick);
+        anim2_b.setOnClickListener(this::onClick);
+
+        arrayList = getAudios();
 
 
         soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
@@ -102,14 +169,20 @@ public class MainActivity extends AppCompatActivity {
             realm.commitTransaction();
         }
 
+        //Реклама
+        //mAdView = (AdView) findViewById(R.id.adView);
 
+        mAdView = findViewById(R.id.adView);
+
+        setMyAds();
+        adRequest = new AdRequest.Builder().build();
 
         //Якщо після виходу з додатку грала мелодія, вона буде грати при заходженні в додаток повторно
          playSavedAudio();
 
         //Відкриваємо MainFragment
 
-        MainFragment mainFragment = new MainFragment();
+         mainFragment = new MainFragment();
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.container, mainFragment, "main_fragment").commit();
 
@@ -118,20 +191,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                name_song.setText(playNextAudio());
+                //name_song.setText(playNextAudio());
                 play_p.setImageResource(R.drawable.bt_pause);
 
             }
         });
 
-        show_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainFragment.rv.setVisibility(View.VISIBLE);
-                mainFragment.rv.animate().alpha(1f).setDuration(1000);
-                hidePlayer();
-            }
-        });
+
 
         play_p.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +210,9 @@ public class MainActivity extends AppCompatActivity {
         melody_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
+                //getSupportFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
+
+                showNewList();
             }
         });
 
@@ -213,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
             savedAudioFile = audioFile.getInternetLink();
 
             play_p.setImageResource(R.drawable.bt_pause);
-            name_song.setText(audioFile.nameSong);
+            //name_song.setText(audioFile.nameSong);
 
         }else{
             play_p.setImageResource(R.drawable.bt_play);
@@ -252,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
 
             play_p.setImageResource(R.drawable.bt_pause);
 
-            name_song.setText(link);
+            //name_song.setText(link);
 
         }else{
             play_p.setImageResource(R.drawable.bt_play);
@@ -289,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             mediaPlayer.start();
-            name_song.setText(audioFile.nameSong);
+            //name_song.setText(audioFile.nameSong);
         }else{
             play_p.setImageResource(R.drawable.bt_play);
         }
@@ -310,6 +378,7 @@ public class MainActivity extends AppCompatActivity {
             play_p.setImageResource(R.drawable.bt_play);
         }
     }
+
     private void playSavedAudio() {
         Log.i("playSavedAudio", "playSavedAudio");
         SharedPreferences spa = getSharedPreferences(MY_AUDIO, Context.MODE_PRIVATE);
@@ -342,6 +411,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         saveAudio();
     }
+
     private void saveAudio() {
         SharedPreferences spa = getSharedPreferences(MY_AUDIO, Context.MODE_PRIVATE);
 
@@ -352,8 +422,6 @@ public class MainActivity extends AppCompatActivity {
             e.commit(); // не забудьте подтвердить изменения
         }
     }
-
-
 
     public void platSPool(int position){
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -450,53 +518,120 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hidePlayer(){
-        player.animate().translationY(200).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                player.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
+        player.animate().translationY(player.getHeight()).setDuration(1000);
 
     }
 
     public void showPlayer(){
-        player.setVisibility(View.VISIBLE);
-        player.animate().translationY(0).setListener(new Animator.AnimatorListener() {
+        player.animate().translationY(0).setDuration(1000);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.home_b:
+
+                main_m.animate().translationY(0).setDuration(1000);
+
+                hidePlayer();
+
+                break;
+
+            case R.id.player_b:
+
+                hideMainMenu();
+                showPlayer();
+                break;
+            case R.id.paint_b:
+                hideMainMenu();
+                showPaintMenu();
+                break;
+            case R.id.time_b:
+
+                mainFragment.setTimer();
+
+                break;
+            case R.id.anim_b:
+
+                mainFragment.startAnim();
+
+                break;
+            case R.id.light_b:
+                mainFragment.changeBrighest();
+                break;
+
+            case R.id.home_b2:
+                hidePaintMenu();
+                showMainMenu();
+                break;
+
+            case R.id.image_b:
+                mainFragment.changeBackgroundImage();
+                break;
+
+            case R.id.suit_b:
+                mainFragment.changeSuitColor();
+                break;
+
+            case R.id.paint2_b:
+                mainFragment.changeBgColor();
+                break;
+
+            case R.id.anim2_b:
+
+                mainFragment.changeAnimColor();
+                break;
+
+
+        }
+    }
+
+    public void showNewList(){
+
+        AudioListFragment audioListFragment = AudioListFragment.init();
+
+        getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                .add(R.id.container, audioListFragment, "LIST_FRAGMENT").commit();
+    }
+
+    private void setMyAds() {
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                player.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
+
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        //Реклама РАБОТАЕТ ПРОСТО ОТКЛЮЧИТЬ ТУТ
+        mAdView.loadAd(adRequest);
+    }
+
+    public void hideAddView(){
+        mAdView.setVisibility(View.GONE);
+    }
+
+    public void showAddView(){
+        mAdView.setVisibility(View.VISIBLE);
+    }
+
+
+    public void showMainMenu(){
+        main_m.animate().translationY(0).setDuration(1000).start();
+    }
+
+    public void hideMainMenu(){
+        main_m.animate().translationY( main_m.getHeight()).setDuration(1000).start();
+    }
+
+    public void showPaintMenu(){
+        paint_menu.animate().translationY(0).setDuration(1000).start();
+    }
+
+    public void hidePaintMenu(){
+        paint_menu.animate().translationY( main_m.getHeight()).setDuration(1000).start();
     }
 
 }
