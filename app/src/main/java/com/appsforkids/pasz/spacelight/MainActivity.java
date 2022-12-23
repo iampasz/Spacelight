@@ -17,6 +17,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -110,6 +111,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.melody_list)
     ImageView melody_list;
 
+    @BindView(R.id.audio_name)
+    TextView audio_name;
+
+
+
     MainFragment mainFragment;
 
     @Override
@@ -127,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 r.getDisplayMetrics()
         );
 
-        player.setY(px);
+        main_m.setY(px);
 
         home_b.setOnClickListener(this);
 
@@ -260,52 +266,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Програвання музики
     public void playLockalMusic(AudioFile audioFile, Boolean play_status) {
 
+
         savedAudioFile = "";
 
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
 
-        if (play_status) {
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setLooping(isLooping);
-            try {
-                mediaPlayer.setDataSource(audioFile.getInternetLink());
-                mediaPlayer.prepare();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            mediaPlayer.start();
+        Log.i("press_play", mediaPlayer + " we are press play");
 
-            savedAudioFile = audioFile.getInternetLink();
-
-            play_p.setImageResource(R.drawable.paint_vector_gradient);
-            //name_song.setText(audioFile.nameSong);
-
-        }else{
-            play_p.setImageResource(R.drawable.play_vector_gradient);
-        }
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                playNextAudio();
-                //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
-            }
-        });
+//
+//        if (play_status) {
+//            mediaPlayer = new MediaPlayer();
+//            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//            mediaPlayer.setLooping(isLooping);
+//            try {
+//                mediaPlayer.setDataSource(audioFile.getInternetLink());
+//                mediaPlayer.prepare();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            mediaPlayer.start();
+//
+//            savedAudioFile = audioFile.getInternetLink();
+//
+//            play_p.setImageResource(R.drawable.paint_vector_gradient);
+//            //name_song.setText(audioFile.nameSong);
+//
+//        }else{
+//            play_p.setImageResource(R.drawable.play_vector_gradient);
+//        }
+//
+//        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mediaPlayer) {
+//                playNextAudio();
+//                //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
-    public void playLockalMusic(String link, Boolean play_status) {
+    public void playLockalMusic(String link, String name,  Boolean play_status) {
 
         savedAudioFile = "";
-
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
-
         if (play_status) {
             mediaPlayer = new MediaPlayer();
+
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setLooping(isLooping);
             try {
@@ -318,16 +327,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             savedAudioFile = link;
 
-            play_p.setImageResource(R.drawable.paint_vector_gradient);
+            play_p.setImageResource(R.drawable.play_vector_gradient);
 
-            //name_song.setText(link);
+            audio_name.setText(name);
 
         }else{
             play_p.setImageResource(R.drawable.play_vector_gradient);
         }
         activeAudio = link;
 
-        //Toast.makeText(MainActivity.this, "here", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "here", Toast.LENGTH_SHORT).show();
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -346,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (play_status) {
-            play_p.setImageResource(R.drawable.paint_vector_gradient);
+            play_p.setImageResource(R.drawable.play_vector_gradient);
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setLooping(isLooping);
@@ -387,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (savedAudio == "") {
             Log.i("playSavedAudio", "empty");
         } else {
-            playLockalMusic(savedAudio, true);
+            playLockalMusic(savedAudio, "", true);
             Log.i("playSavedAudio", savedAudio+" savedAudio");
             refreshSavingAudio(savedAudio);
         }
@@ -477,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(arrayList.get(randomAudioNumber).getLockalLink().equals(activeAudio) || arrayList.get(randomAudioNumber).getLockalLink().equals(previousAudio) ){
                 playNextAudio();
             }else{
-                playLockalMusic(arrayList.get(randomAudioNumber).getLockalLink(), true);
+                playLockalMusic(arrayList.get(randomAudioNumber).getLockalLink(),"", true);
                 return arrayList.get(randomAudioNumber).getNameSong();
             }
         }

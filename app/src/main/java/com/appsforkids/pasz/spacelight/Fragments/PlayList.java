@@ -195,7 +195,10 @@ public class PlayList extends Fragment {
         Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
         realm.beginTransaction();
         MySettings settings = realm.where(MySettings.class).findFirst();
-        nameSong = settings.getCurrentMusic();
+        if(settings!=null){
+            nameSong = settings.getCurrentMusic();
+        }
+
         realm.commitTransaction();
     }
 
@@ -249,23 +252,29 @@ public class PlayList extends Fragment {
     }
 
     private void pressPlay(int position, Boolean play_status){
+
+
         AudioFile audioFile = arrayList.get(position);
+
 
         if (audioFile.getResourceLink() != 0) {
             ((MainActivity) getActivity()).playMusic(audioFile.getResourceLink(), play_status);
         } else {
             if (audioFile.getLockalLink() != null) {
-                ((MainActivity) getActivity()).playLockalMusic(audioFile, play_status);
+                ((MainActivity) getActivity()).playLockalMusic(audioFile.getLockalLink(), audioFile.nameSong+" \n "+audioFile.getAuthorSong(), play_status);
             } else {
-                ((MainActivity) getActivity()).playInternetMusic(audioFile, play_status);
+               // ((MainActivity) getActivity()).playInternetMusic(audioFile, play_status);
             }
-        }
 
-        if (play_status) {
-            currentMusicPosition = position;
-        } else {
-            currentMusicPosition = -1;
+
+
         }
+//
+//        if (play_status) {
+//            currentMusicPosition = position;
+//        } else {
+//            currentMusicPosition = -1;
+//        }
     }
 
     private void pressDownload(int position){

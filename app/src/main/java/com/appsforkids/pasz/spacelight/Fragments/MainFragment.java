@@ -620,23 +620,26 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         MySettings settings = realm.where(MySettings.class).findFirst();
-        pager.setCurrentItem(settings.getNightlightPosition(), false);
 
-        smImage = settings.getAnimationPosition();
-        gradientCounter = settings.getGradientColor();
-        anim_bg = settings.getBackgroundColor();
-        backgroundTumbler = settings.getBackgroundTumbler();
+if(settings!=null){
+    pager.setCurrentItem(settings.getNightlightPosition(), false);
+    smImage = settings.getAnimationPosition();
+    gradientCounter = settings.getGradientColor();
+    anim_bg = settings.getBackgroundColor();
+    backgroundTumbler = settings.getBackgroundTumbler();
 
-        if (backgroundTumbler) {
-            mainBg.setBackgroundResource(myObjects.getGradient()[gradientCounter]);
-        } else {
-            mainBg.setBackgroundResource(myObjects.getBackground()[anim_bg]);
-        }
+    if (backgroundTumbler) {
+        mainBg.setBackgroundResource(myObjects.getGradient()[gradientCounter]);
+    } else {
+        mainBg.setBackgroundResource(myObjects.getBackground()[anim_bg]);
+    }
 
-        //Устанавливаем анимацию
-        if (smImage != 0) {
-            startAnimation2(myObjects.getAnimationImage()[smImage]);
-        }
+    //Устанавливаем анимацию
+    if (smImage != 0) {
+        startAnimation2(myObjects.getAnimationImage()[smImage]);
+    }
+}
+
 
         realm.commitTransaction();
     }

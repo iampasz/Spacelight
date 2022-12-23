@@ -6,7 +6,7 @@
     android:id="@+id/constrain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0000"
+    android:background="#000"
     tools:context=".MainActivity">
 
 
@@ -29,7 +29,7 @@
         android:id="@+id/container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        ads:layout_constraintBottom_toTopOf="@+id/player"
+        ads:layout_constraintBottom_toTopOf="@+id/audio_name"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintTop_toBottomOf="@+id/adView">
@@ -206,6 +206,19 @@
             tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/audio_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"
+        android:text="sound name"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="20sp"
+        ads:layout_constraintBottom_toTopOf="@+id/player"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent" />
 
     <!--        ads:layout_constraintTop_toBottomOf="@+id/adView" -->
 

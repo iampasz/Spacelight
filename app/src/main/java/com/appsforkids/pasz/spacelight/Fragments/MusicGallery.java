@@ -141,7 +141,7 @@ public class MusicGallery extends Fragment {
 
                 switch (hasConnection(getContext())) {
                     case 0:
-                        getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1))).commit();
+                        getParentFragmentManager().beginTransaction().add(R.id.audio_content, SimpleMessageFragment.init(getResources().getString(R.string.message_1))).commit();
 
                         break;
                     case 1:
@@ -150,7 +150,7 @@ public class MusicGallery extends Fragment {
                     case 2:
                         getParentFragmentManager()
                                 .beginTransaction()
-                                .add(R.id.container,
+                                .add(R.id.audio_content,
                                         MessageFragment.init(getResources().getString(R.string.message_3), new DoThisAction() {
                                             @Override
                                             public void doThis() {
@@ -196,7 +196,9 @@ public class MusicGallery extends Fragment {
         Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
         realm.beginTransaction();
         MySettings settings = realm.where(MySettings.class).findFirst();
-        nameSong = settings.getCurrentMusic();
+        if(settings!=null){
+            nameSong = settings.getCurrentMusic();
+        }
         realm.commitTransaction();
     }
 
