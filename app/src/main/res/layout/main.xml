@@ -52,7 +52,7 @@
             android:id="@+id/home_b"
             android:layout_width="@dimen/play_buttons_size"
             android:layout_height="match_parent"
-            ads:srcCompat="@drawable/home_vector_gradient" />
+            ads:srcCompat="@drawable/settings_vector_gradient" />
 
         <ImageView
             android:id="@+id/melody_list"
