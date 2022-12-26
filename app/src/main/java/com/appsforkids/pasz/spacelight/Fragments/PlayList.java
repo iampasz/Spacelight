@@ -258,7 +258,7 @@ public class PlayList extends Fragment {
 
 
         if (audioFile.getResourceLink() != 0) {
-            ((MainActivity) getActivity()).playMusic(audioFile.getResourceLink(), play_status);
+            ((MainActivity) getActivity()).playMusic(audioFile.getResourceLink(),audioFile.nameSong, audioFile.authorSong,  play_status);
         } else {
             if (audioFile.getLockalLink() != null) {
                 ((MainActivity) getActivity()).playLockalMusic(audioFile.getLockalLink(), audioFile.nameSong+" \n "+audioFile.getAuthorSong(), play_status);

@@ -255,7 +255,7 @@ public class MusicGallery extends Fragment {
         AudioFile audioFile = arrayList.get(position);
 
         if (audioFile.getResourceLink() != 0) {
-            ((MainActivity) getActivity()).playMusic(audioFile.getResourceLink(), play_status);
+            ((MainActivity) getActivity()).playMusic(audioFile.getResourceLink(),audioFile.getNameSong(), audioFile.authorSong,  play_status);
         } else {
             if (audioFile.getLockalLink() != null) {
                 ((MainActivity) getActivity()).playLockalMusic(audioFile, play_status);

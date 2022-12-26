@@ -52,13 +52,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String MY_AUDIO = "my_audio";
     String savedAudioFile = "";
     ArrayList <AudioFile> arrayList;
-    String activeAudio = "";
-    String previousAudio = "";
+    int activeAudio;
+    int previousAudio;
     Boolean isLooping = false;
     public ConstraintLayout constrain;
     SoundPool soundPool;
     private AdView mAdView;
     AdRequest adRequest;
+
+    Boolean loopingMelody = false;
 
     @BindView(R.id.main_m)
     public LinearLayout main_m;
@@ -153,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         arrayList = getAudios();
 
-
         soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
         soundPool.load(this, R.raw.s1, 1);
         soundPool.load(this, R.raw.s2, 1);
@@ -184,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adRequest = new AdRequest.Builder().build();
 
         //Якщо після виходу з додатку грала мелодія, вона буде грати при заходженні в додаток повторно
-         playSavedAudio();
+        //playSavedAudio();
 
         //Відкриваємо MainFragment
 
@@ -197,8 +198,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
 
-                //name_song.setText(playNextAudio());
-                play_p.setImageResource(R.drawable.paint_vector_gradient);
+                playNextAudio();
+                play_p.setImageResource(R.drawable.pause_vector_gradient);
 
             }
         });
@@ -327,16 +328,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             savedAudioFile = link;
 
-            play_p.setImageResource(R.drawable.play_vector_gradient);
+            play_p.setImageResource(R.drawable.pause_vector_gradient);
 
             audio_name.setText(name);
 
         }else{
             play_p.setImageResource(R.drawable.play_vector_gradient);
         }
-        activeAudio = link;
-
-        Toast.makeText(MainActivity.this, "here", Toast.LENGTH_SHORT).show();
+        //activeAudio = link;
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -372,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void playMusic(int id, Boolean play_status) {
+    public void playMusic(int id, String name, String auth, Boolean play_status) {
 
         if (mediaPlayer != null) {
             mediaPlayer.stop();
@@ -382,7 +381,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mediaPlayer = MediaPlayer.create(this, id);
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setLooping(isLooping);
+
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                playNextAudio();
+                //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
+            }
+        });
+
             mediaPlayer.start();
+            audio_name.setText(name+"\n"+auth);
+
         }else{
             play_p.setImageResource(R.drawable.play_vector_gradient);
         }
@@ -448,9 +458,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ArrayList<AudioFile> getAudios(){
 
-
         ArrayList<AudioFile> arrayList = new ArrayList<>();
-
         assert Realm.getDefaultConfiguration() != null;
         Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
         RealmResults<AudioFile> realmResults;
@@ -482,19 +490,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.i("next", randomAudioNumber+" randomAudioNumber");
         Log.i("next", previousAudio+" previousAudio");
 
-        if(allAudio>2){
-            if(arrayList.get(randomAudioNumber).getLockalLink().equals(activeAudio) || arrayList.get(randomAudioNumber).getLockalLink().equals(previousAudio) ){
-                playNextAudio();
-            }else{
-                playLockalMusic(arrayList.get(randomAudioNumber).getLockalLink(),"", true);
-                return arrayList.get(randomAudioNumber).getNameSong();
-            }
+        getAudios();
+
+        switch (allAudio){
+            case 0:
+               // Toast.makeText(this, "Завантажте більше мелодій", Toast.LENGTH_SHORT).show();
+                Log.i("next", previousAudio+" 0");
+                break;
+            case 1:
+                        if(arrayList.get(randomAudioNumber).getResourceLink()!=0){
+                            playMusic(arrayList.get(randomAudioNumber).getResourceLink(), arrayList.get(randomAudioNumber).nameSong, arrayList.get(randomAudioNumber).authorSong, true);
+                            activeAudio=randomAudioNumber;
+                        }
+               // playLockalMusic(arrayList.get(randomAudioNumber).getLockalLink(),"", true);
+                Log.i("next", previousAudio+" 1");
+                break;
+            default:
+                Log.i("next", previousAudio+" default");
+
+                if(previousAudio==randomAudioNumber){
+                    randomAudioNumber++;
+                    if(randomAudioNumber>allAudio-1){
+
+                        randomAudioNumber=0;
+
+                    }
+                }
+
+                if(arrayList.get(randomAudioNumber).getResourceLink()!=0){
+                    playMusic(arrayList.get(randomAudioNumber).getResourceLink(), arrayList.get(randomAudioNumber).nameSong, arrayList.get(randomAudioNumber).authorSong, true);
+                    activeAudio=randomAudioNumber;
+                }else{
+
+                    Log.i("next", arrayList.get(randomAudioNumber).getResourceLink()+" arrayList.get(randomAudioNumber).getResourceLink()");
+                    Log.i("next", arrayList.get(randomAudioNumber).getLockalLink()+" arrayList.get(randomAudioNumber).getLockalLink()");
+
+                    playLockalMusic(
+                            arrayList
+                                    .get(randomAudioNumber)
+                                    .getLockalLink(),
+                            arrayList
+                                    .get(randomAudioNumber)
+                                    .getNameSong()+"\n"+arrayList
+                                    .get(randomAudioNumber)
+                                    .authorSong, true);
+                    activeAudio=randomAudioNumber;
+
+                }
+                break;
         }
 
         return "";
     }
 
     public Boolean startStop(){
+
+        Log.i("isplay", " startStop");
+
         if(mediaPlayer!=null){
 
             if(mediaPlayer.isPlaying()){
@@ -502,7 +554,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 play_p.setImageResource(R.drawable.play_vector_gradient);
                 Log.i("isplay", " true");
                 return false;
-
 
             }else{
                 Log.i("isplay", " false");
@@ -515,7 +566,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }else{
+            play_p.setImageResource(R.drawable.pause_vector_gradient);
             playNextAudio();
+            Log.i("isplay", " pause_vector_gradient");
         }
 
 
@@ -540,15 +593,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.home_b:
-
                 main_m.animate().translationY(0).setDuration(1000);
-
                 hidePlayer();
-
                 break;
-
             case R.id.player_b:
-
                 hideMainMenu();
                 showPlayer();
                 break;
@@ -557,42 +605,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showPaintMenu();
                 break;
             case R.id.time_b:
-
                 mainFragment.setTimer();
-
                 break;
             case R.id.anim_b:
-
                 mainFragment.startAnim();
-
                 break;
             case R.id.light_b:
                 mainFragment.changeBrighest();
                 break;
-
             case R.id.home_b2:
                 hidePaintMenu();
                 showMainMenu();
                 break;
-
             case R.id.image_b:
                 mainFragment.changeBackgroundImage();
                 break;
-
             case R.id.suit_b:
                 mainFragment.changeSuitColor();
                 break;
-
             case R.id.paint2_b:
                 mainFragment.changeBgColor();
                 break;
-
             case R.id.anim2_b:
-
                 mainFragment.changeAnimColor();
                 break;
-
-
         }
     }
 
@@ -626,7 +662,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdView.setVisibility(View.VISIBLE);
     }
 
-
     public void showMainMenu(){
         main_m.animate().translationY(0).setDuration(1000).start();
     }
@@ -641,6 +676,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void hidePaintMenu(){
         paint_menu.animate().translationY( main_m.getHeight()).setDuration(1000).start();
+    }
+
+   public void updateAudioList(){
+       arrayList = getAudios();
+    }
+
+    private void loopOrRandom(){
+
+        savedAudioFile = "";
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();}
+        else{
+            play_p.setImageResource(R.drawable.play_vector_gradient);
+        }
     }
 
 }

@@ -375,7 +375,7 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
     }
 
     public void turnOff() {
-        ((MainActivity) getActivity()).playMusic(0, false);
+        ((MainActivity) getActivity()).playMusic(0, "", "", false);
         getActivity().finish();
     }
 

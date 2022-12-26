@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.appsforkids.pasz.spacelight.Adapters.PagerAdapter;
+import com.appsforkids.pasz.spacelight.MainActivity;
 import com.appsforkids.pasz.spacelight.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -79,7 +80,9 @@ public class AudioListFragment extends Fragment {
         close_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((MainActivity)getActivity()).updateAudioList();
                 getParentFragmentManager().beginTransaction().remove(AudioListFragment.this).commit();
+
             }
         });
     }
