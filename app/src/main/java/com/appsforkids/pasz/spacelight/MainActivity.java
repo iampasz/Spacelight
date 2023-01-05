@@ -8,7 +8,9 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.media.SubtitleData;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -23,10 +25,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.appsforkids.pasz.spacelight.Adapters.RecyclerViewAdapter;
 import com.appsforkids.pasz.spacelight.Fragments.AudioListFragment;
 import com.appsforkids.pasz.spacelight.Fragments.MainFragment;
 import com.appsforkids.pasz.spacelight.Fragments.MelodyListFragment;
+import com.appsforkids.pasz.spacelight.Fragments.MessageFragment;
+import com.appsforkids.pasz.spacelight.Fragments.SimpleMessageFragment;
+import com.appsforkids.pasz.spacelight.Interfaces.ChangeColors;
+import com.appsforkids.pasz.spacelight.Interfaces.DoThisAction;
 import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 import com.google.android.gms.ads.AdRequest;
@@ -36,6 +45,9 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -62,44 +74,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Boolean loopingMelody = false;
 
-    @BindView(R.id.main_m)
     public LinearLayout main_m;
-
-    @BindView(R.id.paint_m)
-    LinearLayout paint_menu;
-
-    @BindView(R.id.player_b)
-    ImageView player_b;
-
-    @BindView(R.id.anim2_b)
-    ImageView anim2_b;
-
-    @BindView(R.id.paint_b)
-    ImageView paint_b;
-
-    @BindView(R.id.suit_b)
-    ImageView suit_b;
-
-    @BindView(R.id.image_b)
-    ImageView image_b;
-
-    @BindView(R.id.time_b)
-    ImageView time_b;
-
-    @BindView(R.id.anim_b)
-    ImageView anim_b;
-
-    @BindView(R.id.paint2_b)
-    ImageView paint2_b;
-
-    @BindView(R.id.light_b)
-    ImageView light_b;
 
     @BindView(R.id.home_b)
     ImageView home_b;
-
-    @BindView(R.id.home_b2)
-    ImageView home_b2;
 
     @BindView(R.id.right_p)
     ImageView right_p;
@@ -116,9 +94,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.audio_name)
     TextView audio_name;
 
+    @BindView(R.id.rv)
+    public RecyclerView rv;
 
+    RecyclerViewAdapter adapter;
 
     MainFragment mainFragment;
+
+    MyObjects myObjects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ButterKnife.bind(this);
 
-        float dip = 70f;
+        float dip = 80f;
         Resources r = getResources();
         float px = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
@@ -135,23 +118,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 r.getDisplayMetrics()
         );
 
-        main_m.setY(px);
+//        main_m.setY(px);
 
         home_b.setOnClickListener(this);
 
-        paint_menu.setY(px);
+        rv.setY(px);
 
-        player_b.setOnClickListener(this::onClick);
-        paint_b.setOnClickListener(this::onClick);
-        time_b.setOnClickListener(this::onClick);
-        anim_b.setOnClickListener(this::onClick);
-        light_b.setOnClickListener(this::onClick);
         home_b.setOnClickListener(this::onClick);
-        home_b2.setOnClickListener(this::onClick);
-        image_b.setOnClickListener(this::onClick);
-        suit_b.setOnClickListener(this::onClick);
-        paint2_b.setOnClickListener(this::onClick);
-        anim2_b.setOnClickListener(this::onClick);
 
         arrayList = getAudios();
 
@@ -166,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Встановлюємо повно-екранний режим
         setFullScrean();
+
+        myObjects = new MyObjects(this);
 
         //Встановлюємо стандартні налаштунки
         if (!isFirstOpen()) {
@@ -222,6 +197,57 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showNewList();
             }
         });
+
+
+        LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rv.setLayoutManager(llm);
+
+        //Кнопки меню
+        adapter = new RecyclerViewAdapter(myObjects.getMenuButtons());
+        adapter.MyOnclick(new ChangeColors() {
+            @Override
+            public void onclick(int button) {
+                switch (button) {
+                    case 0:
+                        //back button
+                        hideRvMenu();
+                        showPlayer();
+                        break;
+                    case 1:
+                        //bg colors
+                        mainFragment.changeBgColor();
+                        break;
+                    case 2:
+                        //bg images
+                        mainFragment.changeBackgroundImage();
+
+                        break;
+                    case 3:
+                        //timer
+                        mainFragment.setTimer();
+                        break;
+                    case 4:
+                        //animation
+                        mainFragment.startAnim();
+                        break;
+                    case 5:
+                        //bright
+                        mainFragment.changeBrighest();
+                        break;
+                    case 6:
+                        //suit color
+                        mainFragment.changeSuitColor();
+                        break;
+                    case 7:
+                        //politic
+                        mainFragment.openPrivatePolicy();
+                        break;
+                    case 8:
+                        break;
+                }
+            }
+        });
+        rv.setAdapter(adapter);
 
 
     }
@@ -315,6 +341,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (play_status) {
             mediaPlayer = new MediaPlayer();
+
+        //SubtitleController sc = new SubtitleController(this, null, null);
+            //sc.mHandler = new Handler();
+           // mediaPlayer.setSub
 
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setLooping(isLooping);
@@ -593,61 +623,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.home_b:
-                main_m.animate().translationY(0).setDuration(1000);
+                rv.animate().translationY(0).setDuration(1000);
                 hidePlayer();
-                break;
-            case R.id.player_b:
-                hideMainMenu();
-                showPlayer();
-                break;
-            case R.id.paint_b:
-                hideMainMenu();
-                showPaintMenu();
-                break;
-            case R.id.time_b:
-                mainFragment.setTimer();
-                break;
-            case R.id.anim_b:
-                mainFragment.startAnim();
-                break;
-            case R.id.light_b:
-                mainFragment.changeBrighest();
-                break;
-            case R.id.home_b2:
-                hidePaintMenu();
-                showMainMenu();
-                break;
-            case R.id.image_b:
-                mainFragment.changeBackgroundImage();
-                break;
-            case R.id.suit_b:
-                mainFragment.changeSuitColor();
-                break;
-            case R.id.paint2_b:
-                mainFragment.changeBgColor();
-                break;
-            case R.id.anim2_b:
-                mainFragment.changeAnimColor();
                 break;
         }
     }
 
     public void showNewList(){
 
-        AudioListFragment audioListFragment = AudioListFragment.init();
+        AudioListFragment myFragment = (AudioListFragment)getSupportFragmentManager().findFragmentByTag("LIST_FRAGMENT");
+        if (myFragment != null && myFragment.isVisible()) {
+            // add your code here
+        }else{
+            AudioListFragment audioListFragment = AudioListFragment.init();
+            getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                    .add(R.id.container, audioListFragment, "LIST_FRAGMENT").commit();
+        }
 
-        getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                .add(R.id.container, audioListFragment, "LIST_FRAGMENT").commit();
     }
 
     private void setMyAds() {
-
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-
 
         AdRequest adRequest = new AdRequest.Builder().build();
         //Реклама РАБОТАЕТ ПРОСТО ОТКЛЮЧИТЬ ТУТ
@@ -670,12 +670,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         main_m.animate().translationY( main_m.getHeight()).setDuration(1000).start();
     }
 
-    public void showPaintMenu(){
-        paint_menu.animate().translationY(0).setDuration(1000).start();
+    public void showRvMenu(){
+        rv.animate().translationY(0).setDuration(1000).start();
     }
 
-    public void hidePaintMenu(){
-        paint_menu.animate().translationY( main_m.getHeight()).setDuration(1000).start();
+    public void hideRvMenu(){
+        rv.animate().translationY( rv.getHeight()).setDuration(1000).start();
     }
 
    public void updateAudioList(){
@@ -693,5 +693,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             play_p.setImageResource(R.drawable.play_vector_gradient);
         }
     }
+
+
 
 }

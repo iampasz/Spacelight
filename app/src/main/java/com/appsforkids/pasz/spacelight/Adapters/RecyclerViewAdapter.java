@@ -23,47 +23,32 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
    ArrayList<MenuButton> menuButtons;
 
     ChangeColors changeColors;
-    String [] colors;
     int i = 0;
 
     public  void MyOnclick(ChangeColors changeColors){
         this.changeColors = changeColors;
     }
 
-    public RecyclerViewAdapter(ArrayList menuButtons, String [] colors){
-
+    public RecyclerViewAdapter(ArrayList menuButtons){
         this.menuButtons = menuButtons;
-        this.colors = colors;
-
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
-
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
-
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(v);
-
         return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
-        holder.colorShape.setColorFilter(menuButtons.get(position).getColor());
         holder.iconImage.setImageResource(menuButtons.get(position).getIconImege());
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeColors.onclick(menuButtons.get(position).getButton());
-
-                holder.colorShape.setColorFilter(Color.parseColor(colors[i]));
-                i++;
-                if(i>=colors.length){
-                    i=0;
-                }
             }
         });
 
@@ -77,18 +62,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-
-        ImageView colorShape;
         ImageView iconImage;
         TextView textMenu;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
-            colorShape = (ImageView) itemView.findViewById(R.id.colorShape);
             iconImage = (ImageView) itemView.findViewById(R.id.play_item);
             textMenu = (TextView) itemView.findViewById(R.id.textMenu);
-
         }
+
     }
 }

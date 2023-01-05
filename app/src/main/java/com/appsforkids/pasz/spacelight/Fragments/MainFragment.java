@@ -32,25 +32,16 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.appsforkids.pasz.spacelight.Adapters.MyPagerAdapter;
-import com.appsforkids.pasz.spacelight.Adapters.RecyclerViewAdapter;
 import com.appsforkids.pasz.spacelight.AddToRealm;
-import com.appsforkids.pasz.spacelight.Interfaces.ChangeColors;
 import com.appsforkids.pasz.spacelight.Interfaces.DoThisAction;
 import com.appsforkids.pasz.spacelight.MainActivity;
 import com.appsforkids.pasz.spacelight.MyObjects;
 import com.appsforkids.pasz.spacelight.R;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 import com.appsforkids.pasz.spacelight.RevolutionAnimationView;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -94,12 +85,9 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
     @BindView(R.id.lock_frame)
     FrameLayout lock_frame;
 
-    @BindView(R.id.rv)
-    public RecyclerView rv;
 
     MyPagerAdapter pagerAdapter;
 
-    RecyclerViewAdapter adapter;
 
     Boolean show = true;
     Boolean timerOn = false;
@@ -159,8 +147,6 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
         pager.setAdapter(pagerAdapter);
         pager.setCurrentItem(500);
 
-
-
         float dip = 70f;
         Resources r = getResources();
         float px = TypedValue.applyDimension(
@@ -168,6 +154,16 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
                 dip,
                 r.getDisplayMetrics()
         );
+
+
+        //SubtitleController sc = new SubtitleController(getContext(), null, null);
+        //sc.mHandler = new Handler();
+        //mediaplayer.setSubtitleAnchor(sc, null);
+
+        //getMediaPlayer(getContext());
+
+
+
 
 
 
@@ -191,8 +187,6 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
                 break;
         }
 
-        LinearLayoutManager llm = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        rv.setLayoutManager(llm);
         Resources res = getResources();
 
         colors = res.getStringArray(R.array.myColors);
@@ -258,94 +252,7 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             }
         });
 
-        //Кнопки меню
-        adapter = new RecyclerViewAdapter(myObjects.getMenuButtons(colors), menuColors);
-        adapter.MyOnclick(new ChangeColors() {
-            @Override
-            public void onclick(int button) {
-                switch (button) {
-                    case 1:
-                       // getParentFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
-                        if(playerStatus){
-                            ((MainActivity)getActivity()).hidePlayer();
-                            rv.animate().alpha(1f).setDuration(1000);
-                            playerStatus=false;
-                        }else{
 
-                            //rv.setVisibility(View.GONE);
-                            rv.animate().alpha(0f).setDuration(1000);
-                            ((MainActivity)getActivity()).showPlayer();
-                            playerStatus=true;
-                        }
-
-                        break;
-                    case 2:
-                        changeBgColor();
-                        break;
-                    case 3:
-                        changeSuitColor();
-                        break;
-                    case 4:
-                        if (smImage == -1) {
-                        } else {
-                            startAnimation2(myObjects.getAnimationImage()[smImage]);
-                            smImage++;
-                            if (smImage >= myObjects.getAnimationImage().length) {
-                                deleteAnimation();
-                                smImage = 0;
-                            }
-                        }
-                        break;
-                    case 5:
-                        setTimer();
-                        break;
-                    case 6:
-                        switch (hasConnection(getContext())) {
-                            case 0:
-                                    getParentFragmentManager()
-                                            .beginTransaction()
-                                            .add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
-                                            .commit();
-                                break;
-                            case 1:
-                                changeBackgroundImage();
-                                break;
-                            case 2:
-
-                                    getParentFragmentManager()
-                                            .beginTransaction()
-                                            .add(R.id.container, MessageFragment.init(getResources().getString(R.string.message_3), new DoThisAction() {
-                                                @Override
-                                                public void doThis() {
-                                                    changeBackgroundImage();
-                                                }
-                                                @Override
-                                                public void doThis(int hours, int minutes) {
-                                                }
-                                                @Override
-                                                public void doThat() {
-
-                                                }
-                                            }), "MelodyListFragment")
-                                            .commit();
-
-
-                                break;
-                            case 3:
-                                changeBackgroundImage();
-                                break;
-                        }
-                        break;
-                    case 7:
-                        changeBrighest();
-                        break;
-                    case 8:
-                        openPrivatePolicy();
-                        break;
-                }
-            }
-        });
-        rv.setAdapter(adapter);
     }
 
     public void changeSuitColor() {
@@ -386,14 +293,12 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
         if (chekMenu) {
             //openMenu(menuItems.getMenuButtons(colors));
-            rv.setVisibility(View.INVISIBLE);
             textView.setVisibility(View.GONE);
             timerText.setVisibility(View.GONE);
             suit.setVisibility(View.GONE);
             lock_button.setImageResource(R.drawable.ic_lock);
             lockButton.setAlpha(0.3f);
             lock_frame.setClickable(true);
-
 
             ((MainActivity)getActivity()).hideAddView();
 
@@ -402,9 +307,7 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
             hideLockTimer.start();
 
-
         } else {
-            rv.setVisibility(View.VISIBLE);
             textView.setVisibility(View.VISIBLE);
             suit.setVisibility(View.VISIBLE);
 
@@ -486,45 +389,45 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
     }
 
     public void openPrivatePolicy() {
+        MessageFragment myFragment = (MessageFragment)getParentFragmentManager().findFragmentByTag("POLICY_FRAGMENT");
+        if (myFragment != null && myFragment.isVisible()) {
+            // add your code here
+        }else{
             getParentFragmentManager()
                     .beginTransaction()
                     .add(R.id.container, MessageFragment.init(getString(R.string.open_policy), new DoThisAction() {
-                            @Override
-                            public void doThis() {
-                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://paszzsap.github.io/nightlight2/politic.html"));
+                        @Override
+                        public void doThis() {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://paszzsap.github.io/nightlight2/politic.html"));
 
-                                switch (hasConnection(getContext())) {
-                                    case 0:
-                                        getParentFragmentManager()
-                                                .beginTransaction()
-                                                .add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
-                                                .commit();
-                                        break;
-                                    case 1:
-                                        startActivity(browserIntent);
-                                        break;
-                                    case 2:
-                                        startActivity(browserIntent);
-
-                                        break;
-                                    case 3:
-                                        changeBackgroundImage();
-                                        break;
-                                }
-
-
+                            switch (hasConnection(getContext())) {
+                                case 0:
+                                    getParentFragmentManager()
+                                            .beginTransaction()
+                                            .add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
+                                            .commit();
+                                    break;
+                                case 1:
+                                    startActivity(browserIntent);
+                                    break;
+                                case 2:
+                                    startActivity(browserIntent);
+                                    break;
+                                case 3:
+                                    changeBackgroundImage();
+                                    break;
                             }
+                        }
+                        @Override
+                        public void doThis(int hours, int minutes) {
+                        }
 
-                            @Override
-                            public void doThis(int hours, int minutes) {
-
-                            }
-
-                            @Override
-                            public void doThat() {
-                            }
-                        }), "MelodyListFragment")
+                        @Override
+                        public void doThat() {
+                        }
+                    }), "POLICY_FRAGMENT")
                     .commit();
+        }
     }
 
     public void setTimer() {
@@ -535,24 +438,27 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             timerOn = false;
         }
 
-        getParentFragmentManager().beginTransaction().add(R.id.container, TimerFragment.init(new DoThisAction() {
-            @Override
-            public void doThis() {
-
-            }
-
-            @Override
-            public void doThis(int hours, int minutes) {
-
-                startTimer(hours, minutes);
-                timerOn = true;
-            }
-
-            @Override
-            public void doThat() {
-
-            }
-        })).commit();
+        TimerFragment myFragment = (TimerFragment)getParentFragmentManager().findFragmentByTag("TIMER_FRAGMENT");
+        if (myFragment != null && myFragment.isVisible()) {
+            // add your code here
+        }else{
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container, TimerFragment.init(new DoThisAction() {
+                @Override
+                public void doThis() {
+                }
+                @Override
+                public void doThis(int hours, int minutes) {
+                    startTimer(hours, minutes);
+                    timerOn = true;
+                }
+                @Override
+                public void doThat() {
+                }
+            }), "TIMER_FRAGMENT")
+                    .commit();
+        }
 
     }
 
@@ -563,39 +469,34 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             gradientCounter = 0;
         }
         mainBg.setBackgroundResource(myObjects.getGradient()[gradientCounter]);
-
-
         backgroundTumbler = true;
-
     }
 
     public void changeBackgroundImage() {
-
-        BackgroundFragment backgroundFragment = new BackgroundFragment();
-        backgroundFragment.setCallBack(new ChoseItem() {
-            @Override
-            public void setImage(String link) {
-                Picasso.get().load(link).into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        mainBg.setBackground(new BitmapDrawable(getResources(), bitmap));
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                    }
-                });
-            }
-        });
-
-        getParentFragmentManager().beginTransaction().add(R.id.container, backgroundFragment).commit();
-
+        BackgroundFragment myFragment = (BackgroundFragment)getParentFragmentManager().findFragmentByTag("BACKGROUND_FRAGMENT");
+        if (myFragment != null && myFragment.isVisible()) {
+            // add your code here
+        }else{
+            BackgroundFragment backgroundFragment = new BackgroundFragment();
+            backgroundFragment.setCallBack(new ChoseItem() {
+                @Override
+                public void setImage(String link) {
+                    Picasso.get().load(link).into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            mainBg.setBackground(new BitmapDrawable(getResources(), bitmap));
+                        }
+                        @Override
+                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                        }
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        }
+                    });
+                }
+            });
+            getParentFragmentManager().beginTransaction().add(R.id.container, backgroundFragment, "BACKGROUND_FRAGMENT").commit();
+        }
     }
 
     @Override
@@ -605,11 +506,11 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         MySettings settings = realm.where(MySettings.class).findFirst();
-        settings.setNightlightPosition(pager.getCurrentItem());
-        settings.setBackgroundColor(anim_bg);
-        settings.setGradientColor(gradientCounter);
-        settings.setBackgroundTumbler(backgroundTumbler);
-        settings.setAnimationPosition(smImage);
+//        settings.setNightlightPosition(pager.getCurrentItem());
+//        settings.setBackgroundColor(anim_bg);
+//        settings.setGradientColor(gradientCounter);
+ //       settings.setBackgroundTumbler(backgroundTumbler);
+ //       settings.setAnimationPosition(smImage);
 
         realm.commitTransaction();
     }
@@ -639,59 +540,12 @@ if(settings!=null){
         startAnimation2(myObjects.getAnimationImage()[smImage]);
     }
 }
-
-
         realm.commitTransaction();
     }
 
 
     @Override
     public void onClick(View view) {
-
-        switch (view.getId()){
-
-            case R.id.time_b:
-
-                setTimer();
-
-                break;
-            case R.id.anim_b:
-
-                if (smImage == -1) {
-                } else {
-                    startAnimation2(myObjects.getAnimationImage()[smImage]);
-                    smImage++;
-                    if (smImage >= myObjects.getAnimationImage().length) {
-                        deleteAnimation();
-                        smImage = 0;
-                    }
-                }
-
-                break;
-            case R.id.light_b:
-                changeBrighest();
-                break;
-
-
-            case R.id.image_b:
-                changeBackgroundImage();
-                break;
-
-            case R.id.suit_b:
-                changeSuitColor();
-                break;
-
-            case R.id.paint2_b:
-                changeBgColor();
-                break;
-
-            case R.id.anim2_b:
-
-                int image = myObjects.getAnimationImage()[smImage];
-                revolutionAnimationView.changeColorImage(ContextCompat.getDrawable(getContext(), image), Color.YELLOW );
-                break;
-
-        }
 
     }
 
@@ -751,10 +605,6 @@ if(settings!=null){
 
     }
 
-
-
-
-
     public void changeAnimColor(){
 
         int image = myObjects.getAnimationImage()[smImage];
@@ -772,4 +622,6 @@ if(settings!=null){
             }
         }
     }
+
+
 }

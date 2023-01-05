@@ -9,26 +9,11 @@
     android:layout_marginLeft="10dp"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_weight="1"
-        android:background="@drawable/shape_oval">
-
-        <ImageView
-
-            android:id="@+id/colorShape"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/shape_oval" />
-
-        <ImageView
-            android:id="@+id/play_item"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/bgcolor" />
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/play_item"
+        android:layout_width="@dimen/play_buttons_size"
+        android:layout_height="@dimen/play_buttons_size"
+        app:srcCompat="@drawable/bgcolor" />
 
     <TextView
         android:id="@+id/textMenu"

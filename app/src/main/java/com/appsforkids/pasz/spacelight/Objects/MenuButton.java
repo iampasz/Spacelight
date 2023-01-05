@@ -8,8 +8,7 @@ public class MenuButton {
     int text;
     int button;
 
-    public MenuButton(int color, int iconImege, int text, int button){
-        this.color = color;
+    public MenuButton( int iconImege, int text, int button){
         this.iconImege = iconImege;
         this.text = text;
         this.button = button;
