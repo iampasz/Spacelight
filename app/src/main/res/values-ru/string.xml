@@ -51,6 +51,13 @@
     <string name="timer">Таймер</string>
     <string name="brightness">Яркость</string>
 
+    <string name="home">Главная</string>
+    <string name="paint">Закрасить</string>
+    <string name="image">Изображения</string>
+    <string name="time">Таймер</string>
+    <string name="anim">Анимации</string>
+    <string name="suit_color">Цвет костюма</string>
+
     <string name="menu">Меню</string>
 
     <string name="lock">Блок</string>

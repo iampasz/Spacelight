@@ -57,7 +57,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, MediaPlayer.OnErrorListener {
 
     MediaPlayer mediaPlayer;
     private static final String MY_SETTINGS = "my_settings";
@@ -179,8 +179,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
-
         play_p.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showNewList();
             }
         });
-
 
         LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rv.setLayoutManager(llm);
@@ -248,8 +245,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         rv.setAdapter(adapter);
-
-
     }
 
     //Встановлюємо повно-екранний режим
@@ -302,35 +297,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.i("press_play", mediaPlayer + " we are press play");
 
-//
-//        if (play_status) {
-//            mediaPlayer = new MediaPlayer();
-//            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//            mediaPlayer.setLooping(isLooping);
-//            try {
-//                mediaPlayer.setDataSource(audioFile.getInternetLink());
-//                mediaPlayer.prepare();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            mediaPlayer.start();
-//
-//            savedAudioFile = audioFile.getInternetLink();
-//
-//            play_p.setImageResource(R.drawable.paint_vector_gradient);
-//            //name_song.setText(audioFile.nameSong);
-//
-//        }else{
-//            play_p.setImageResource(R.drawable.play_vector_gradient);
-//        }
-//
-//        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//            @Override
-//            public void onCompletion(MediaPlayer mediaPlayer) {
-//                playNextAudio();
-//                //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     public void playLockalMusic(String link, String name,  Boolean play_status) {
@@ -342,9 +308,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (play_status) {
             mediaPlayer = new MediaPlayer();
 
-        //SubtitleController sc = new SubtitleController(this, null, null);
-            //sc.mHandler = new Handler();
-           // mediaPlayer.setSub
+            mediaPlayer.setOnErrorListener(this);
 
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setLooping(isLooping);
@@ -355,6 +319,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 e.printStackTrace();
             }
             mediaPlayer.start();
+
 
             savedAudioFile = link;
 
@@ -409,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (play_status) {
             mediaPlayer = MediaPlayer.create(this, id);
+            mediaPlayer.setOnErrorListener(this);
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setLooping(isLooping);
 
@@ -694,6 +660,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extras) {
 
+        Log.i("error", mp+"mp");
+        Log.i("error", what+"what");
+        Log.i("error", extras+"extras");
 
+        play_p.setImageResource(R.drawable.play_vector_gradient);
+        audio_name.setText("");
+        Toast.makeText(this, "Sorry, something went wrong", Toast.LENGTH_SHORT).show();
+
+        return true;
+    }
 }
