@@ -52,6 +52,13 @@
     <string name="timer">Regulator czasowy</string>
     <string name="brightness">Jasność</string>
 
+    <string name="home">Home</string>
+    <string name="paint">Paint</string>
+    <string name="image">Images</string>
+    <string name="time">Timer</string>
+    <string name="anim">Animations</string>
+    <string name="suit_color">Suit color</string>
+
     <string name="menu">Menu</string>
 
     <string name="lock">Zamek</string>

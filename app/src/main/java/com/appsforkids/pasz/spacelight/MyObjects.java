@@ -140,43 +140,22 @@ public class MyObjects {
         return list;
     }
 
-    public ArrayList<MenuButton> getMenuButtons(String [] colors){
+    public ArrayList<MenuButton> getMenuButtons(){
         final ArrayList<MenuButton> menuButtons = new ArrayList<>();
-        menuButtons.add(new MenuButton(Color.parseColor(colors[0]), R.drawable.ic_sound, R.string.sounds, 1));
-        menuButtons.add(new MenuButton(Color.parseColor(colors[1]), R.drawable.ic_paint, R.string.bg_color, 2));
-        menuButtons.add(new MenuButton(Color.parseColor(colors[2]), R.drawable.ic_bear, R.string.ng_color, 3));
-        menuButtons.add(new MenuButton(Color.parseColor(colors[3]), R.drawable.ic_stsrs, R.string.ng, 6));
-        menuButtons.add(new MenuButton(Color.parseColor(colors[4]), R.drawable.ic_anim, R.string.animation, 4));
-        menuButtons.add(new MenuButton(Color.parseColor(colors[5]), R.drawable.ic_time, R.string.timer, 5));
-        menuButtons.add(new MenuButton(Color.parseColor(colors[6]), R.drawable.ic_light, R.string.brightness, 7));
-        menuButtons.add(new MenuButton(Color.parseColor(colors[0]), R.drawable.politic_button, R.string.politica, 8));
+        menuButtons.add(new MenuButton( R.drawable.home_vector_gradient, R.string.home, 0));
+        menuButtons.add(new MenuButton( R.drawable.paint_vector_gradient, R.string.paint, 1));
+        menuButtons.add(new MenuButton( R.drawable.image_vector_gradient, R.string.image, 2));
+        menuButtons.add(new MenuButton( R.drawable.time_vector_gradient, R.string.time, 3));
+        menuButtons.add(new MenuButton( R.drawable.anim_vector_gradient, R.string.anim, 4));
+        menuButtons.add(new MenuButton( R.drawable.light_vector_gradient, R.string.brightness, 5));
+        menuButtons.add(new MenuButton( R.drawable.suit_vector_gradient, R.string.suit_color, 6));
+        menuButtons.add(new MenuButton( R.drawable.politic_button, R.string.politica, 7));
+
         return menuButtons;
     }
 
-    public ArrayList<MenuButton> getSoundsButtons(){
-        final ArrayList<MenuButton> soundsButtons = new ArrayList<>();
-
-        soundsButtons.add(new MenuButton(Color.YELLOW, R.drawable.none, R.string.brightness, EMPTY_SOUND));
-        soundsButtons.add(new MenuButton(Color.GREEN, R.drawable.ic_sound, R.string.brightness, FIRST_SOUND));
-        soundsButtons.add(new MenuButton(Color.BLUE, R.drawable.ic_sound, R.string.brightness, SECOND_SOUND));
-        return soundsButtons;
-    }
 
 
-    public ArrayList<MenuButton> getBgColorsButtons(String [] colors){
-        final ArrayList<MenuButton> bgColors = new ArrayList<>();
-        bgColors.add(new MenuButton(Color.parseColor(colors[0]), 0, R.string.ng_color, RED_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[1]), 0, R.string.ng_color, ORANGE_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[2]), 0, R.string.ng_color, YELLOW_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[3]), 0, R.string.ng_color, GREEN_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[4]), 0, R.string.ng_color, CANYAN_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[5]), 0, R.string.ng_color, BLUE_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[6]), 0, R.string.ng_color, MOOD_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[7]), 0, R.string.ng_color, BLACK_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[8]), 0, R.string.ng_color, BLACK_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[9]), 0, R.string.ng_color, BLACK_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[10]), 0, R.string.ng_color, BLACK_COLOR));
-        bgColors.add(new MenuButton(Color.parseColor(colors[11]), 0, R.string.ng_color, BLACK_COLOR));
-        return bgColors;
-    }
+
+
 }
