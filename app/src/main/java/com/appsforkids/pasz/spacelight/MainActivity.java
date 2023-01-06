@@ -622,10 +622,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void hideAddView(){
         mAdView.setVisibility(View.GONE);
+        rv.setVisibility(View.GONE);
+        player.setVisibility(View.GONE);
+        audio_name.setVisibility(View.GONE);
     }
 
     public void showAddView(){
         mAdView.setVisibility(View.VISIBLE);
+        rv.setVisibility(View.VISIBLE);
+        player.setVisibility(View.VISIBLE);
+        audio_name.setVisibility(View.VISIBLE);
     }
 
     public void showMainMenu(){
