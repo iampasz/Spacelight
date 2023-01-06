@@ -142,14 +142,14 @@ public class MyObjects {
 
     public ArrayList<MenuButton> getMenuButtons(){
         final ArrayList<MenuButton> menuButtons = new ArrayList<>();
-        menuButtons.add(new MenuButton( R.drawable.home_vector_gradient, R.string.home, 0));
-        menuButtons.add(new MenuButton( R.drawable.paint_vector_gradient, R.string.paint, 1));
-        menuButtons.add(new MenuButton( R.drawable.image_vector_gradient, R.string.image, 2));
-        menuButtons.add(new MenuButton( R.drawable.time_vector_gradient, R.string.time, 3));
-        menuButtons.add(new MenuButton( R.drawable.anim_vector_gradient, R.string.anim, 4));
-        menuButtons.add(new MenuButton( R.drawable.light_vector_gradient, R.string.brightness, 5));
-        menuButtons.add(new MenuButton( R.drawable.suit_vector_gradient, R.string.suit_color, 6));
-        menuButtons.add(new MenuButton( R.drawable.politic_button, R.string.politica, 7));
+        menuButtons.add(new MenuButton( R.drawable.home_vector_gradient, R.string.sounds, 0));
+        menuButtons.add(new MenuButton( R.drawable.paint_vector_gradient, R.string.sounds, 1));
+        menuButtons.add(new MenuButton( R.drawable.image_vector_gradient, R.string.sounds, 2));
+        menuButtons.add(new MenuButton( R.drawable.time_vector_gradient, R.string.sounds, 3));
+        menuButtons.add(new MenuButton( R.drawable.anim_vector_gradient, R.string.sounds, 4));
+        menuButtons.add(new MenuButton( R.drawable.light_vector_gradient, R.string.sounds, 5));
+        menuButtons.add(new MenuButton( R.drawable.suit_vector_gradient, R.string.sounds, 6));
+        menuButtons.add(new MenuButton( R.drawable.politic_button, R.string.sounds, 7));
 
         return menuButtons;
     }
