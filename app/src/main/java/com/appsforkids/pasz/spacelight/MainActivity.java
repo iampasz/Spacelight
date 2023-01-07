@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int activeAudio;
     int previousAudio;
     Boolean isLooping = false;
-    public ConstraintLayout constrain;
     SoundPool soundPool;
     private AdView mAdView;
     AdRequest adRequest;
@@ -82,11 +81,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.right_p)
     ImageView right_p;
 
+    @BindView(R.id.random_list)
+    ImageView random_list;
+
     @BindView(R.id.player)
     LinearLayout player;
 
     @BindView(R.id.play_p)
     ImageView play_p;
+
+    @BindView(R.id.constrain)
+    public ConstraintLayout constrain;
 
     @BindView(R.id.melody_list)
     ImageView melody_list;
@@ -102,6 +107,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     MainFragment mainFragment;
 
     MyObjects myObjects;
+
+    String currentLink;
+    String currentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         rv.setY(px);
 
-        home_b.setOnClickListener(this::onClick);
+        home_b.setOnClickListener(this);
 
         arrayList = getAudios();
 
@@ -135,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         soundPool.load(this, R.raw.s4, 1);
         soundPool.load(this, R.raw.s5, 1);
 
-        constrain = (ConstraintLayout) findViewById(R.id.constrain);
 
         //Встановлюємо повно-екранний режим
         setFullScrean();
@@ -193,6 +200,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //getSupportFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
 
                 showNewList();
+            }
+        });
+
+        random_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(isLooping){
+                    isLooping=false;
+                    random_list.setImageResource(R.drawable.repeat_vector_gradient);
+                }else{
+                    isLooping=true;
+                    random_list.setImageResource(R.drawable.random_vector_gradient);
+                }
+
+                if(mediaPlayer.isPlaying()){
+                    Log.i("statusp", mediaPlayer.isLooping()+" st");
+                    mediaPlayer.setLooping(isLooping);
+                }
             }
         });
 
@@ -289,6 +315,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void playLockalMusic(AudioFile audioFile, Boolean play_status) {
 
 
+
         savedAudioFile = "";
 
         if (mediaPlayer != null) {
@@ -300,6 +327,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void playLockalMusic(String link, String name,  Boolean play_status) {
+
+        currentLink = link;
+        currentName = name;
 
         savedAudioFile = "";
         if (mediaPlayer != null) {
@@ -339,6 +369,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
             }
         });
+
+        Log.i("statusp", mediaPlayer.isLooping()+" st");
 
     }
 
