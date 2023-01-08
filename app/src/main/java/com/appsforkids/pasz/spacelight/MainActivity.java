@@ -129,11 +129,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        main_m.setY(px);
 
         home_b.setOnClickListener(this);
+        right_p.setOnClickListener(this);
+        play_p.setOnClickListener(this);
+        melody_list.setOnClickListener(this);
 
         rv.setY(px);
-
-        home_b.setOnClickListener(this);
-
         arrayList = getAudios();
 
         soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
@@ -142,8 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         soundPool.load(this, R.raw.s3, 1);
         soundPool.load(this, R.raw.s4, 1);
         soundPool.load(this, R.raw.s5, 1);
-
-
+        
         //Встановлюємо повно-екранний режим
         setFullScrean();
 
@@ -174,54 +173,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          mainFragment = new MainFragment();
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.container, mainFragment, "main_fragment").commit();
-
-
-        right_p.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                playNextAudio();
-                play_p.setImageResource(R.drawable.pause_vector_gradient);
-
-            }
-        });
-
-        play_p.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //((MainActivity)getActivity()).startStop();
-                startStop();
-            }
-        });
-
-        melody_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //getSupportFragmentManager().beginTransaction().add(R.id.container, new MelodyListFragment(), "MelodyListFragment").commit();
-
-                showNewList();
-            }
-        });
-
-        random_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(isLooping){
-                    isLooping=false;
-                    random_list.setImageResource(R.drawable.repeat_vector_gradient);
-                }else{
-                    isLooping=true;
-                    random_list.setImageResource(R.drawable.random_vector_gradient);
-                }
-
-                if(mediaPlayer.isPlaying()){
-                    Log.i("statusp", mediaPlayer.isLooping()+" st");
-                    mediaPlayer.setLooping(isLooping);
-                }
-            }
-        });
-
         LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rv.setLayoutManager(llm);
 
@@ -623,6 +574,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.home_b:
                 rv.animate().translationY(0).setDuration(1000);
                 hidePlayer();
+                break;
+
+            case R.id.right_p:
+                playNextAudio();
+                play_p.setImageResource(R.drawable.pause_vector_gradient);
+                break;
+
+            case R.id.play_p:
+                 startStop();
+                break;
+
+            case R.id.melody_list:
+                showNewList();
+                break;
+
+            case R.id.random_list:
+
+                if(isLooping){
+                    isLooping=false;
+                    random_list.setImageResource(R.drawable.repeat_vector_gradient);
+                }else{
+                    isLooping=true;
+                    random_list.setImageResource(R.drawable.random_vector_gradient);
+                }
+
+                if(mediaPlayer.isPlaying()){
+                    Log.i("statusp", mediaPlayer.isLooping()+" st");
+                    mediaPlayer.setLooping(isLooping);
+                }
+
                 break;
         }
     }

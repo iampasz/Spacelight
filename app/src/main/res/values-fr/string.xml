@@ -52,12 +52,12 @@
     <string name="timer">Minuteur</string>
     <string name="brightness">Luminosité</string>
 
-    <string name="home">Home</string>
-    <string name="paint">Paint</string>
-    <string name="image">Images</string>
-    <string name="time">Timer</string>
-    <string name="anim">Animations</string>
-    <string name="suit_color">Suit color</string>
+    <string name="home">Domicile</string>
+    <string name="paint">Peinturer</string>
+    <string name="image">Des photos</string>
+    <string name="time">Minuteur</string>
+    <string name="anim">Animations </string>
+    <string name="suit_color">Adaptent à la couleur</string>
 
     <string name="menu">Menu</string>
 
@@ -83,8 +83,8 @@
 
     <string name="dont_show">Ne plus afficher</string>
 
-    <string name="downloaded">Downloaded</string>
-    <string name="galery">Galery</string>
+    <string name="downloaded">Téléchargé</string>
+    <string name="galery">Galerie</string>
 
 
 </resources>

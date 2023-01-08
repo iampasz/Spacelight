@@ -52,12 +52,12 @@
     <string name="timer">Temporizador</string>
     <string name="brightness">Brillo</string>
 
-    <string name="home">Home</string>
-    <string name="paint">Paint</string>
-    <string name="image">Images</string>
-    <string name="time">Timer</string>
-    <string name="anim">Animations</string>
-    <string name="suit_color">Suit color</string>
+    <string name="home">Casa</string>
+    <string name="paint">Pintar</string>
+    <string name="image">Fotos</string>
+    <string name="time">Temporizador</string>
+    <string name="anim">Animaciones </string>
+    <string name="suit_color">Adaptan al colorr</string>
 
     <string name="menu">Menú</string>
 
@@ -83,8 +83,8 @@
 
     <string name="dont_show">No volver a mostrar</string>
 
-    <string name="downloaded">Downloaded</string>
-    <string name="galery">Galery</string>
+    <string name="downloaded">Descargado</string>
+    <string name="galery">Galería</string>
 
 
 </resources>
