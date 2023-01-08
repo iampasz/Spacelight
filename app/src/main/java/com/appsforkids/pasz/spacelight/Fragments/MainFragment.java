@@ -201,7 +201,11 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
             @Override
             public void onFinish() {
-                lockButton.setVisibility(View.GONE);
+                if(chekMenu){
+
+                }else{
+                    lockButton.setVisibility(View.GONE);
+                }
             }
         };
 
@@ -414,7 +418,8 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
                                     startActivity(browserIntent);
                                     break;
                                 case 3:
-                                    changeBackgroundImage();
+                                    //internet onected with WIFI
+                                    startActivity(browserIntent);
                                     break;
                             }
                         }

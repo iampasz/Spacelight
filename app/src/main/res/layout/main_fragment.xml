@@ -101,7 +101,7 @@
                 android:id="@+id/lock_button"
                 android:layout_width="@dimen/play_buttons_size"
                 android:layout_height="@dimen/play_buttons_size"
-                ads:srcCompat="@drawable/unlock_vector_gradient" />
+                ads:srcCompat="@drawable/ic_unlock" />
 
             <ImageView
                 android:id="@+id/presents"
