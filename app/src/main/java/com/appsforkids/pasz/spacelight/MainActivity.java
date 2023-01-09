@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView melody_list;
 
     @BindView(R.id.audio_name)
-    TextView audio_name;
+    public TextView audio_name;
 
     @BindView(R.id.rv)
     public RecyclerView rv;
@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         right_p.setOnClickListener(this);
         play_p.setOnClickListener(this);
         melody_list.setOnClickListener(this);
+        random_list.setOnClickListener(this);
 
         rv.setY(px);
         arrayList = getAudios();
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         soundPool.load(this, R.raw.s3, 1);
         soundPool.load(this, R.raw.s4, 1);
         soundPool.load(this, R.raw.s5, 1);
-        
+
         //Встановлюємо повно-екранний режим
         setFullScrean();
 
@@ -599,10 +600,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     random_list.setImageResource(R.drawable.random_vector_gradient);
                 }
 
-                if(mediaPlayer.isPlaying()){
-                    Log.i("statusp", mediaPlayer.isLooping()+" st");
-                    mediaPlayer.setLooping(isLooping);
+                if(mediaPlayer!=null ){
+                    if(mediaPlayer.isPlaying()){
+                        Log.i("statusp", mediaPlayer.isLooping()+" st");
+                        mediaPlayer.setLooping(isLooping);
+                    }
                 }
+
 
                 break;
         }

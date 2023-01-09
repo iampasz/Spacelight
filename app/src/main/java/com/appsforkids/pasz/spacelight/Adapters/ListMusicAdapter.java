@@ -77,15 +77,15 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
         holder.music_constrain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.play_item.setImageResource(R.drawable.bt_pause);
+                holder.play_item.setImageResource(R.drawable.pause_vector_gradient);
 
                 if(audioFileAll.get(holder.getAdapterPosition()).getNameSong().equals(nameSong)){
-                    holder.play_item.setImageResource(R.drawable.bt_play);
+                    holder.play_item.setImageResource(R.drawable.play_vector_gradient);
                     playMyMusic.pressPosition(holder.getAdapterPosition(), false);
                     nameSong="";
                 }else{
                     playMyMusic.pressPosition(holder.getAdapterPosition(), true);
-                    holder.play_item.setImageResource(R.drawable.bt_pause);
+                    holder.play_item.setImageResource(R.drawable.pause_vector_gradient);
                     nameSong = audioFileAll.get(holder.getAdapterPosition()).getNameSong();
                 }
                  notifyDataSetChanged();
@@ -93,14 +93,14 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
         });
 
         if(audioFileAll.get(holder.getAdapterPosition()).getNameSong().equals(nameSong)){
-            holder.play_item.setImageResource(R.drawable.bt_pause);
+            holder.play_item.setImageResource(R.drawable.pause_vector_gradient);
 
         }else{
-            holder.play_item.setImageResource(R.drawable.bt_play);
+            holder.play_item.setImageResource(R.drawable.play_vector_gradient);
         }
 
         if(audioFileAll.get(holder.getAdapterPosition()).getNameSong().equals(nameSong) && nameSong!=""){
-            holder.play_item.setImageResource(R.drawable.bt_pause);
+            holder.play_item.setImageResource(R.drawable.pause_vector_gradient);
         }
     }
 

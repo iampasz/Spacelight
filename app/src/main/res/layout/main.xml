@@ -9,6 +9,17 @@
     tools:context=".MainActivity">
 
 
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        ads:layout_constraintBottom_toTopOf="@+id/audio_name"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/adView">
+
+    </FrameLayout>
+
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
@@ -24,25 +35,13 @@
 
     </com.google.android.gms.ads.AdView>
 
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        ads:layout_constraintBottom_toTopOf="@+id/audio_name"
-        ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintStart_toStartOf="parent"
-        ads:layout_constraintTop_toBottomOf="@+id/adView">
-
-    </FrameLayout>
-
     <TextView
         android:id="@+id/audio_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="50dp"
         android:textAlignment="center"
         android:textColor="#fff"
-        android:textSize="20sp"
+        android:textSize="18sp"
         ads:layout_constraintBottom_toTopOf="@+id/frameLayout"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintStart_toStartOf="parent" />

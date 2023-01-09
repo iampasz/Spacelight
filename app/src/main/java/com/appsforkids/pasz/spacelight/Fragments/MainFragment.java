@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -43,6 +44,7 @@ import com.appsforkids.pasz.spacelight.R;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 import com.appsforkids.pasz.spacelight.RevolutionAnimationView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -147,6 +149,9 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
         pager.setAdapter(pagerAdapter);
         pager.setCurrentItem(500);
 
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_l2);
+        tabLayout.setupWithViewPager(pager, true);
+
         float dip = 70f;
         Resources r = getResources();
         float px = TypedValue.applyDimension(
@@ -155,6 +160,22 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
                 r.getDisplayMetrics()
         );
 
+//        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                ((MainActivity)getActivity()).audio_name.setText(getString(myObjects.getNightlighters().get(pager.getCurrentItem()).getName())+"");
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
 
         //SubtitleController sc = new SubtitleController(getContext(), null, null);
         //sc.mHandler = new Handler();
@@ -300,7 +321,7 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             textView.setVisibility(View.GONE);
             timerText.setVisibility(View.GONE);
             suit.setVisibility(View.GONE);
-            lock_button.setImageResource(R.drawable.ic_lock);
+            lock_button.setImageResource(R.drawable.lock_vector_gradient);
             lockButton.setAlpha(0.3f);
             lock_frame.setClickable(true);
 
@@ -324,7 +345,7 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
             }
 
-            lock_button.setImageResource(R.drawable.ic_unlock);
+            lock_button.setImageResource(R.drawable.unlock_vector_gradient);
             lock_frame.setClickable(false);
             chekMenu = true;
             show = true;

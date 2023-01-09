@@ -149,13 +149,8 @@ public class MyObjects {
         menuButtons.add(new MenuButton( R.drawable.anim_vector_gradient, R.string.anim, 4));
         menuButtons.add(new MenuButton( R.drawable.light_vector_gradient, R.string.brightness, 5));
         menuButtons.add(new MenuButton( R.drawable.suit_vector_gradient, R.string.suit_color, 6));
-        menuButtons.add(new MenuButton( R.drawable.politic_button, R.string.politica, 7));
+        menuButtons.add(new MenuButton( R.drawable.question_vector_gradient, R.string.politica, 7));
 
         return menuButtons;
     }
-
-
-
-
-
 }

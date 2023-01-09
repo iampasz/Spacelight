@@ -12,31 +12,14 @@
     android:paddingEnd="5dp"
     android:paddingBottom="10dp">
 
-    <FrameLayout
-        android:id="@+id/play_frame"
+    <ImageView
+        android:id="@+id/play_item"
         android:layout_width="@dimen/buttons_size"
         android:layout_height="@dimen/buttons_size"
-        android:layout_weight="1"
-        android:background="@drawable/shape_oval"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-
-            android:id="@+id/colorShape"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/shape_oval"
-            app:tint="#ffcc33" />
-
-        <ImageView
-            android:id="@+id/play_item"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/bgcolor" />
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/play_vector_gradient" />
 
     <FrameLayout
         android:id="@+id/download_frame"
@@ -73,7 +56,7 @@
         android:paddingRight="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/download_frame"
-        app:layout_constraintStart_toEndOf="@+id/play_frame"
+        app:layout_constraintStart_toEndOf="@+id/play_item"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
