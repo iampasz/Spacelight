@@ -11,6 +11,7 @@ import android.media.SoundPool;
 import android.media.SubtitleData;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -44,6 +45,8 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -64,8 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String MY_AUDIO = "my_audio";
     String savedAudioFile = "";
     ArrayList <AudioFile> arrayList;
-    int activeAudio;
-    int previousAudio;
+    //int activeAudio;
+    //int previousAudio;
     Boolean isLooping = false;
     SoundPool soundPool;
     private AdView mAdView;
@@ -111,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String currentLink;
     String currentName;
 
+    int audioCounter = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         play_p.setOnClickListener(this);
         melody_list.setOnClickListener(this);
         random_list.setOnClickListener(this);
+
+        audio_name.setSelected(true);
 
         rv.setY(px);
         arrayList = getAudios();
@@ -157,6 +164,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             realm.insert(getDefualtSettings());
             realm.commitTransaction();
         }
+
+
+        audio_name.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 
         //Реклама
         //mAdView = (AdView) findViewById(R.id.adView);
@@ -271,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         savedAudioFile = "";
 
         if (mediaPlayer != null) {
-            mediaPlayer.stop();
+            mediaPlayer.reset();
         }
 
         Log.i("press_play", mediaPlayer + " we are press play");
@@ -285,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         savedAudioFile = "";
         if (mediaPlayer != null) {
-            mediaPlayer.stop();
+            mediaPlayer.reset();
         }
         if (play_status) {
             mediaPlayer = new MediaPlayer();
@@ -307,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             play_p.setImageResource(R.drawable.pause_vector_gradient);
 
+           // audio_name.setText(name);
             audio_name.setText(name);
 
         }else{
@@ -317,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
+               // mediaPlayer.release();
                 playNextAudio();
                 //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
             }
@@ -329,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void playInternetMusic(AudioFile audioFile, Boolean play_status) {
 
         if (mediaPlayer != null) {
-            mediaPlayer.stop();
+            mediaPlayer.reset();
         }
 
         if (play_status) {
@@ -353,7 +365,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void playMusic(int id, String name, String auth, Boolean play_status) {
 
         if (mediaPlayer != null) {
-            mediaPlayer.stop();
+            mediaPlayer.reset();
         }
 
         if (play_status) {
@@ -365,13 +377,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
+                //mediaPlayer.release();
                 playNextAudio();
                 //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
             }
         });
 
             mediaPlayer.start();
-            audio_name.setText(name+"\n"+auth);
+            audio_name.setText(name+", "+auth);
 
         }else{
             play_p.setImageResource(R.drawable.play_vector_gradient);
@@ -462,62 +475,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public String playNextAudio(){
 
         int allAudio = arrayList.size();
-        Random random = new Random();
-        int randomAudioNumber = random.nextInt(allAudio);
-        previousAudio = activeAudio;
-
-        Log.i("next", allAudio+" allAudio");
-        Log.i("next", randomAudioNumber+" randomAudioNumber");
-        Log.i("next", previousAudio+" previousAudio");
-
         getAudios();
 
         switch (allAudio){
             case 0:
-               // Toast.makeText(this, "Завантажте більше мелодій", Toast.LENGTH_SHORT).show();
-                Log.i("next", previousAudio+" 0");
+                //Have not any audio
                 break;
             case 1:
-                        if(arrayList.get(randomAudioNumber).getResourceLink()!=0){
-                            playMusic(arrayList.get(randomAudioNumber).getResourceLink(), arrayList.get(randomAudioNumber).nameSong, arrayList.get(randomAudioNumber).authorSong, true);
-                            activeAudio=randomAudioNumber;
+                //Have first audio with id
+                        if(arrayList.get(audioCounter).getResourceLink()!=0){
+                            playMusic(arrayList.get(audioCounter).getResourceLink(), arrayList.get(audioCounter).nameSong, arrayList.get(audioCounter).authorSong, true);
+                            //activeAudio=audioCounter;
                         }
-               // playLockalMusic(arrayList.get(randomAudioNumber).getLockalLink(),"", true);
-                Log.i("next", previousAudio+" 1");
                 break;
+
             default:
-                Log.i("next", previousAudio+" default");
+                //Have melody with lockal link
 
-                if(previousAudio==randomAudioNumber){
-                    randomAudioNumber++;
-                    if(randomAudioNumber>allAudio-1){
-
-                        randomAudioNumber=0;
-
-                    }
-                }
-
-                if(arrayList.get(randomAudioNumber).getResourceLink()!=0){
-                    playMusic(arrayList.get(randomAudioNumber).getResourceLink(), arrayList.get(randomAudioNumber).nameSong, arrayList.get(randomAudioNumber).authorSong, true);
-                    activeAudio=randomAudioNumber;
+                if(arrayList.get(audioCounter).getResourceLink()!=0){
+                    playMusic(arrayList.get(audioCounter).getResourceLink(), arrayList.get(audioCounter).nameSong, arrayList.get(audioCounter).authorSong, true);
+                   // activeAudio=audioCounter;
                 }else{
-
-                    Log.i("next", arrayList.get(randomAudioNumber).getResourceLink()+" arrayList.get(randomAudioNumber).getResourceLink()");
-                    Log.i("next", arrayList.get(randomAudioNumber).getLockalLink()+" arrayList.get(randomAudioNumber).getLockalLink()");
-
                     playLockalMusic(
-                            arrayList
-                                    .get(randomAudioNumber)
-                                    .getLockalLink(),
-                            arrayList
-                                    .get(randomAudioNumber)
-                                    .getNameSong()+"\n"+arrayList
-                                    .get(randomAudioNumber)
-                                    .authorSong, true);
-                    activeAudio=randomAudioNumber;
-
+                            arrayList.get(audioCounter).getLockalLink(),
+                            arrayList.get(audioCounter).getNameSong()+", "+arrayList.get(audioCounter).authorSong,
+                            true);
+                    //activeAudio=audioCounter;
                 }
                 break;
+        }
+
+        audioCounter++;
+
+        Log.i("audioCounter",audioCounter+" rrr "+allAudio);
+
+        if(audioCounter==allAudio){
+            audioCounter=0;
         }
 
         return "";
@@ -649,6 +642,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rv.setVisibility(View.VISIBLE);
         player.setVisibility(View.VISIBLE);
         audio_name.setVisibility(View.VISIBLE);
+
     }
 
     public void showMainMenu(){
@@ -686,9 +680,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onError(MediaPlayer mp, int what, int extras) {
 
-        Log.i("error", mp+"mp");
-        Log.i("error", what+"what");
-        Log.i("error", extras+"extras");
+        Log.i("errorq", mp+"mp");
+        Log.i("errorq", what+"what");
+        Log.i("errorq", extras+"extras");
 
         play_p.setImageResource(R.drawable.play_vector_gradient);
         audio_name.setText("");

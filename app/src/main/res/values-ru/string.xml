@@ -85,4 +85,7 @@
     <string name="downloaded">Скачано</string>
     <string name="galery">Галерея</string>
 
+    <string name="audio_name">Song name</string>
+    <string name="audio_author">Author name</string>
+
 </resources>

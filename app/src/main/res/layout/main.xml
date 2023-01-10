@@ -5,6 +5,7 @@
     android:id="@+id/constrain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="0dp"
     android:background="#000"
     tools:context=".MainActivity">
 
@@ -13,54 +14,20 @@
         android:id="@+id/container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        ads:layout_constraintBottom_toTopOf="@+id/audio_name"
+        ads:layout_constraintBottom_toTopOf="@+id/frameLayout"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintTop_toBottomOf="@+id/adView">
 
     </FrameLayout>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:visibility="visible"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-1237459888817948/8632786725"
-        ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintStart_toStartOf="parent"
-        ads:layout_constraintTop_toTopOf="parent"
-        tools:ignore="DuplicateClickableBoundsCheck">
-
-    </com.google.android.gms.ads.AdView>
-
-    <TextView
-        android:id="@+id/audio_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        ads:layout_constraintBottom_toTopOf="@+id/frameLayout"
-        ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintStart_toStartOf="parent" />
-
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintBottom_toTopOf="@+id/audio_name"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintStart_toStartOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
-
-        </androidx.recyclerview.widget.RecyclerView>
 
         <LinearLayout
             android:id="@+id/player"
@@ -69,7 +36,9 @@
             android:layout_gravity="bottom"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
             android:visibility="visible">
 
             <ImageView
@@ -105,7 +74,51 @@
 
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/audio_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#49000000"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="0dp"
+
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textColor="#9BF1F1F1"
+        android:textSize="12sp"
+
+        android:visibility="visible"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:visibility="visible"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-1237459888817948/8632786725"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent"
+        tools:ignore="DuplicateClickableBoundsCheck">
+
+    </com.google.android.gms.ads.AdView>
 
     <!--        ads:layout_constraintTop_toBottomOf="@+id/adView" -->
 

@@ -67,11 +67,8 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
     @BindView(R.id.lockButton)
     LinearLayout lockButton;
 
-    @BindView(R.id.suit)
-    ImageView suit;
 
-    @BindView(R.id.presents)
-    ImageView presents;
+
 
     @BindView(R.id.animateBg)
     ImageView animateBg;
@@ -86,6 +83,9 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
     @BindView(R.id.lock_frame)
     FrameLayout lock_frame;
+
+    @BindView(R.id.tab_l2)
+    TabLayout tab_l2;
 
 
     MyPagerAdapter pagerAdapter;
@@ -147,10 +147,9 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
         pagerAdapter = new MyPagerAdapter(getParentFragmentManager(), myObjects.getNightlighters());
         pager.setAdapter(pagerAdapter);
-        pager.setCurrentItem(500);
+        //pager.setCurrentItem(2);
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_l2);
-        tabLayout.setupWithViewPager(pager, true);
+        tab_l2.setupWithViewPager(pager, true);
 
         float dip = 70f;
         Resources r = getResources();
@@ -245,29 +244,31 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
         });
 
         //Кнопка костюму
-        suit.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+//        suit.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//
+//                Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
+//                suitColor = myFragment.getView().findViewById(R.id.suit_color);
+//
+//                switch (motionEvent.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//
+//                        suitColor.setVisibility(View.INVISIBLE);
+//                        Log.i("Show", "imageView.setVisibility(View.INVISIBLE);");
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//
+//                        suitColor.setVisibility(View.VISIBLE);
+//                        Log.i("Show", "imageView.setVisibility(View.VISIBLE);");
+//                        break;
+//
+//                }
+//                return true;
+//            }
+//        });
 
-                Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
-                suitColor = myFragment.getView().findViewById(R.id.suit_color);
 
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-                        suitColor.setVisibility(View.INVISIBLE);
-                        Log.i("Show", "imageView.setVisibility(View.INVISIBLE);");
-                        break;
-                    case MotionEvent.ACTION_UP:
-
-                        suitColor.setVisibility(View.VISIBLE);
-                        Log.i("Show", "imageView.setVisibility(View.VISIBLE);");
-                        break;
-
-                }
-                return true;
-            }
-        });
 
         //Кнопка бокування
         lockButton.setOnClickListener(new View.OnClickListener() {
@@ -320,12 +321,14 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             //openMenu(menuItems.getMenuButtons(colors));
             textView.setVisibility(View.GONE);
             timerText.setVisibility(View.GONE);
-            suit.setVisibility(View.GONE);
+
             lock_button.setImageResource(R.drawable.lock_vector_gradient);
             lockButton.setAlpha(0.3f);
             lock_frame.setClickable(true);
 
             ((MainActivity)getActivity()).hideAddView();
+
+            tab_l2.setVisibility(View.GONE);
 
             chekMenu = false;
             show = false;
@@ -334,9 +337,10 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
         } else {
             textView.setVisibility(View.VISIBLE);
-            suit.setVisibility(View.VISIBLE);
+
 
             ((MainActivity)getActivity()).showAddView();
+            tab_l2.setVisibility(View.VISIBLE);
 
             lockButton.setAlpha(1f);
             if (timerOn) {

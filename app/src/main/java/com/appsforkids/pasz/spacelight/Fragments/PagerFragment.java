@@ -2,7 +2,10 @@ package  com.appsforkids.pasz.spacelight.Fragments;
 
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,10 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.appsforkids.pasz.spacelight.ColorController;
+import com.appsforkids.pasz.spacelight.MainActivity;
 import com.appsforkids.pasz.spacelight.MyObjects;
 import com.appsforkids.pasz.spacelight.Objects.Nightlighter;
 import com.appsforkids.pasz.spacelight.R;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 //mport com.daimajia.androidanimations.library.Techniques;
 //import com.daimajia.androidanimations.library.YoYo;
@@ -37,7 +43,8 @@ public class PagerFragment extends Fragment {
     Realm realm;
     Context ctx;
 
-     ImageView suitColorImg;
+    ImageView suitColorImg;
+    ImageView suit;
     TextView nameNightlight;
 
 
@@ -76,6 +83,7 @@ public class PagerFragment extends Fragment {
         final ImageView moonImg = (ImageView) view.findViewById(R.id.moon);
         final ImageView suitImg = (ImageView) view.findViewById(R.id.suit) ;
          suitColorImg = (ImageView) view.findViewById(R.id.suit_color) ;
+        suit = (ImageView) view.findViewById(R.id.suit) ;
         final ImageView animalImg = (ImageView) view.findViewById(R.id.animal) ;
 
         moonImg.setImageResource(myNightlighter.getMoonImg());
@@ -83,16 +91,16 @@ public class PagerFragment extends Fragment {
         suitColorImg.setImageResource(R.drawable.grad_blue_1);
         animalImg.setImageResource(myNightlighter.getAnimalImg());
 
-//        final ArrayList<Techniques> techniques = new ArrayList<>();
-//       // techniques.add(Techniques.Bounce);
-//        techniques.add(Techniques.BounceIn);
-//        techniques.add(Techniques.FadeIn);
-//       // techniques.add(Techniques.DropOut);
-//        techniques.add(Techniques.Shake);
-//        techniques.add(Techniques.Flash);
-//        techniques.add(Techniques.SlideInLeft);
-//        techniques.add(Techniques.Swing);
-//        techniques.add(Techniques.FlipInY);
+        final ArrayList<Techniques> techniques = new ArrayList<>();
+       // techniques.add(Techniques.Bounce);
+        techniques.add(Techniques.BounceIn);
+        techniques.add(Techniques.FadeIn);
+       // techniques.add(Techniques.DropOut);
+        techniques.add(Techniques.Shake);
+        techniques.add(Techniques.Flash);
+        techniques.add(Techniques.SlideInLeft);
+        techniques.add(Techniques.Swing);
+        techniques.add(Techniques.FlipInY);
 
 
         nameNightlight.setOnLongClickListener(new View.OnLongClickListener() {
@@ -107,6 +115,10 @@ public class PagerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Random random = new Random();
+
+               // moonImg.setVisibility(View.INVISIBLE);
+              //  moonImg.animate().alpha(0f).setDuration(5000).start();
+
 
 
 //               int i =  random.nextInt(techniques.size());
@@ -129,13 +141,29 @@ public class PagerFragment extends Fragment {
         realm = Realm.getDefaultInstance();
 
 
-        suitColorImg.setOnTouchListener(new View.OnTouchListener() {
+        moonImg.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+
+
 
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
                         hideSuit();
+                        //suit.setVisibility(View.GONE);
+                       // ((MainActivity)getActivity()).platSPool(1);
+
+
+//                        Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+//// Vibrate for 500 milliseconds
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                            v.vibrate(VibrationEffect.createOneShot(5000, VibrationEffect.DEFAULT_AMPLITUDE));
+//                        } else {
+//                            //deprecated in API 26
+//                            v.vibrate(5000);
+//                        }
+
+
                         break;
                     case MotionEvent.ACTION_UP:
                         showSuit();

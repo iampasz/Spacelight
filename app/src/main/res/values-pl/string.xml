@@ -87,4 +87,8 @@
     <string name="galery">Galeria</string>
 
 
+    <string name="audio_name">Song name</string>
+    <string name="audio_author">Author name</string>
+
+
 </resources>
