@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.appsforkids.pasz.spacelight.app-mergeReleaseResources-4:/values-v18/values-v18.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\pasz\\.gradle\\caches\\transforms-3\\9c9f07a1b92f83b32e4be6eeedd2ea69\\transformed\\appcompat-1.6.0\\res\\values-v18\\values-v18.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "48",
+                        "endOffsets": "99"
+                    }
+                }
+            ]
+        }
+    ]
+}

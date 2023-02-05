@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.appsforkids.pasz.spacelight.app-mergeDebugResources-5:/values-watch-v20/values-watch-v20.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\pasz\\.gradle\\caches\\transforms-3\\36a424ef76fb9e1b0c30ef374a392de5\\transformed\\appcompat-1.6.0\\res\\values-watch-v20\\values-watch-v20.xml",
+                    "from": {
+                        "startLines": "2,5,8",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,214,385",
+                        "endLines": "4,7,10",
+                        "endColumns": "12,12,12",
+                        "endOffsets": "209,380,553"
+                    }
+                }
+            ]
+        }
+    ]
+}
