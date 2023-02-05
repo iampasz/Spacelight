@@ -1,13 +1,6 @@
 <resources>
     <string name="app_name">Światło kosmiczne</string>
-    <string name="facebook_app_id" translatable="false">488998881840882</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb488998881840882</string>
-    <!--<string name="banner_ad_unit_id">ca-app-pub-1657105281106558/8080795492</string>-->
-    <!--старий ненастраевымый банер-->
-    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/9922711695</string>
-    <!--native banner ads
-    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/7813195271</string>-->
-    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+
     <string name="again">Ponownie?</string>
     <string name="yes">TAk</string>
     <string name="no">Nie</string>
@@ -26,30 +19,10 @@
     <string name="bear">niedźwiedź</string>
 
 
-    <integer-array name="hours">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-    </integer-array>
 
-    <integer-array name="minutes">
-        <item>10</item>
-        <item>20</item>
-        <item>30</item>
-        <item>40</item>
-        <item>50</item>
-    </integer-array>
 
-    <string name="sounds">Dźwięki</string>
-    <string name="bg_color">BG Kolor</string>
-    <string name="ng_color">NL Kolor</string>
-    <string name="ng">BG Kolor</string>
-    <string name="timer">Regulator czasowy</string>
+
+
     <string name="brightness">Jasność</string>
 
     <string name="home">Dom</string>
@@ -59,20 +32,8 @@
     <string name="anim">Animacje</string>
     <string name="suit_color">Kolor garnituru</string>
 
-    <string name="menu">Menu</string>
-
-    <string name="lock">Zamek</string>
-    <string name="unlock">Odblokować</string>
-
-    <string name="animation">Animacja</string>
 
 
-    <string name="politica">Polityka prywatności</string>
-
-
-
-    <string name="title_ad">Gratulacje</string>
-    <string name="text_ad">Otworzyłeś sekretną lampkę nocną!</string>
 
     <string name="minutes">minuty</string>
     <string name="hours">godziny</string>
@@ -81,14 +42,13 @@
     <string name="message_2">Zalecamy pobranie melodii na telefon</string>
     <string name="message_3">Internet jest podłączony do sieci komórkowej. Kontynuować?</string>
 
-    <string name="dont_show">Nie pokazuj ponownie</string>
+
 
     <string name="downloaded">Pobrane</string>
     <string name="galery">Galeria</string>
 
 
-    <string name="audio_name">Song name</string>
-    <string name="audio_author">Author name</string>
+
 
 
 </resources>

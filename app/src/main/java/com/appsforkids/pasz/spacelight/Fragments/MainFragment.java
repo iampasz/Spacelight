@@ -1,5 +1,6 @@
 package com.appsforkids.pasz.spacelight.Fragments;
 
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -26,10 +28,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -45,6 +46,7 @@ import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 import com.appsforkids.pasz.spacelight.RevolutionAnimationView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -57,33 +59,47 @@ import io.realm.Realm;
 public class MainFragment extends Fragment implements Serializable, View.OnClickListener {
 
 
-
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.pager)
     ViewPager pager;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.lock_button)
     ImageView lock_button;
 
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.suit_button)
+    ImageView suit_button;
+
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.rocket)
+    ImageView rocket;
+
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.lockButton)
     LinearLayout lockButton;
 
-
-
-
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.animateBg)
     ImageView animateBg;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.timer)
     TextView timerText;
 
     ConstraintLayout mainBg;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.main_constrain)
     ConstraintLayout main_constrain;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.lock_frame)
     FrameLayout lock_frame;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.tab_l2)
     TabLayout tab_l2;
 
@@ -100,6 +116,7 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
     Context ctx;
     boolean chekMenu = true;
     boolean chekStatus = true;
+    boolean hideSuit = false;
 
     boolean playerStatus =  true;
 
@@ -123,20 +140,23 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
     CountDownTimer offTimer;
     CountDownTimer hideLockTimer;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.main_fragment, null);
+        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.main_fragment, null);
         ButterKnife.bind(this, view);
 
         mainBg = ((MainActivity)getActivity()).constrain;
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
 
         return view;
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -159,28 +179,6 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
                 r.getDisplayMetrics()
         );
 
-//        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                ((MainActivity)getActivity()).audio_name.setText(getString(myObjects.getNightlighters().get(pager.getCurrentItem()).getName())+"");
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
-
-        //SubtitleController sc = new SubtitleController(getContext(), null, null);
-        //sc.mHandler = new Handler();
-        //mediaplayer.setSubtitleAnchor(sc, null);
-
-        //getMediaPlayer(getContext());
 
 
 
@@ -243,38 +241,56 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             }
         });
 
-        //Кнопка костюму
-//        suit.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//
-//                Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
-//                suitColor = myFragment.getView().findViewById(R.id.suit_color);
-//
-//                switch (motionEvent.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//
-//                        suitColor.setVisibility(View.INVISIBLE);
-//                        Log.i("Show", "imageView.setVisibility(View.INVISIBLE);");
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//
-//                        suitColor.setVisibility(View.VISIBLE);
-//                        Log.i("Show", "imageView.setVisibility(View.VISIBLE);");
-//                        break;
-//
-//                }
-//                return true;
-//            }
-//        });
+        rocket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
+                //Analistic
+                sendAnalystics("rocket", "press_rocekt");
 
+
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int height = displayMetrics.heightPixels;
+
+                rocket.animate().setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(@NonNull Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(@NonNull Animator animator) {
+                        changeNighlit();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(@NonNull Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(@NonNull Animator animator) {
+
+                    }
+                }).translationY(-height).setDuration(2000).start();
+
+            }
+        });
         //Кнопка бокування
         lockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 lockButton();
+            }
+        });
+
+
+        suit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideSuit();
             }
         });
 
@@ -314,13 +330,15 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
     public void lockButton() {
 
-        Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
+        Fragment myFragment = getParentFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
         final TextView textView = myFragment.getView().findViewById(R.id.nameNightlight);
 
         if (chekMenu) {
             //openMenu(menuItems.getMenuButtons(colors));
-            textView.setVisibility(View.GONE);
-            timerText.setVisibility(View.GONE);
+            textView.animate().alpha(0).setDuration(1000).start();
+            timerText.animate().alpha(0).setDuration(1000).start();
+            //suit_button.setVisibility(View.GONE);
+            suit_button.animate().alpha(0).setDuration(1000).start();
 
             lock_button.setImageResource(R.drawable.lock_vector_gradient);
             lockButton.setAlpha(0.3f);
@@ -328,7 +346,7 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
             ((MainActivity)getActivity()).hideAddView();
 
-            tab_l2.setVisibility(View.GONE);
+            tab_l2.animate().alpha(0).setDuration(1000).start();
 
             chekMenu = false;
             show = false;
@@ -336,15 +354,17 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             hideLockTimer.start();
 
         } else {
-            textView.setVisibility(View.VISIBLE);
+            textView.animate().alpha(1f).setDuration(1000).start();
+            //suit_button.setVisibility(View.VISIBLE);
+            suit_button.animate().alpha(1f).setDuration(1000).start();
 
 
             ((MainActivity)getActivity()).showAddView();
-            tab_l2.setVisibility(View.VISIBLE);
+            tab_l2.animate().alpha(1f).setDuration(1000).start();
 
             lockButton.setAlpha(1f);
             if (timerOn) {
-                timerText.setVisibility(View.VISIBLE);
+                timerText.animate().alpha(1f).setDuration(1000).start();
             } else {
 
             }
@@ -400,6 +420,7 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             timerText.setVisibility(View.VISIBLE);
             int mySeconds = (((hours * 60 * 60) + (60 * minutes)) * 1000);
             offTimer = new CountDownTimer(mySeconds, 1000) {
+                @SuppressLint("DefaultLocale")
                 @Override
                 public void onTick(long l) {
 
@@ -608,27 +629,6 @@ if(settings!=null){
         return 0;
     }
 
-//    private boolean getChekBoxStatus(String preferences) {
-//        SharedPreferences spa = getActivity().getSharedPreferences(MY_CHEKBOX, Context.MODE_PRIVATE);
-//        chekStatus = spa.getBoolean(preferences, true);
-//
-//        if (chekStatus) {
-//            Log.i("chhh", "true");
-//            return true;
-//        } else {
-//            Log.i("chhh", "false");
-//            return false;
-//        }
-//    }
-//
-//    public void setChekBoxStatus(String preferences) {
-//        SharedPreferences spa = getActivity().getSharedPreferences(MY_CHEKBOX, Context.MODE_PRIVATE);
-//        // выводим нужную активность
-//        SharedPreferences.Editor e = spa.edit();
-//        e.putBoolean(preferences, false);
-//        e.commit(); // не забудьте подтвердить изменения
-//    }
-
     private void showPlayer(){
 
         ((MainActivity)getActivity()).showPlayer();
@@ -643,7 +643,9 @@ if(settings!=null){
 
     public void  startAnim(){
         if (smImage == -1) {
+
         } else {
+
             startAnimation2(myObjects.getAnimationImage()[smImage]);
             smImage++;
             if (smImage >= myObjects.getAnimationImage().length) {
@@ -652,6 +654,60 @@ if(settings!=null){
             }
         }
     }
+
+    public void hideSuit(){
+        if(hideSuit){
+            hideSuit =false;
+            pager.animate().alpha(1f).setDuration(1000).start();
+        }else{
+            hideSuit =true;
+            pager.animate().alpha(0f).setDuration(1000).start();
+        }
+    }
+
+
+    public void changeNighlit(){
+        InternetNightlightFragment myFragment = (InternetNightlightFragment)getParentFragmentManager().findFragmentByTag("INTERNET_NG_FRAGMENT");
+        if (myFragment != null && myFragment.isVisible()) {
+            // add your code here
+        }else{
+            InternetNightlightFragment internetNightlightFragment = new InternetNightlightFragment();
+            internetNightlightFragment.setCallBack(new ChoseItem() {
+                @Override
+                public void setImage(String link) {
+
+                    Fragment myFragment = getParentFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
+
+                    final ImageView animal = myFragment.getView().findViewById(R.id.animal);
+                    final ImageView suit_color = myFragment.getView().findViewById(R.id.suit_color);
+                    final ImageView suit = myFragment.getView().findViewById(R.id.suit);
+                    final ImageView moon = myFragment.getView().findViewById(R.id.moon);
+
+
+                    suit_color.setVisibility(View.INVISIBLE);
+                    suit.setVisibility(View.INVISIBLE);
+                    animal.setVisibility(View.INVISIBLE);
+                    //((ViewGroup) moon.getParent()).removeView(moon);
+
+                    Picasso.get().load(link).into(moon);
+
+                    rocket.setY(2500);
+                    rocket.animate().translationY(0).start();
+
+
+                }
+            });
+            getParentFragmentManager().beginTransaction().add(R.id.container, internetNightlightFragment, "INTERNET_NG_FRAGMENT").commit();
+        }
+    }
+
+
+    private void sendAnalystics(String key, String value){
+        //Analistic
+        Bundle bundle = new Bundle();
+        bundle.putString(key, value);
+        mFirebaseAnalytics.logEvent("press", bundle);
+    };
 
 
 }

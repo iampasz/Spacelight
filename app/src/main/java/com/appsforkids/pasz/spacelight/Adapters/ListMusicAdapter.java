@@ -88,7 +88,7 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
                     holder.play_item.setImageResource(R.drawable.pause_vector_gradient);
                     nameSong = audioFileAll.get(holder.getAdapterPosition()).getNameSong();
                 }
-                 notifyDataSetChanged();
+                // notifyDataSetChanged();
             }
         });
 

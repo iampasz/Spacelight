@@ -1,6 +1,7 @@
 package  com.appsforkids.pasz.spacelight.Fragments;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,7 +45,7 @@ public class PagerFragment extends Fragment {
     Context ctx;
 
     ImageView suitColorImg;
-    ImageView suit;
+
     TextView nameNightlight;
 
 
@@ -65,12 +66,14 @@ public class PagerFragment extends Fragment {
         myNightlighter = (Nightlighter) getArguments().getSerializable("nightlight");
     }
 
+    @SuppressLint("InflateParams")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.pager_fragment, null);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -83,7 +86,7 @@ public class PagerFragment extends Fragment {
         final ImageView moonImg = (ImageView) view.findViewById(R.id.moon);
         final ImageView suitImg = (ImageView) view.findViewById(R.id.suit) ;
          suitColorImg = (ImageView) view.findViewById(R.id.suit_color) ;
-        suit = (ImageView) view.findViewById(R.id.suit) ;
+
         final ImageView animalImg = (ImageView) view.findViewById(R.id.animal) ;
 
         moonImg.setImageResource(myNightlighter.getMoonImg());
@@ -144,32 +147,18 @@ public class PagerFragment extends Fragment {
         moonImg.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-
-
-
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
+                        view.performClick();
                         hideSuit();
-                        //suit.setVisibility(View.GONE);
-                       // ((MainActivity)getActivity()).platSPool(1);
-
-
-//                        Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-//// Vibrate for 500 milliseconds
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                            v.vibrate(VibrationEffect.createOneShot(5000, VibrationEffect.DEFAULT_AMPLITUDE));
-//                        } else {
-//                            //deprecated in API 26
-//                            v.vibrate(5000);
-//                        }
-
-
                         break;
                     case MotionEvent.ACTION_UP:
+                        view.performClick();
                         showSuit();
                         break;
+                    default:
+                        break;
                 }
-
                 return false;
             }
         });

@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
-    android:paddingLeft="5dp"
+    android:paddingStart="5dp"
     android:paddingTop="10dp"
     android:paddingEnd="5dp"
     android:paddingBottom="10dp">
@@ -16,6 +16,7 @@
         android:id="@+id/play_item"
         android:layout_width="@dimen/buttons_size"
         android:layout_height="@dimen/buttons_size"
+        android:contentDescription="@string/image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

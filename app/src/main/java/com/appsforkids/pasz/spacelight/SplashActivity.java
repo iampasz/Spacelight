@@ -1,13 +1,14 @@
 package com.appsforkids.pasz.spacelight;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
 
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity{
 
 

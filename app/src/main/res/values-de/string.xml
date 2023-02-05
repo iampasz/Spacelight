@@ -1,13 +1,5 @@
 <resources>
     <string name="app_name">Licht</string>
-    <string name="facebook_app_id" translatable="false">488998881840882</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb488998881840882</string>
-    <!--<string name="banner_ad_unit_id">ca-app-pub-1657105281106558/8080795492</string>-->
-    <!--старий ненастраевымый банер-->
-    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/9922711695</string>
-    <!--native banner ads
-    <string name="banner_ad_unit_id">ca-app-pub-1237459888817948/7813195271</string>-->
-    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
     <string name="again">Wieder?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
@@ -25,30 +17,10 @@
     <string name="bear">Bär</string>
 
 
-    <integer-array name="hours">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-    </integer-array>
 
-    <integer-array name="minutes">
-        <item>10</item>
-        <item>20</item>
-        <item>30</item>
-        <item>40</item>
-        <item>50</item>
-    </integer-array>
 
-    <string name="sounds">Geräusche</string>
-    <string name="bg_color">BG Farbe</string>
-    <string name="ng_color">NL Farbe</string>
-    <string name="ng">BG Farbe</string>
-    <string name="timer">Timer</string>
+
+
     <string name="brightness">Helligkeit</string>
 
     <string name="home">Heim</string>
@@ -58,20 +30,10 @@
     <string name="anim">Animationen</string>
     <string name="suit_color">Farbe des Anzugs</string>
 
-    <string name="menu">Speisekarte</string>
-
-    <string name="lock">Sperren</string>
-    <string name="unlock">Freischalten</string>
-
-    <string name="animation">Animation</string>
-
-
-    <string name="politica">Datenschutz-Bestimmungen</string>
 
 
 
-    <string name="title_ad">Herzliche Glückwünsche</string>
-    <string name="text_ad">Du hast das geheime Nachtlicht geöffnet!</string>
+
 
     <string name="minutes">Minuten </string>
     <string name="hours">Stunden</string>
@@ -80,12 +42,11 @@
     <string name="message_2">Wir empfehlen, eine Melodie auf Ihr Telefon herunterzuladen</string>
     <string name="message_3">Das Internet ist mit dem Mobilfunknetz verbunden. Fortsetzen?</string>
 
-    <string name="dont_show">Nicht mehr anzeigen</string>
+
 
     <string name="downloaded">Heruntergeladen</string>
     <string name="galery">Galerie</string>
 
-    <string name="audio_name">Song name</string>
-    <string name="audio_author">Author name</string>
+
 
 </resources>

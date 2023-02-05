@@ -10,7 +10,7 @@
     <FrameLayout
         android:id="@+id/save_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_margin="10dp"
         android:layout_marginBottom="70dp"
         android:foregroundGravity="center"
@@ -22,20 +22,21 @@
             android:id="@+id/close_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:contentDescription="image"
-            android:scaleType="centerInside"
+            android:contentDescription="@string/image"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_bbutton" />
 
         <TextView
-            style="@style/FontLocalizedBold"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:gravity="center"
             android:shadowColor="@color/text_shadow"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="2"
             android:text="@string/ok"
+            android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="26sp"
             android:textStyle="bold" />

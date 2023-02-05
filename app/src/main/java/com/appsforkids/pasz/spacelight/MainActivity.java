@@ -1,6 +1,7 @@
 package com.appsforkids.pasz.spacelight;
 
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -15,8 +16,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -78,30 +81,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public LinearLayout main_m;
 
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.home_b)
     ImageView home_b;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.right_p)
     ImageView right_p;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.random_list)
     ImageView random_list;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.player)
     LinearLayout player;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.play_p)
     ImageView play_p;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.constrain)
     public ConstraintLayout constrain;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.melody_list)
     ImageView melody_list;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.audio_name)
     public TextView audio_name;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.rv)
     public RecyclerView rv;
 
@@ -131,6 +144,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 r.getDisplayMetrics()
         );
 
+
+
+
 //        main_m.setY(px);
 
         home_b.setOnClickListener(this);
@@ -145,11 +161,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         arrayList = getAudios();
 
         soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-        soundPool.load(this, R.raw.s1, 1);
-        soundPool.load(this, R.raw.s2, 1);
-        soundPool.load(this, R.raw.s3, 1);
-        soundPool.load(this, R.raw.s4, 1);
-        soundPool.load(this, R.raw.s5, 1);
+//        soundPool.load(this, R.raw.s1, 1);
+//        soundPool.load(this, R.raw.s2, 1);
+//        soundPool.load(this, R.raw.s3, 1);
+//        soundPool.load(this, R.raw.s4, 1);
+//        soundPool.load(this, R.raw.s5, 1);
 
         //Встановлюємо повно-екранний режим
         setFullScrean();
@@ -184,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          mainFragment = new MainFragment();
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.container, mainFragment, "main_fragment").commit();
+
         LinearLayoutManager llm = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rv.setLayoutManager(llm);
 
@@ -214,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case 4:
                         //animation
                         mainFragment.startAnim();
+
                         break;
                     case 5:
                         //bright
@@ -251,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // выводим нужную активность
             SharedPreferences.Editor e = sp.edit();
             e.putBoolean("hasVisited", true);
-            e.commit(); // не забудьте подтвердить изменения
+            e.apply(); // не забудьте подтвердить изменения
         }
 
         return hasVisited;
@@ -311,8 +329,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 e.printStackTrace();
             }
             mediaPlayer.start();
-
-
             savedAudioFile = link;
 
             play_p.setImageResource(R.drawable.pause_vector_gradient);
@@ -362,6 +378,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @SuppressLint("SetTextI18n")
     public void playMusic(int id, String name, String auth, Boolean play_status) {
 
         if (mediaPlayer != null) {
@@ -431,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // выводим нужную активность
             SharedPreferences.Editor e = spa.edit();
             e.putString("audioFile", savedAudioFile);
-            e.commit(); // не забудьте подтвердить изменения
+            e.apply(); // не забудьте подтвердить изменения
         }
     }
 
@@ -562,6 +579,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -631,17 +649,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void hideAddView(){
-        mAdView.setVisibility(View.GONE);
-        rv.setVisibility(View.GONE);
-        player.setVisibility(View.GONE);
-        audio_name.setVisibility(View.GONE);
+        mAdView.animate().alpha(0f).setDuration(1000).start();
+        rv.animate().alpha(0f).setDuration(1000).start();
+        player.animate().alpha(0f).setDuration(1000).start();
+        audio_name.animate().alpha(0f).setDuration(1000).start();
     }
 
     public void showAddView(){
-        mAdView.setVisibility(View.VISIBLE);
-        rv.setVisibility(View.VISIBLE);
-        player.setVisibility(View.VISIBLE);
-        audio_name.setVisibility(View.VISIBLE);
+        mAdView.animate().alpha(1f).setDuration(1000).start();
+        rv.animate().alpha(1f).setDuration(1000).start();
+        player.animate().alpha(1f).setDuration(1000).start();
+        audio_name.animate().alpha(1f).setDuration(1000).start();
 
     }
 

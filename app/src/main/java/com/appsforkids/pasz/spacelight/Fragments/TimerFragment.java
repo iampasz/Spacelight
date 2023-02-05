@@ -1,5 +1,6 @@
 package com.appsforkids.pasz.spacelight.Fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,13 +29,16 @@ import butterknife.ButterKnife;
 
 public class TimerFragment extends Fragment {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.no_button)
     FrameLayout no_button;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.yes_button)
     FrameLayout yes_button;
 
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.frame_constraine)
     ConstraintLayout frame_constraine;
 

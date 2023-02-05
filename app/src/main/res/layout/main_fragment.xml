@@ -24,10 +24,35 @@
             android:layout_height="0dp"
             android:clickable="true"
             android:contentDescription="@string/again"
+            android:focusable="true"
             ads:layout_constraintBottom_toTopOf="@+id/tab_l2"
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintStart_toStartOf="parent"
-            ads:layout_constraintTop_toTopOf="@+id/lock_frame" />
+            ads:layout_constraintTop_toTopOf="@+id/lock_frame"
+            tools:ignore="DuplicateSpeakableTextCheck">
+
+        </androidx.viewpager.widget.ViewPager>
+
+        <ImageView
+            android:id="@+id/rocket"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginBottom="50dp"
+            android:contentDescription="@string/hide_nl"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:srcCompat="@drawable/rocket" />
+
+        <ImageView
+            android:id="@+id/suit_button"
+            android:layout_width="@dimen/play_buttons_size"
+            android:layout_height="@dimen/play_buttons_size"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="100dp"
+            android:contentDescription="@string/hide_nl"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toTopOf="parent"
+            ads:srcCompat="@drawable/suit_vector_gradient" />
 
         <FrameLayout
             android:id="@+id/lock_frame"
@@ -37,7 +62,6 @@
             ads:layout_constraintBottom_toBottomOf="parent"
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintStart_toStartOf="parent"
-            ads:layout_constraintTop_toTopOf="@+id/animateBg"
             tools:ignore="SpeakableTextPresentCheck">
 
             <ImageView
@@ -52,6 +76,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="DuplicateClickableBoundsCheck,SpeakableTextPresentCheck" />
+
         </FrameLayout>
 
 
@@ -76,7 +101,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="@string/lock"
                 android:textAlignment="center"
                 android:textColor="#fff"
                 android:textSize="10sp" />

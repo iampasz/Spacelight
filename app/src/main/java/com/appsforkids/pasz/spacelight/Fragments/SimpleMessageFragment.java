@@ -1,11 +1,13 @@
 package com.appsforkids.pasz.spacelight.Fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,9 +21,11 @@ import butterknife.ButterKnife;
 
 public class SimpleMessageFragment extends Fragment {
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.ok_button)
-    FrameLayout ok_button;
+    ImageView ok_button;
 
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.dialog_message)
     TextView dialog_message;
 

@@ -1,5 +1,6 @@
 package  com.appsforkids.pasz.spacelight.Adapters;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 
 import android.view.LayoutInflater;
@@ -42,7 +43,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.iconImage.setImageResource(menuButtons.get(position).getIconImege());
         holder.itemView.setOnClickListener(new View.OnClickListener() {

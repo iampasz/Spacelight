@@ -1,5 +1,6 @@
 package com.appsforkids.pasz.spacelight;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Background Async Task to download file
  * */public class DownloadFileFromURL extends AsyncTask<String, String, String> {
     String file_name;
+    @SuppressLint("StaticFieldLeak")
     Activity activity;
     ProgressDialog mProgressDialog;
     FileIsDownloaded fileIsDownloaded;
@@ -69,7 +71,7 @@ import static android.content.Context.MODE_PRIVATE;
                     8192);
 
             OutputStream output = activity.openFileOutput(file_name, MODE_PRIVATE);
-            byte data[] = new byte[1024];
+            byte[] data = new byte[1024];
             long total = 0;
             while ((count = input.read(data)) != -1) {
                 total += count;
@@ -105,7 +107,6 @@ import static android.content.Context.MODE_PRIVATE;
 
     private AudioFile getAudio(int id){
         Realm realm = Realm.getDefaultInstance();
-        AudioFile audioFile = realm.where(AudioFile.class).equalTo("id", id).findFirst();
-        return audioFile;
+        return realm.where(AudioFile.class).equalTo("id", id).findFirst();
     }
 }

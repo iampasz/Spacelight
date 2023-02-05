@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E000000"
     android:clickable="true"
+    android:focusable="true"
     android:padding="2dp">
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,11 +37,10 @@
           android:id="@+id/close_button"
           android:layout_width="match_parent"
           android:layout_height="75dp"
-          android:contentDescription="image"
+          android:contentDescription="@string/image"
           app:srcCompat="@drawable/ic_bbutton" />
 
       <TextView
-          style="@style/FontLocalizedBold"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"

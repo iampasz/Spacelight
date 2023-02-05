@@ -1,6 +1,7 @@
 package com.appsforkids.pasz.spacelight;
 
 import android.animation.TimeAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -163,6 +164,7 @@ public class RevolutionAnimationView extends View {
         }
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onAttachedToWindow() {
@@ -196,6 +198,7 @@ public class RevolutionAnimationView extends View {
 
 
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onDetachedFromWindow() {
@@ -235,6 +238,7 @@ public class RevolutionAnimationView extends View {
     /**
      * Pause the animation if it's running
      */
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     public void pause() {
         if (mTimeAnimator != null && mTimeAnimator.isRunning()) {
@@ -249,6 +253,7 @@ public class RevolutionAnimationView extends View {
     /**
      * Resume the animation if not already running
      */
+    @SuppressLint("ObsoleteSdkInt")
     public void resume() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (mTimeAnimator != null && mTimeAnimator.isPaused()) {

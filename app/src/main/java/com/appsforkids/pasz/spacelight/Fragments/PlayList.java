@@ -119,7 +119,7 @@ public class PlayList extends Fragment {
                                                     @Override
                                                     public  void doThat() {
                                                         listMusicAdapter.setPressedPosition();
-                                                        listMusicAdapter.notifyDataSetChanged();
+                                                        //listMusicAdapter.notifyDataSetChanged();
                                                     }
                                                 })).commit();
                                 break;
@@ -224,7 +224,7 @@ public class PlayList extends Fragment {
         listMusicAdapter.setPressedPosition();
         arrayList.clear();
         getAudios();
-        listMusicAdapter.notifyDataSetChanged();
+        //listMusicAdapter.notifyDataSetChanged();
     }
 
     public int hasConnection(final Context context) {
