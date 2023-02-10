@@ -136,6 +136,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ButterKnife.bind(this);
 
+        LoadMelody loadMelody = new LoadMelody(this);
+
         float dip = 80f;
         Resources r = getResources();
         float px = TypedValue.applyDimension(

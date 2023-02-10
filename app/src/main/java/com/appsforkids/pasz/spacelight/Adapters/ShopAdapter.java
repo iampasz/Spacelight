@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,14 +52,15 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.image.setLayoutParams(new CardView.LayoutParams(size, (int) (size*1.5)));
+        CardView.LayoutParams params = new CardView.LayoutParams(size, (int) (size*1.5));
+        holder.image.setLayoutParams(params);
+
 
         Picasso.get().load(items.get(holder.getAdapterPosition()).getImage_internet_link()).into(holder.image);
 
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 getItemPosition.usePosition(items.get(holder.getAdapterPosition()).getImage_internet_link());
             }
         });

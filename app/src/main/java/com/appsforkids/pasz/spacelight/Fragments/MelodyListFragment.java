@@ -283,7 +283,7 @@ public class MelodyListFragment extends Fragment {
                 saveLink(clickId, path);
                 refreshList();
             }
-        }).execute(audioFile.getInternetLink());
+        }, true).execute(audioFile.getInternetLink());
     }
 
     private void getAudios(){

@@ -29,17 +29,15 @@ import java.util.ArrayList;
 public class InternetNightlightFragment extends Fragment  {
 
     GridLayoutManager gm;
-
     ArrayList<ImageBgFile> imagesArray;
     RecyclerView rv_cards;
-     MainFragment.ChoseItem choseItem;
+    MainFragment.ChoseItem choseItem;
     int height;
     ImageView close_button;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.shop_item_fragment, container, false);
     }
 
@@ -72,17 +70,6 @@ public class InternetNightlightFragment extends Fragment  {
             }
         });
 
-
-
-//        ImageView close_button = view.findViewById(R.id.close_button);
-//        close_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                closeFragment(0);
-//
-//            }
-//        });
 
     }
 

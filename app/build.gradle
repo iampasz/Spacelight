@@ -64,6 +64,8 @@ dependencies {
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
     implementation "androidx.media:media:1.6.0"
 
+    implementation "com.airbnb.android:lottie:3.4.0"
+
     implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
 
 }

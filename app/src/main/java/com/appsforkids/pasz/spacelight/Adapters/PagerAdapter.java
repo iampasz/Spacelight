@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.appsforkids.pasz.spacelight.Fragments.MusicGallery;
-import com.appsforkids.pasz.spacelight.Fragments.PlayList;
+import com.appsforkids.pasz.spacelight.Fragments.DownloadMusicList;
+import com.appsforkids.pasz.spacelight.Fragments.SavedMusicList;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
@@ -23,10 +23,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
 
-            PlayList playList = new PlayList();
+            SavedMusicList playList = new SavedMusicList();
             return playList;
             case 1:
-                MusicGallery musicGallery = new MusicGallery();
+                DownloadMusicList musicGallery = new DownloadMusicList();
                 return musicGallery;
 //            case 2:
 //                ImageGallery imageGalery = new ImageGallery();

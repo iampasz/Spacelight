@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +37,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.appsforkids.pasz.spacelight.Adapters.MyPagerAdapter;
 import com.appsforkids.pasz.spacelight.AddToRealm;
 import com.appsforkids.pasz.spacelight.Interfaces.DoThisAction;
@@ -133,6 +135,8 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
     int brights = 0;
     int smImage = -1;
 
+    ImageView image;
+
     String MY_CHEKBOX = "my_chekbox";
 
     ImageView suitColor;
@@ -165,6 +169,12 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
         myObjects = new MyObjects(getContext());
 
+
+        LottieAnimationView lottieAnimationView =  ((MainActivity)getActivity()).findViewById(R.id.main_lottie);
+        lottieAnimationView.setAnimation(R.raw.night);
+        lottieAnimationView.setSpeed(1f);
+
+
         pagerAdapter = new MyPagerAdapter(getParentFragmentManager(), myObjects.getNightlighters());
         pager.setAdapter(pagerAdapter);
         //pager.setCurrentItem(2);
@@ -178,11 +188,6 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
                 dip,
                 r.getDisplayMetrics()
         );
-
-
-
-
-
 
 
         //Налаштунки
@@ -245,7 +250,6 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             @Override
             public void onClick(View view) {
 
-
                 //Analistic
                 sendAnalystics("rocket", "press_rocekt");
 
@@ -254,28 +258,24 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
                 getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                 int height = displayMetrics.heightPixels;
 
-                rocket.animate().setListener(new Animator.AnimatorListener() {
+                rocket.animate().translationY(-height).setDuration(2000).start();
+
+                CountDownTimer cdt = new CountDownTimer(2000, 1000) {
                     @Override
-                    public void onAnimationStart(@NonNull Animator animator) {
+                    public void onTick(long millisUntilFinished) {
 
                     }
 
                     @Override
-                    public void onAnimationEnd(@NonNull Animator animator) {
-                        changeNighlit();
+                    public void onFinish() {
+                        rocket.setY(2500);
+                        rocket.animate().translationY(0).start();
                     }
+                }.start();
 
-                    @Override
-                    public void onAnimationCancel(@NonNull Animator animator) {
 
-                    }
 
-                    @Override
-                    public void onAnimationRepeat(@NonNull Animator animator) {
-
-                    }
-                }).translationY(-height).setDuration(2000).start();
-
+                changeNighlit();
             }
         });
         //Кнопка бокування
@@ -295,6 +295,14 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
         });
 
 
+        image= new ImageView(getContext());
+        image.setLayoutParams(new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT));
+
+        main_constrain.addView(image);
+
+
     }
 
     public void changeSuitColor() {
@@ -302,12 +310,21 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
         Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
         suitColor = myFragment.getView().findViewById(R.id.suit_color);
 
-        suitCounter++;
-        if (suitCounter >= myObjects.getGradientArray().length) {
-            suitCounter = 0;
+
+        if(suitColor!=null){
+            if(suitColor.isShown()){
+
+                suitCounter++;
+                if (suitCounter >= myObjects.getGradientArray().length) {
+                    suitCounter = 0;
+                }
+
+                suitColor.setImageResource(myObjects.getGradientArray()[suitCounter]);
+            }
         }
 
-        suitColor.setImageResource(myObjects.getGradientArray()[suitCounter]);
+
+        sendAnalystics("change_color", "color"+suitCounter);
 
     }
 
@@ -321,6 +338,8 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
         if (brights >= myObjects.getBrights().length) {
             brights = 0;
         }
+
+        sendAnalystics("bright", "bright="+brights);
     }
 
     public void turnOff() {
@@ -384,6 +403,8 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
 
         }
 
+        sendAnalystics("lock", "lock is: "+chekMenu);
+
     }
 
     public void startAnimation2(int imageViewAnimation) {
@@ -404,6 +425,8 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             revolutionAnimationView.changeImage(ContextCompat.getDrawable(getContext(), imageViewAnimation));
             Log.i("startAnimation2", imageViewAnimation + " tyt");
         }
+
+        sendAnalystics("start_anim", "animation is= " + imageViewAnimation);
     }
 
     public void deleteAnimation() {
@@ -435,6 +458,8 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             };
             offTimer.start();
         }
+
+        sendAnalystics("timer", "timer is: " + hours +" and " + minutes);
 
     }
 
@@ -479,6 +504,8 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
                     }), "POLICY_FRAGMENT")
                     .commit();
         }
+
+        sendAnalystics("politica", "press");
     }
 
     public void setTimer() {
@@ -521,6 +548,8 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
         }
         mainBg.setBackgroundResource(myObjects.getGradient()[gradientCounter]);
         backgroundTumbler = true;
+
+        sendAnalystics("changeBgColor", "changeBgColor: "+gradientCounter);
     }
 
     public void changeBackgroundImage() {
@@ -532,10 +561,12 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             backgroundFragment.setCallBack(new ChoseItem() {
                 @Override
                 public void setImage(String link) {
+                    sendAnalystics("changeBackgroundImage", "changeBackgroundImage: " + link);
                     Picasso.get().load(link).into(new Target() {
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                             mainBg.setBackground(new BitmapDrawable(getResources(), bitmap));
+
                         }
                         @Override
                         public void onBitmapFailed(Exception e, Drawable errorDrawable) {
@@ -548,6 +579,8 @@ public class MainFragment extends Fragment implements Serializable, View.OnClick
             });
             getParentFragmentManager().beginTransaction().add(R.id.container, backgroundFragment, "BACKGROUND_FRAGMENT").commit();
         }
+
+
     }
 
     @Override
@@ -594,7 +627,6 @@ if(settings!=null){
         realm.commitTransaction();
     }
 
-
     @Override
     public void onClick(View view) {
 
@@ -610,12 +642,14 @@ if(settings!=null){
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (wifiInfo != null && wifiInfo.isConnected()) {
+            sendAnalystics("internet", "WIFI");
             return 3;
         } else {
 
         }
         wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         if (wifiInfo != null && wifiInfo.isConnected()) {
+            sendAnalystics("internet", "MOBILE");
             return 2;
         } else {
 
@@ -626,6 +660,7 @@ if(settings!=null){
         } else {
 
         }
+        sendAnalystics("internet", "NO INTERNET");
         return 0;
     }
 
@@ -659,12 +694,17 @@ if(settings!=null){
         if(hideSuit){
             hideSuit =false;
             pager.animate().alpha(1f).setDuration(1000).start();
+            image.animate().alpha(1f).setDuration(1000).start();
+
         }else{
             hideSuit =true;
             pager.animate().alpha(0f).setDuration(1000).start();
+            image.animate().alpha(0f).setDuration(1000).start();
         }
-    }
 
+        sendAnalystics("hideSuit", "hideSuit: " +hideSuit);
+
+    }
 
     public void changeNighlit(){
         InternetNightlightFragment myFragment = (InternetNightlightFragment)getParentFragmentManager().findFragmentByTag("INTERNET_NG_FRAGMENT");
@@ -677,30 +717,41 @@ if(settings!=null){
                 public void setImage(String link) {
 
                     Fragment myFragment = getParentFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
-
                     final ImageView animal = myFragment.getView().findViewById(R.id.animal);
                     final ImageView suit_color = myFragment.getView().findViewById(R.id.suit_color);
                     final ImageView suit = myFragment.getView().findViewById(R.id.suit);
                     final ImageView moon = myFragment.getView().findViewById(R.id.moon);
+                    final TextView nameNightlight = myFragment.getView().findViewById(R.id.nameNightlight);
+
+                    animal.setVisibility(View.GONE);
+                   // suit_color.setVisibility(View.GONE);
 
 
-                    suit_color.setVisibility(View.INVISIBLE);
-                    suit.setVisibility(View.INVISIBLE);
-                    animal.setVisibility(View.INVISIBLE);
-                    //((ViewGroup) moon.getParent()).removeView(moon);
+                    if(suit_color!=null){
+                            ((ViewGroup) suit_color.getParent()).removeView(suit_color);
+                    }
+
+
+                   suit.setVisibility(View.GONE);
+                    //moon.setVisibility(View.GONE);
+                    nameNightlight.setVisibility(View.GONE);
+
+
+//                    if(pager.isShown()){
+//                        pager.setVisibility(View.GONE);
+//                        tab_l2.setVisibility(View.GONE);
+//                    }
 
                     Picasso.get().load(link).into(moon);
 
-                    rocket.setY(2500);
-                    rocket.animate().translationY(0).start();
-
+                    sendAnalystics("internet_nl", "is: " + link);
 
                 }
             });
-            getParentFragmentManager().beginTransaction().add(R.id.container, internetNightlightFragment, "INTERNET_NG_FRAGMENT").commit();
+
+            getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_from_down, R.anim.slide_in_up).add(R.id.container, internetNightlightFragment, "INTERNET_NG_FRAGMENT").commit();
         }
     }
-
 
     private void sendAnalystics(String key, String value){
         //Analistic
@@ -708,6 +759,5 @@ if(settings!=null){
         bundle.putString(key, value);
         mFirebaseAnalytics.logEvent("press", bundle);
     };
-
 
 }
