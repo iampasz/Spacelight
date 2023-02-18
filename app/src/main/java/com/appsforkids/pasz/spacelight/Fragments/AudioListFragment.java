@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.appsforkids.pasz.spacelight.Adapters.PagerAdapter;
+import com.appsforkids.pasz.spacelight.AddToRealm;
 import com.appsforkids.pasz.spacelight.MainActivity;
 import com.appsforkids.pasz.spacelight.R;
 import com.google.android.material.tabs.TabLayout;
@@ -37,6 +38,10 @@ public class AudioListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+        //Оновлення мелодій з інтернету
+        AddToRealm addToRealm = new AddToRealm();
+        addToRealm.refreshListFromJSON();
 
         View view = inflater.inflate(R.layout.audiolist, container, false);
 

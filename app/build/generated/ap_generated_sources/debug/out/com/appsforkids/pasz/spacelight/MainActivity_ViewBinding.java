@@ -2,6 +2,7 @@
 package com.appsforkids.pasz.spacelight;
 
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +28,12 @@ public class MainActivity_ViewBinding implements Unbinder {
     this.target = target;
 
     target.home_b = Utils.findRequiredViewAsType(source, R.id.home_b, "field 'home_b'", ImageView.class);
+    target.suit_button = Utils.findRequiredViewAsType(source, R.id.suit_button, "field 'suit_button'", ImageView.class);
+    target.lockButton = Utils.findRequiredViewAsType(source, R.id.lockButton, "field 'lockButton'", LinearLayout.class);
+    target.alien_bt = Utils.findRequiredViewAsType(source, R.id.alien_bt, "field 'alien_bt'", ImageView.class);
+    target.rocket = Utils.findRequiredViewAsType(source, R.id.rocket, "field 'rocket'", ImageView.class);
+    target.lock_button = Utils.findRequiredViewAsType(source, R.id.lock_button, "field 'lock_button'", ImageView.class);
+    target.lock_frame = Utils.findRequiredViewAsType(source, R.id.lock_frame, "field 'lock_frame'", FrameLayout.class);
     target.right_p = Utils.findRequiredViewAsType(source, R.id.right_p, "field 'right_p'", ImageView.class);
     target.random_list = Utils.findRequiredViewAsType(source, R.id.random_list, "field 'random_list'", ImageView.class);
     target.player = Utils.findRequiredViewAsType(source, R.id.player, "field 'player'", LinearLayout.class);
@@ -45,6 +52,12 @@ public class MainActivity_ViewBinding implements Unbinder {
     this.target = null;
 
     target.home_b = null;
+    target.suit_button = null;
+    target.lockButton = null;
+    target.alien_bt = null;
+    target.rocket = null;
+    target.lock_button = null;
+    target.lock_frame = null;
     target.right_p = null;
     target.random_list = null;
     target.player = null;

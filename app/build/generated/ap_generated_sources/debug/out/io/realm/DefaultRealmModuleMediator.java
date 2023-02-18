@@ -26,9 +26,10 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
 
     private static final Set<Class<? extends RealmModel>> MODEL_CLASSES;
     static {
-        Set<Class<? extends RealmModel>> modelClasses = new HashSet<Class<? extends RealmModel>>(4);
+        Set<Class<? extends RealmModel>> modelClasses = new HashSet<Class<? extends RealmModel>>(5);
         modelClasses.add(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class);
-        modelClasses.add(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class);
+        modelClasses.add(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class);
+        modelClasses.add(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class);
         modelClasses.add(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class);
         modelClasses.add(com.appsforkids.pasz.spacelight.Models.Nightlight.class);
         MODEL_CLASSES = Collections.unmodifiableSet(modelClasses);
@@ -36,9 +37,10 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
 
     @Override
     public Map<Class<? extends RealmModel>, OsObjectSchemaInfo> getExpectedObjectSchemaInfoMap() {
-        Map<Class<? extends RealmModel>, OsObjectSchemaInfo> infoMap = new HashMap<Class<? extends RealmModel>, OsObjectSchemaInfo>(4);
+        Map<Class<? extends RealmModel>, OsObjectSchemaInfo> infoMap = new HashMap<Class<? extends RealmModel>, OsObjectSchemaInfo>(5);
         infoMap.put(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class, io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.getExpectedObjectSchemaInfo());
-        infoMap.put(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class, io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.getExpectedObjectSchemaInfo());
+        infoMap.put(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class, io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.getExpectedObjectSchemaInfo());
+        infoMap.put(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class, io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.getExpectedObjectSchemaInfo());
         infoMap.put(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class, io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.getExpectedObjectSchemaInfo());
         infoMap.put(com.appsforkids.pasz.spacelight.Models.Nightlight.class, io.realm.com_appsforkids_pasz_spacelight_Models_NightlightRealmProxy.getExpectedObjectSchemaInfo());
         return infoMap;
@@ -51,8 +53,11 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
             return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.createColumnInfo(schemaInfo);
         }
-        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-            return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.createColumnInfo(schemaInfo);
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+            return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.createColumnInfo(schemaInfo);
+        }
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+            return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.createColumnInfo(schemaInfo);
         }
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
             return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.createColumnInfo(schemaInfo);
@@ -70,8 +75,11 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
             return "MySettings";
         }
-        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-            return "ImageBgFile";
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+            return "LottieImage";
+        }
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+            return "ImageFile";
         }
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
             return "AudioFile";
@@ -89,8 +97,11 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
         if (className.equals("MySettings")) {
             return com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class;
         }
-        if (className.equals("ImageBgFile")) {
-            return com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class;
+        if (className.equals("LottieImage")) {
+            return com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class;
+        }
+        if (className.equals("ImageFile")) {
+            return com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class;
         }
         if (className.equals("AudioFile")) {
             return com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class;
@@ -116,8 +127,11 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
             if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
                 return clazz.cast(new io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy());
             }
-            if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-                return clazz.cast(new io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy());
+            if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+                return clazz.cast(new io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy());
+            }
+            if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+                return clazz.cast(new io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy());
             }
             if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
                 return clazz.cast(new io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy());
@@ -146,9 +160,13 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
             com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.MySettingsColumnInfo columnInfo = (com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.MySettingsColumnInfo) realm.getSchema().getColumnInfo(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class);
             return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.copyOrUpdate(realm, columnInfo, (com.appsforkids.pasz.spacelight.RealmObjects.MySettings) obj, update, cache, flags));
         }
-        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-            com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.ImageBgFileColumnInfo columnInfo = (com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.ImageBgFileColumnInfo) realm.getSchema().getColumnInfo(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class);
-            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.copyOrUpdate(realm, columnInfo, (com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile) obj, update, cache, flags));
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+            com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.LottieImageColumnInfo columnInfo = (com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.LottieImageColumnInfo) realm.getSchema().getColumnInfo(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class);
+            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.copyOrUpdate(realm, columnInfo, (com.appsforkids.pasz.spacelight.RealmObjects.LottieImage) obj, update, cache, flags));
+        }
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+            com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.ImageFileColumnInfo columnInfo = (com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.ImageFileColumnInfo) realm.getSchema().getColumnInfo(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class);
+            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.copyOrUpdate(realm, columnInfo, (com.appsforkids.pasz.spacelight.RealmObjects.ImageFile) obj, update, cache, flags));
         }
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
             com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.AudioFileColumnInfo columnInfo = (com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.AudioFileColumnInfo) realm.getSchema().getColumnInfo(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class);
@@ -169,8 +187,10 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
 
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
             return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.insert(realm, (com.appsforkids.pasz.spacelight.RealmObjects.MySettings) object, cache);
-        } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-            return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.insert(realm, (com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile) object, cache);
+        } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+            return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.insert(realm, (com.appsforkids.pasz.spacelight.RealmObjects.LottieImage) object, cache);
+        } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+            return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.insert(realm, (com.appsforkids.pasz.spacelight.RealmObjects.ImageFile) object, cache);
         } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
             return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.insert(realm, (com.appsforkids.pasz.spacelight.RealmObjects.AudioFile) object, cache);
         } else if (clazz.equals(com.appsforkids.pasz.spacelight.Models.Nightlight.class)) {
@@ -194,8 +214,10 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
 
             if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
                 io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.insert(realm, (com.appsforkids.pasz.spacelight.RealmObjects.MySettings) object, cache);
-            } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-                io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.insert(realm, (com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile) object, cache);
+            } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+                io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.insert(realm, (com.appsforkids.pasz.spacelight.RealmObjects.LottieImage) object, cache);
+            } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+                io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.insert(realm, (com.appsforkids.pasz.spacelight.RealmObjects.ImageFile) object, cache);
             } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
                 io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.insert(realm, (com.appsforkids.pasz.spacelight.RealmObjects.AudioFile) object, cache);
             } else if (clazz.equals(com.appsforkids.pasz.spacelight.Models.Nightlight.class)) {
@@ -206,8 +228,10 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
             if (iterator.hasNext()) {
                 if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
                     io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.insert(realm, iterator, cache);
-                } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-                    io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.insert(realm, iterator, cache);
+                } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+                    io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.insert(realm, iterator, cache);
+                } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+                    io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.insert(realm, iterator, cache);
                 } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
                     io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.insert(realm, iterator, cache);
                 } else if (clazz.equals(com.appsforkids.pasz.spacelight.Models.Nightlight.class)) {
@@ -227,8 +251,10 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
 
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
             return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.insertOrUpdate(realm, (com.appsforkids.pasz.spacelight.RealmObjects.MySettings) obj, cache);
-        } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-            return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.insertOrUpdate(realm, (com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile) obj, cache);
+        } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+            return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.insertOrUpdate(realm, (com.appsforkids.pasz.spacelight.RealmObjects.LottieImage) obj, cache);
+        } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+            return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.insertOrUpdate(realm, (com.appsforkids.pasz.spacelight.RealmObjects.ImageFile) obj, cache);
         } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
             return io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.insertOrUpdate(realm, (com.appsforkids.pasz.spacelight.RealmObjects.AudioFile) obj, cache);
         } else if (clazz.equals(com.appsforkids.pasz.spacelight.Models.Nightlight.class)) {
@@ -252,8 +278,10 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
 
             if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
                 io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.insertOrUpdate(realm, (com.appsforkids.pasz.spacelight.RealmObjects.MySettings) object, cache);
-            } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-                io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.insertOrUpdate(realm, (com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile) object, cache);
+            } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+                io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.insertOrUpdate(realm, (com.appsforkids.pasz.spacelight.RealmObjects.LottieImage) object, cache);
+            } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+                io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.insertOrUpdate(realm, (com.appsforkids.pasz.spacelight.RealmObjects.ImageFile) object, cache);
             } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
                 io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.insertOrUpdate(realm, (com.appsforkids.pasz.spacelight.RealmObjects.AudioFile) object, cache);
             } else if (clazz.equals(com.appsforkids.pasz.spacelight.Models.Nightlight.class)) {
@@ -264,8 +292,10 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
             if (iterator.hasNext()) {
                 if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
                     io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.insertOrUpdate(realm, iterator, cache);
-                } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-                    io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.insertOrUpdate(realm, iterator, cache);
+                } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+                    io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.insertOrUpdate(realm, iterator, cache);
+                } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+                    io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.insertOrUpdate(realm, iterator, cache);
                 } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
                     io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.insertOrUpdate(realm, iterator, cache);
                 } else if (clazz.equals(com.appsforkids.pasz.spacelight.Models.Nightlight.class)) {
@@ -285,8 +315,11 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
             return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.createOrUpdateUsingJsonObject(realm, json, update));
         }
-        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.createOrUpdateUsingJsonObject(realm, json, update));
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.createOrUpdateUsingJsonObject(realm, json, update));
+        }
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.createOrUpdateUsingJsonObject(realm, json, update));
         }
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
             return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.createOrUpdateUsingJsonObject(realm, json, update));
@@ -305,8 +338,11 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
             return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.createUsingJsonStream(realm, reader));
         }
-        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.createUsingJsonStream(realm, reader));
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.createUsingJsonStream(realm, reader));
+        }
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.createUsingJsonStream(realm, reader));
         }
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
             return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.createUsingJsonStream(realm, reader));
@@ -326,8 +362,11 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
             return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_MySettingsRealmProxy.createDetachedCopy((com.appsforkids.pasz.spacelight.RealmObjects.MySettings) realmObject, 0, maxDepth, cache));
         }
-        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageBgFileRealmProxy.createDetachedCopy((com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile) realmObject, 0, maxDepth, cache));
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_LottieImageRealmProxy.createDetachedCopy((com.appsforkids.pasz.spacelight.RealmObjects.LottieImage) realmObject, 0, maxDepth, cache));
+        }
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+            return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_ImageFileRealmProxy.createDetachedCopy((com.appsforkids.pasz.spacelight.RealmObjects.ImageFile) realmObject, 0, maxDepth, cache));
         }
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
             return clazz.cast(io.realm.com_appsforkids_pasz_spacelight_RealmObjects_AudioFileRealmProxy.createDetachedCopy((com.appsforkids.pasz.spacelight.RealmObjects.AudioFile) realmObject, 0, maxDepth, cache));
@@ -343,7 +382,10 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
             return false;
         }
-        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+            return false;
+        }
+        if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
             return false;
         }
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
@@ -363,8 +405,10 @@ class DefaultRealmModuleMediator extends RealmProxyMediator {
 
         if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.MySettings.class)) {
             throw getNotEmbeddedClassException("com.appsforkids.pasz.spacelight.RealmObjects.MySettings");
-        } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile.class)) {
-            throw getNotEmbeddedClassException("com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile");
+        } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.LottieImage.class)) {
+            throw getNotEmbeddedClassException("com.appsforkids.pasz.spacelight.RealmObjects.LottieImage");
+        } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.ImageFile.class)) {
+            throw getNotEmbeddedClassException("com.appsforkids.pasz.spacelight.RealmObjects.ImageFile");
         } else if (clazz.equals(com.appsforkids.pasz.spacelight.RealmObjects.AudioFile.class)) {
             throw getNotEmbeddedClassException("com.appsforkids.pasz.spacelight.RealmObjects.AudioFile");
         } else if (clazz.equals(com.appsforkids.pasz.spacelight.Models.Nightlight.class)) {

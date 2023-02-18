@@ -1,5 +1,6 @@
 package com.appsforkids.pasz.spacelight.Interfaces;
 
-public interface DownloadButton {
+public interface DownloadAndDelete {
     void download(int position);
+    void delete(int position);
 }

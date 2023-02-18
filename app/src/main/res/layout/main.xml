@@ -10,20 +10,6 @@
     tools:context=".MainActivity">
 
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/main_lottie"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        ads:layout_constraintBottom_toBottomOf="@+id/audio_name"
-        ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintStart_toStartOf="parent"
-        ads:layout_constraintTop_toTopOf="@+id/adView"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/butterfly" />
-
-
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="0dp"
@@ -34,6 +20,52 @@
         ads:layout_constraintTop_toBottomOf="@+id/adView">
 
     </FrameLayout>
+
+    <ImageView
+        android:id="@+id/suit_button"
+        android:layout_width="@dimen/play_buttons_size"
+        android:layout_height="@dimen/play_buttons_size"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        android:contentDescription="@string/hide_nl"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent"
+        ads:srcCompat="@drawable/suit_vector_gradient" />
+
+    <TextView
+        android:id="@+id/timer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:alpha="0.7"
+        android:textColor="#fff"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/rocket"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="50dp"
+        android:contentDescription="@string/hide_nl"
+        ads:layout_constraintBottom_toBottomOf="@+id/container"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:srcCompat="@drawable/rocket" />
+
+    <ImageView
+        android:id="@+id/alien_bt"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="50dp"
+        ads:layout_constraintBottom_toBottomOf="@+id/container"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:srcCompat="@drawable/alien" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -133,6 +165,45 @@
         tools:ignore="DuplicateClickableBoundsCheck">
 
     </com.google.android.gms.ads.AdView>
+
+    <FrameLayout
+        android:id="@+id/lock_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        tools:ignore="SpeakableTextPresentCheck">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/lockButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        android:visibility="visible"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/lock_button"
+            android:layout_width="@dimen/play_buttons_size"
+            android:layout_height="@dimen/play_buttons_size"
+            ads:srcCompat="@drawable/unlock_vector_gradient" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="10sp" />
+
+    </LinearLayout>
 
     <!--        ads:layout_constraintTop_toBottomOf="@+id/adView" -->
 

@@ -28,6 +28,10 @@
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable-nodpi/an_racoon.png"
     },
     {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/raw_mountain_background.json.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/raw/mountain_background.json"
+    },
+    {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_list_vector_gradient.xml.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/list_vector_gradient.xml"
     },
@@ -88,16 +92,20 @@
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable-nodpi/grad_blue_1.png"
     },
     {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_delete.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/delete.xml"
+    },
+    {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable-nodpi_bg_002.jpg.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable-nodpi/bg_002.jpg"
     },
     {
-        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_random_vector_gradient.xml.flat",
-        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/random_vector_gradient.xml"
-    },
-    {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/raw_night.json.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/raw/night.json"
+    },
+    {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_random_vector_gradient.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/random_vector_gradient.xml"
     },
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_pause_vector_gradient.xml.flat",
@@ -108,12 +116,20 @@
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable-nodpi/an_monkey.png"
     },
     {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/raw_full_screen.json.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/raw/full_screen.json"
+    },
+    {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/raw_space_ride.json.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/raw/space_ride.json"
     },
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_gr_blue_5.xml.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/gr_blue_5.xml"
+    },
+    {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/raw_train.json.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/raw/train.json"
     },
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_gr_pink_4.xml.flat",
@@ -144,6 +160,14 @@
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable-nodpi/moon.png"
     },
     {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_download_vector_gradient.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/download_vector_gradient.xml"
+    },
+    {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_delete_vector_gradient.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/delete_vector_gradient.xml"
+    },
+    {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable-nodpi_ic_bbutton.png.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable-nodpi/ic_bbutton.png"
     },
@@ -158,6 +182,10 @@
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_music_item_bg.xml.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/music_item_bg.xml"
+    },
+    {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_alien.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/alien.xml"
     },
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_gr_blue_4.xml.flat",
@@ -192,6 +220,10 @@
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/button_gradient.xml"
     },
     {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_download.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/download.xml"
+    },
+    {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_play_s.xml.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/play_s.xml"
     },
@@ -220,6 +252,10 @@
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable-nodpi/sm_12.png"
     },
     {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/raw_night_cycle.json.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/raw/night_cycle.json"
+    },
+    {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/mipmap-anydpi-v26_ic_my_icon.xml.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/mipmap-anydpi-v26/ic_my_icon.xml"
     },
@@ -238,6 +274,10 @@
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/layout_play_l.xml.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/layout/play_l.xml"
+    },
+    {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/layout_item_lottie.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/layout/item_lottie.xml"
     },
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable-nodpi_an_hippo.png.flat",
@@ -320,6 +360,10 @@
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable-nodpi/bgcolor.png"
     },
     {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/layout_image_list_fragment.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/layout/image_list_fragment.xml"
+    },
+    {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_gr_dark.xml.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/gr_dark.xml"
     },
@@ -330,6 +374,10 @@
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable-nodpi_sm_11.png.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable-nodpi/sm_11.png"
+    },
+    {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_minuse_bt.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/minuse_bt.xml"
     },
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_paint_vector_gradient.xml.flat",
@@ -362,6 +410,10 @@
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_repeat_vector_gradient.xml.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/repeat_vector_gradient.xml"
+    },
+    {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/raw_no_internet.json.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/raw/no_internet.json"
     },
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable-nodpi_an_bear.png.flat",
@@ -444,6 +496,10 @@
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/random_s.xml"
     },
     {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_plus_bt.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/plus_bt.xml"
+    },
+    {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/layout_main.xml.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/layout/main.xml"
     },
@@ -490,6 +546,10 @@
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable_question_vector_gradient.xml.flat",
         "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/drawable/question_vector_gradient.xml"
+    },
+    {
+        "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/layout_lottie_fragment.xml.flat",
+        "source": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-main-44:/layout/lottie_fragment.xml"
     },
     {
         "merged": "/Users/macbookair/.gradle/daemon/7.4/com.appsforkids.pasz.spacelight.app-merged_res-42:/drawable-nodpi_an_cat.png.flat",

@@ -6,35 +6,30 @@ import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-import com.appsforkids.pasz.spacelight.Interfaces.DownloadButton;
+import com.appsforkids.pasz.spacelight.Interfaces.DownloadAndDelete;
 import com.appsforkids.pasz.spacelight.Interfaces.PlayMyMusic;
 import com.appsforkids.pasz.spacelight.R;
 import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
-import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
+
 
 import java.util.ArrayList;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
-import io.realm.Sort;
 
 public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.ListMusicHolder> {
 
     PlayMyMusic playMyMusic;
-    DownloadButton downloadButton;
+    DownloadAndDelete downloadButton;
     ArrayList<AudioFile> audioFileAll;
     private String nameSong;
 
-    public ListMusicAdapter( PlayMyMusic playMyMusic, DownloadButton downloadButton, ArrayList<AudioFile> audioFileAll, String nameSong){
+    public ListMusicAdapter(PlayMyMusic playMyMusic, DownloadAndDelete downloadButton, ArrayList<AudioFile> audioFileAll ){
         this.playMyMusic = playMyMusic;
         this.downloadButton = downloadButton;
-        this.nameSong = nameSong;
+
 
         this.audioFileAll = audioFileAll;
     };
@@ -64,15 +59,34 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
         holder.music_author.setText(audioFileAll.get(holder.getAdapterPosition()).authorSong);
 
         if(audioFileAll.get(holder.getAdapterPosition()).getStatus()){
-            holder.download_frame.setVisibility(View.GONE);
+            holder.download_bt.setImageResource(R.drawable.delete_vector_gradient);
+
         }
 
-        holder.download_frame.setOnClickListener(new View.OnClickListener() {
+
+        holder.download_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                downloadButton.download(holder.getAdapterPosition());
+
+                //downloadButton.download(holder.getAdapterPosition());
+                downloadButton.delete(holder.getAdapterPosition());
+
+
+
+
+//                if(audioFileAll.get(holder.getAdapterPosition()).getStatus()){
+//
+//                    downloadButton.delete(holder.getAdapterPosition());
+//
+//                }else{
+//
+//                    downloadButton.download(holder.getAdapterPosition());
+//
+//                }
+
             }
         });
+
 
         holder.music_constrain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +128,7 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
     private ImageView play_item;
     private TextView music_name;
     private TextView music_author;
-    private FrameLayout download_frame;
+    private ImageView download_bt;
     private ConstraintLayout music_constrain;
 
         public ListMusicHolder(@NonNull View itemView) {
@@ -123,37 +137,12 @@ public class ListMusicAdapter extends RecyclerView.Adapter<ListMusicAdapter.List
             play_item = itemView.findViewById(R.id.play_item);
             music_name = itemView.findViewById(R.id.music_name);
             music_author = itemView.findViewById(R.id.music_author);
-            download_frame = itemView.findViewById(R.id.download_frame);
+            download_bt = itemView.findViewById(R.id.download_bt);
             music_constrain = itemView.findViewById(R.id.music_constrain);
         }
     }
 
 
-    public  int hasConnection(final Context context)   {
-
-        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiInfo != null && wifiInfo.isConnected())
-        {
-            return 3;
-        }else{
-        }
-        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (wifiInfo != null && wifiInfo.isConnected())
-        {
-            return 2;
-        }else{
-
-        }
-        wifiInfo = cm.getActiveNetworkInfo();
-        if (wifiInfo != null && wifiInfo.isConnected())
-        {
-            return 1;
-        }else{
-
-        }
-        return 0;
-    }
 
 
 

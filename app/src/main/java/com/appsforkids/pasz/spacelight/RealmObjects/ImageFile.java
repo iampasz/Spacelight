@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import io.realm.RealmObject;
 
-public class ImageBgFile extends RealmObject implements Serializable {
+public class ImageFile extends RealmObject implements Serializable {
 
 
     String imageInternetLink;

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,12 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.appsforkids.pasz.spacelight.Adapters.ShopAdapter;
+import com.airbnb.lottie.LottieAnimationView;
+import com.appsforkids.pasz.spacelight.Adapters.ImageAdapter;
 import com.appsforkids.pasz.spacelight.Interfaces.GetActionFromAdapter;
 import com.appsforkids.pasz.spacelight.Interfaces.GetJson;
+import com.appsforkids.pasz.spacelight.MainActivity;
 import com.appsforkids.pasz.spacelight.R;
 import com.appsforkids.pasz.spacelight.ReadJson;
-import com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile;
+import com.appsforkids.pasz.spacelight.RealmObjects.ImageFile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,13 +29,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class BackgroundFragment extends Fragment  {
+public class ImgeListFragment extends Fragment  {
 
     GridLayoutManager gm;
 
-    ArrayList<ImageBgFile> imagesArray;
+    ArrayList<ImageFile> imageFiles;
     RecyclerView rv_cards;
-     MainFragment.ChoseItem choseItem;
+    MainFragment.ChoseItem choseItem;
     int height;
     ImageView close_button;
 
@@ -40,18 +43,29 @@ public class BackgroundFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.shop_item_fragment, container, false);
+        return inflater.inflate(R.layout.image_list_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Boolean internetConnection = ((MainActivity)getActivity()).hasConnection();
+
+        LottieAnimationView no_internet = view.findViewById(R.id.no_internet);
+
+        if(internetConnection){
+            no_internet.setVisibility(View.GONE);
+        }else{
+            no_internet.setVisibility(View.VISIBLE);
+        }
+
+
         int spanCount = 3;
 
         gm = new GridLayoutManager(getContext(),spanCount, RecyclerView.VERTICAL, false);
 
-         rv_cards = view.findViewById(R.id.rv_cards);
+        rv_cards = view.findViewById(R.id.rv_cards);
         close_button = view.findViewById(R.id.close_button);
         rv_cards.setLayoutManager(gm);
 
@@ -59,10 +73,10 @@ public class BackgroundFragment extends Fragment  {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-         height = displayMetrics.widthPixels;
+        height = displayMetrics.widthPixels;
         height = height/spanCount;
 
-       getArrayFromJson("https://koko-oko.com/images/bg_image_sl/images.json");
+        getArrayFromJson("https://koko-oko.com/images/ng/images.json");
 
 
         close_button.setOnClickListener(new View.OnClickListener() {
@@ -97,21 +111,22 @@ public class BackgroundFragment extends Fragment  {
 
         }else{
 
-            choseItem.setImage(link);
+            //Toast.makeText(getContext(), link+"link", Toast.LENGTH_SHORT).show();
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace( R.id.container,  ImageFragment.init(link))
+                    .commit();
         }
-        getParentFragmentManager().beginTransaction().remove(BackgroundFragment.this).commit();
+        getParentFragmentManager().beginTransaction().remove(ImgeListFragment.this).commit();
 
     }
 
     private void getArrayFromJson(String url){
-
-
-
         ReadJson readJson = new ReadJson(new GetJson() {
             @Override
             public void getJson(String result) {
 
-                 imagesArray = new ArrayList<>();
+                imageFiles = new ArrayList<>();
 
                 try {
                     String jsonText = result;
@@ -121,9 +136,9 @@ public class BackgroundFragment extends Fragment  {
 
 
                     for(int i = 0; jsonArray.length()>i; i++){
-                        ImageBgFile imageBgFile = new ImageBgFile();
-                        imageBgFile.setImage(jsonArray.getJSONObject(i).getString("internet_link"));
-                        imagesArray.add(imageBgFile);
+                        ImageFile imageFile = new ImageFile();
+                        imageFile.setImage(jsonArray.getJSONObject(i).getString("internet_link"));
+                        imageFiles.add(imageFile);
                     }
 
                     showImages();
@@ -139,7 +154,7 @@ public class BackgroundFragment extends Fragment  {
     }
 
     private void showImages(){
-        rv_cards.setAdapter(new ShopAdapter(imagesArray, height,   new GetActionFromAdapter() {
+        rv_cards.setAdapter(new ImageAdapter(imageFiles, height,   new GetActionFromAdapter() {
             @Override
             public void usePosition(String link) {
                 closeFragment(link);

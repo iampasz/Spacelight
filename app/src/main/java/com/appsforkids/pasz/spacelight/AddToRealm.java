@@ -1,10 +1,11 @@
 package com.appsforkids.pasz.spacelight;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.appsforkids.pasz.spacelight.Interfaces.GetJson;
 import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
-import com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile;
+import com.appsforkids.pasz.spacelight.RealmObjects.ImageFile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +18,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class AddToRealm {
 
@@ -103,13 +105,65 @@ public class AddToRealm {
 
     }
 
+    public void refreshListFromJSON(){
+        ArrayList<AudioFile> musicItemArrayList = new ArrayList<>();
+        ReadJson readJson = new ReadJson(new GetJson() {
+            @Override
+            public void getJson(String result) {
+                try {
+                    String jsonText = result;
+                    JSONObject jsonRoot = new JSONObject(jsonText);
+                    JSONArray jsonArray = jsonRoot.getJSONArray("music");
+
+                    //Toast.makeText(context, jsonArray.length()+" ", Toast.LENGTH_SHORT).show();
+
+                    Realm.init(ctx);
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+
+                    RealmResults<AudioFile> oldArrey= realm.where(AudioFile.class).findAll();
+                    Log.i("COMPARE_AR", oldArrey.size()+" all items in realm");
+
+                    for(int i = 0; jsonArray.length()>i; i++){
+
+                        AudioFile audioFile = new AudioFile();
+
+                        audioFile.setId(jsonArray.getJSONObject(i).getInt("id"));
+                        audioFile.setNameSong(jsonArray.getJSONObject(i).getString("name"));
+                        audioFile.setFileName(jsonArray.getJSONObject(i).getString("file_name"));
+                        audioFile.setAuthorSong(jsonArray.getJSONObject(i).getString("author"));
+                        audioFile.setInternetLink(jsonArray.getJSONObject(i).getString("internet_link"));
+                        audioFile.setStatus( jsonArray.getJSONObject(i).getBoolean("status"));
+
+                        AudioFile nullAudio =  oldArrey.where().equalTo("fileName", audioFile.getFileName()).findFirst();
+
+                        if(nullAudio==null){
+                            musicItemArrayList.add(audioFile);
+                        }else{
+                            Log.i("COMPARE_AR", audioFile.getFileName()+" find this one");
+                        }
+                    }
+
+                    realm.copyToRealm(musicItemArrayList);
+                    realm.commitTransaction();
+                    Log.i("COMPARE_AR", musicItemArrayList.size()+" size");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        readJson.execute("https://koko-oko.com/audio/music.json");
+    }
+
+
     public void getImgJsonFromURL(){
 
         ReadJson readJson = new ReadJson(new GetJson() {
             @Override
             public void getJson(String result) {
 
-                ArrayList<ImageBgFile> imageItemArrayList = new ArrayList<>();
+                ArrayList<ImageFile> imageItemArrayList = new ArrayList<>();
 
                 try {
 
@@ -119,7 +173,7 @@ public class AddToRealm {
                     JSONArray jsonArray = jsonRoot.getJSONArray("music");
                     for(int i = 0; jsonArray.length()>i; i++){
 
-                        ImageBgFile imageBgFile = new ImageBgFile();
+                        ImageFile imageBgFile = new ImageFile();
                       //  imageBgFile.setId(jsonArray.getJSONObject(i).getInt("id"));
                         imageItemArrayList.add(imageBgFile);
 

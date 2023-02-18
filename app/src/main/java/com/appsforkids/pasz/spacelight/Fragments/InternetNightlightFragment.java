@@ -13,12 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.appsforkids.pasz.spacelight.Adapters.ShopAdapter;
+import com.appsforkids.pasz.spacelight.Adapters.ImageAdapter;
 import com.appsforkids.pasz.spacelight.Interfaces.GetActionFromAdapter;
 import com.appsforkids.pasz.spacelight.Interfaces.GetJson;
 import com.appsforkids.pasz.spacelight.R;
 import com.appsforkids.pasz.spacelight.ReadJson;
-import com.appsforkids.pasz.spacelight.RealmObjects.ImageBgFile;
+import com.appsforkids.pasz.spacelight.RealmObjects.ImageFile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class InternetNightlightFragment extends Fragment  {
 
     GridLayoutManager gm;
-    ArrayList<ImageBgFile> imagesArray;
+    ArrayList<ImageFile> imagesArray;
     RecyclerView rv_cards;
     MainFragment.ChoseItem choseItem;
     int height;
@@ -38,7 +38,7 @@ public class InternetNightlightFragment extends Fragment  {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.shop_item_fragment, container, false);
+        return inflater.inflate(R.layout.image_list_fragment, container, false);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class InternetNightlightFragment extends Fragment  {
 
 
                     for(int i = 0; jsonArray.length()>i; i++){
-                        ImageBgFile imageBgFile = new ImageBgFile();
+                        ImageFile imageBgFile = new ImageFile();
                         imageBgFile.setImage(jsonArray.getJSONObject(i).getString("internet_link"));
                         imagesArray.add(imageBgFile);
                     }
@@ -126,7 +126,7 @@ public class InternetNightlightFragment extends Fragment  {
     }
 
     private void showImages(){
-        rv_cards.setAdapter(new ShopAdapter(imagesArray, height,   new GetActionFromAdapter() {
+        rv_cards.setAdapter(new ImageAdapter(imagesArray, height,   new GetActionFromAdapter() {
             @Override
             public void usePosition(String link) {
                 closeFragment(link);

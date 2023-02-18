@@ -9,14 +9,20 @@
     android:focusable="true"
     android:padding="2dp">
 
-  <TextView
-      android:id="@+id/textView2"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="TextView"
+  <com.airbnb.lottie.LottieAnimationView
+      android:id="@+id/no_internet_dl"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_margin="50dp"
+      android:scaleType="centerCrop"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent"
+      app:lottie_autoPlay="true"
+      app:lottie_loop="true"
+      app:lottie_rawRes="@raw/no_internet" />
+
 
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/rv_images"
@@ -25,7 +31,7 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textView2">
+      app:layout_constraintTop_toTopOf="parent">
 
   </androidx.recyclerview.widget.RecyclerView>
 

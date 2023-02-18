@@ -1,5 +1,6 @@
 package com.appsforkids.pasz.spacelight.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,41 +17,49 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.appsforkids.pasz.spacelight.Adapters.ListMusicAdapter;
 import com.appsforkids.pasz.spacelight.DownloadFileFromURL;
 import com.appsforkids.pasz.spacelight.Interfaces.DoThisAction;
-import com.appsforkids.pasz.spacelight.Interfaces.DownloadButton;
+import com.appsforkids.pasz.spacelight.Interfaces.DownloadAndDelete;
 import com.appsforkids.pasz.spacelight.Interfaces.FileIsDownloaded;
+import com.appsforkids.pasz.spacelight.Interfaces.GetJson;
 import com.appsforkids.pasz.spacelight.Interfaces.PlayMyMusic;
 import com.appsforkids.pasz.spacelight.MainActivity;
 import com.appsforkids.pasz.spacelight.R;
+import com.appsforkids.pasz.spacelight.ReadJson;
 import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
+import butterknife.BindInt;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class SavedMusicList extends Fragment {
+public class GalleryList extends Fragment {
 
 
-    ListMusicAdapter listMusicAdapter;
     RecyclerView rv_melody;
     int currentMusicPosition = -1;
-    ArrayList<AudioFile> arrayList;
-    int clickId;
     String nameSong ="";
+    ArrayList<AudioFile> arrayList;
 
+    ListMusicAdapter listMusicAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Set View container and add buterknife library
-        View view = inflater.inflate(R.layout.play_l, container, false);
+        View view = inflater.inflate(R.layout.download_ml, container, false);
         ButterKnife.bind(this, view);
-        arrayList = new ArrayList<>();
+
         return view;
     }
 
@@ -58,12 +68,12 @@ public class SavedMusicList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rv_melody = (RecyclerView) view.findViewById(R.id.rv_images);
+
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv_melody.setLayoutManager(llm);
-        getAudios();
 
-        //Set current music position
-        setSettings();
+        arrayList =  new ArrayList<>();
+        arrayList.addAll(getAudios());
 
         PlayMyMusic playMyMusic = new PlayMyMusic() {
             Boolean answer = false;
@@ -90,17 +100,17 @@ public class SavedMusicList extends Fragment {
                             case 0:
                                 getParentFragmentManager()
                                         .beginTransaction()
-                                        .add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
+                                        .add(R.id.audio_content, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
                                         .commit();
                                 break;
                             case 1:
-                                getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_2))).commit();
+                                getParentFragmentManager().beginTransaction().add(R.id.audio_content, SimpleMessageFragment.init(getResources().getString(R.string.message_2))).commit();
                                 pressPlay(position, play_status);
                                 break;
                             case 2:
                                 getParentFragmentManager()
                                         .beginTransaction()
-                                        .add(R.id.container,
+                                        .add(R.id.audio_content,
                                                 MessageFragment.init(getResources().getString(R.string.message_1), new DoThisAction() {
                                                     @Override
                                                     public void doThis() {
@@ -111,13 +121,13 @@ public class SavedMusicList extends Fragment {
                                                     }
                                                     @Override
                                                     public  void doThat() {
-                                                        listMusicAdapter.setPressedPosition();
-                                                        //listMusicAdapter.notifyDataSetChanged();
+                                                        //listMusicAdapter.setPressedPosition();
+                                                        // listMusicAdapter.notifyDataSetChanged();
                                                     }
                                                 })).commit();
                                 break;
                             case 3:
-                                getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_2))).commit();
+                                getParentFragmentManager().beginTransaction().add(R.id.audio_content, SimpleMessageFragment.init(getResources().getString(R.string.message_2))).commit();
                                 pressPlay(position, play_status);
                                 break;
                         }
@@ -126,47 +136,43 @@ public class SavedMusicList extends Fragment {
             }
 
         };
-        DownloadButton downloadButton = new DownloadButton() {
+        DownloadAndDelete downloadButton = new DownloadAndDelete() {
             @Override
             public void download(int position) {
 
-                switch (hasConnection(getContext())) {
-                    case 0:
-                        getParentFragmentManager().beginTransaction().add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1))).commit();
 
-                        break;
-                    case 1:
-                        pressDownload(position);
-                        break;
-                    case 2:
-                        getParentFragmentManager()
-                                .beginTransaction()
-                                .add(R.id.container,
-                                        MessageFragment.init(getResources().getString(R.string.message_3), new DoThisAction() {
-                                            @Override
-                                            public void doThis() {
-                                                listMusicAdapter.setPressedPosition();
-                                                pressDownload(position);
-                                            }
-                                            @Override
-                                            public void doThis(int hours, int minutes) {
-                                            }
-                                            @Override
-                                            public void doThat() {
-                                            }
-                                        })).commit();
-                        break;
-                    case 3:
-                        pressDownload(position);
-                        break;
-                }
+
+            }
+            @Override
+            public void delete(int position) {
+
+                pressDownload(position);
+                arrayList.remove(position);
+                listMusicAdapter.notifyItemRemoved(position);
+                //listMusicAdapter.notifyItemRemoved(position);
+                // arrayList.clear();
+                // Toast.makeText(getContext(), position+"", Toast.LENGTH_SHORT).show();
+
             }
         };
 
-        listMusicAdapter = new ListMusicAdapter(playMyMusic, downloadButton, arrayList, nameSong);
+
+
+        listMusicAdapter = new ListMusicAdapter(
+                playMyMusic,
+                downloadButton,
+                arrayList);
+
         rv_melody.setAdapter(listMusicAdapter);
 
+        Boolean internetConnection = ((MainActivity)getActivity()).hasConnection();
+        LottieAnimationView no_internet = view.findViewById(R.id.no_internet_dl);
 
+        if(internetConnection){
+            no_internet.setVisibility(View.GONE);
+        }else{
+            no_internet.setVisibility(View.VISIBLE);
+        }
     }
 
     //Save current music position
@@ -191,33 +197,44 @@ public class SavedMusicList extends Fragment {
         if(settings!=null){
             nameSong = settings.getCurrentMusic();
         }
-
         realm.commitTransaction();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        saveSettings();
+       // saveSettings();
     }
 
-    private String saveLink(int position, String lockalLink) {
+    private void saveLink(String file_name, String lockalLink) {
+
+        Log.i("SAVED_LINK",file_name+" position");
+        Log.i("SAVED_LINK",lockalLink+" localLink");
         assert Realm.getDefaultConfiguration() != null;
         Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
         realm.beginTransaction();
-        AudioFile needFile = realm.where(AudioFile.class).equalTo("id", position).findFirst();
+        AudioFile needFile = realm
+                .where(AudioFile.class)
+                .equalTo("fileName", file_name)
+                .findFirst();
+
         needFile.setLockalLink(lockalLink);
         needFile.setStatus(true);
+
         realm.commitTransaction();
 
-        return needFile.getInternetLink();
+        Log.i("SAVED_LINK",needFile.getFileName()+" file");
+
+        //arrayList.clear();
+       // rv_melody.notify();
+       // listMusicAdapter.notifyDataSetChanged();
     }
 
     private void refreshList() {
-        listMusicAdapter.setPressedPosition();
-        arrayList.clear();
-        getAudios();
-        //listMusicAdapter.notifyDataSetChanged();
+        //listMusicAdapter.setPressedPosition();
+        //arrayList.clear();
+        //getAudios();
+       // listMusicAdapter.notifyDataSetChanged();
     }
 
     public int hasConnection(final Context context) {
@@ -245,84 +262,59 @@ public class SavedMusicList extends Fragment {
     }
 
     private void pressPlay(int position, Boolean play_status){
-
-
         AudioFile audioFile = arrayList.get(position);
 
-
         if (audioFile.getResourceLink() != 0) {
-            ((MainActivity) getActivity()).playMusic(audioFile.getResourceLink(),audioFile.nameSong, audioFile.authorSong,  play_status);
+            ((MainActivity) getActivity()).playMusic(audioFile.getResourceLink(),audioFile.getNameSong(), audioFile.authorSong,  play_status);
         } else {
             if (audioFile.getLockalLink() != null) {
-                ((MainActivity) getActivity()).playLockalMusic(audioFile.getLockalLink(), audioFile.nameSong+" \n "+audioFile.getAuthorSong(), play_status);
+                ((MainActivity) getActivity()).playLockalMusic(audioFile, play_status);
             } else {
-               // ((MainActivity) getActivity()).playInternetMusic(audioFile, play_status);
+                ((MainActivity) getActivity()).playInternetMusic(audioFile, play_status);
             }
-
-
-
         }
-//
-//        if (play_status) {
-//            currentMusicPosition = position;
-//        } else {
-//            currentMusicPosition = -1;
-//        }
+
+        if (play_status) {
+            currentMusicPosition = position;
+        } else {
+            currentMusicPosition = -1;
+        }
     }
 
     private void pressDownload(int position){
         AudioFile audioFile = arrayList.get(position);
-
-        clickId = audioFile.getId();
-
+        //clickId = audioFile.getFileName();
         String file_name = audioFile.getFileName();
-        new DownloadFileFromURL(getActivity(), file_name, new FileIsDownloaded() {
+        DownloadFileFromURL dff = new DownloadFileFromURL(getActivity(), file_name, new FileIsDownloaded() {
             @Override
             public void fileDownloaded(String path) {
-                saveLink(clickId, path);
-                refreshList();
+                Log.i("TRY_REFRESH", " 111");
+                saveLink(file_name, path);
             }
-        }, true).execute(audioFile.getInternetLink());
+        }, true);
+        dff.execute(audioFile.getInternetLink());
+
+        arrayList.clear();
+        arrayList.addAll(getAudios());
+
+        //listMusicAdapter.notify();
+
+        //listMusicAdapter.notifyItemRemoved(position);
+
+
     }
 
-    private void getAudios(){
-        assert Realm.getDefaultConfiguration() != null;
-        Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
+    private RealmResults<AudioFile> getAudios(){
         RealmResults<AudioFile> realmResults;
         //RealmResults<AudioFile> realmResults = realm.where(AudioFile.class).findAll();
-
-        //Перша мелодія яка яку не потрібно завантажувати з інтернету
-        AudioFile firstAudio = new AudioFile();
-        firstAudio.setResourseLink(R.raw.sound_file_3);
-        firstAudio.setNameSong("Stream");
-        firstAudio.setAuthorSong("Twarres");
-        firstAudio.setStatus(true);
-        firstAudio.setLockalLink("plug");
-
-        arrayList.add(firstAudio);
-
-//        switch (hasConnection(getContext())){
-//            case 0:
-//                realmResults = realm.where(AudioFile.class).equalTo("status", true).findAll();
-//
-//                break;
-//            default:
-//                realmResults = realm.where(AudioFile.class).sort("status", Sort.DESCENDING).findAll();
-//        }
-
-        realmResults = realm.where(AudioFile.class).equalTo("status", true).findAll();
-
-        for(int i = 0; realmResults.size()>i; i++){
-
-            AudioFile audioFile = realmResults.get(i);
-            Log.i("ara", audioFile.getLockalLink()+" jj");
-
-        }
-
+        assert Realm.getDefaultConfiguration() != null;
+        Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
+        realmResults = realm.where(AudioFile.class).equalTo("status", false).findAll();
         // realm.commitTransaction();//??
 
-        arrayList.addAll(realmResults);
+        return realmResults;
     }
+
 
 
 }

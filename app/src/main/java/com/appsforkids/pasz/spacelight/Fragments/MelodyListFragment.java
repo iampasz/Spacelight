@@ -4,12 +4,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appsforkids.pasz.spacelight.Adapters.ListMusicAdapter;
-import com.appsforkids.pasz.spacelight.AddToRealm;
 import com.appsforkids.pasz.spacelight.DownloadFileFromURL;
 import com.appsforkids.pasz.spacelight.Interfaces.DoThisAction;
-import com.appsforkids.pasz.spacelight.Interfaces.DownloadButton;
+import com.appsforkids.pasz.spacelight.Interfaces.DownloadAndDelete;
 import com.appsforkids.pasz.spacelight.Interfaces.FileIsDownloaded;
 import com.appsforkids.pasz.spacelight.MainActivity;
 import com.appsforkids.pasz.spacelight.Interfaces.PlayMyMusic;
@@ -131,7 +128,7 @@ public class MelodyListFragment extends Fragment {
             }
 
         };
-        DownloadButton downloadButton = new DownloadButton() {
+        DownloadAndDelete downloadButton = new DownloadAndDelete() {
             @Override
             public void download(int position) {
 
@@ -166,9 +163,14 @@ public class MelodyListFragment extends Fragment {
                         break;
                 }
             }
+
+            @Override
+            public void delete(int position) {
+
+            }
         };
 
-        listMusicAdapter = new ListMusicAdapter(playMyMusic, downloadButton, arrayList, nameSong);
+        listMusicAdapter = new ListMusicAdapter(playMyMusic, downloadButton, arrayList);
         rv_melody.setAdapter(listMusicAdapter);
         close_button = (ImageView) view.findViewById(R.id.close_button);
         close_button.setOnClickListener(new View.OnClickListener() {

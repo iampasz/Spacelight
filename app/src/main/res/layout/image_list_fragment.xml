@@ -20,6 +20,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/no_internet"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="50dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/save_button"
+            app:layout_constraintEnd_toEndOf="@+id/rv_cards"
+            app:layout_constraintStart_toStartOf="@+id/rv_cards"
+            app:layout_constraintTop_toTopOf="@+id/rv_cards"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/no_internet" />
+
         <FrameLayout
             android:id="@+id/save_button"
             android:layout_width="match_parent"

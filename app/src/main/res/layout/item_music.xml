@@ -22,31 +22,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/play_vector_gradient" />
 
-    <FrameLayout
-        android:id="@+id/download_frame"
+    <ImageView
+
+        android:id="@+id/download_bt"
         android:layout_width="@dimen/buttons_size"
         android:layout_height="@dimen/buttons_size"
-        android:layout_weight="1"
-        android:background="@drawable/shape_oval"
+        android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-
-            android:id="@+id/colorShape2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/shape_oval"
-            app:tint="#42EF0000" />
-
-        <ImageView
-            android:id="@+id/play_item2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_download" />
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/download_vector_gradient" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -56,7 +41,7 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/download_frame"
+        app:layout_constraintEnd_toStartOf="@+id/download_bt"
         app:layout_constraintStart_toEndOf="@+id/play_item"
         app:layout_constraintTop_toTopOf="parent">
 
