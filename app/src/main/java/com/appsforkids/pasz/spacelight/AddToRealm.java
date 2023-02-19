@@ -29,10 +29,6 @@ public class AddToRealm {
         this.ctx = ctx;
     }
 
-    public AddToRealm() {
-
-    }
-
 
     private static String readText(Context context, int resId) throws IOException {
         InputStream is = context.getResources().openRawResource(resId);
@@ -207,4 +203,6 @@ public class AddToRealm {
 
         readJson.execute("https://koko-oko.com/audio/music.json");
     }
+
+
 }

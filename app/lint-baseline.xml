@@ -1,15 +1,292 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 7.3.1" type="baseline" client="gradle" dependencies="false" name="AGP (7.3.1)" variant="fatal" version="7.3.1">
+<issues format="5" by="lint Dolphin | 2021.3.1 Patch 1">
 
     <issue
-        id="NotSibling"
-        message="`@+id/animateBg` is not a sibling in the same `ConstraintLayout`"
-        errorLine1="            ads:layout_constraintTop_toTopOf=&quot;@+id/animateBg&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="GradleDependency"
+        message="A newer version of androidx.appcompat:appcompat than 1.6.0 is available: 1.6.1">
         <location
-            file="src/main/res/layout/main_fragment.xml"
-            line="55"
-            column="13"/>
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.android.gms:play-services-ads than 21.4.0 is available: 21.5.0">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.android.material:material than 1.7.0 is available: 1.8.0">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.firebase:firebase-crashlytics than 18.3.1 is available: 18.3.5">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.firebase:firebase-crashlytics-gradle than 2.9.2 is available: 2.9.4">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="DisableBaselineAlignment"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance">
+        <location
+            file="src\main\res\layout\message_fragment.xml"
+            line="61"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `#2E000000` with a theme that also paints a background (inferred theme is `@style/Theme.Design.NoActionBar`)">
+        <location
+            file="src\main\res\layout\lottie_fragment.xml"
+            line="9"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.butterfly` appears to be unused">
+        <location
+            file="src\main\res\raw\butterfly.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.cat` appears to be unused">
+        <location
+            file="src\main\res\raw\cat.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.coala` appears to be unused">
+        <location
+            file="src\main\res\raw\coala.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.myColors` appears to be unused">
+        <location
+            file="src\main\res\values\colors.xml"
+            line="8"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.bgColors` appears to be unused">
+        <location
+            file="src\main\res\values\colors.xml"
+            line="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.bgNlColors` appears to be unused">
+        <location
+            file="src\main\res\values\colors.xml"
+            line="33"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.menuColors` appears to be unused">
+        <location
+            file="src\main\res\values\colors.xml"
+            line="51"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.delete` appears to be unused">
+        <location
+            file="src\main\res\drawable\delete.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.dino_dance` appears to be unused">
+        <location
+            file="src\main\res\raw\dino_dance.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.download` appears to be unused">
+        <location
+            file="src\main\res\drawable\download.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.full_screen` appears to be unused">
+        <location
+            file="src\main\res\raw\full_screen.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_download` appears to be unused">
+        <location
+            file="src\main\res\drawable-nodpi\ic_download.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.mountain_background` appears to be unused">
+        <location
+            file="src\main\res\raw\mountain_background.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.night` appears to be unused">
+        <location
+            file="src\main\res\raw\night.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.night_cycle` appears to be unused">
+        <location
+            file="src\main\res\raw\night_cycle.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.panda` appears to be unused">
+        <location
+            file="src\main\res\raw\panda.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.rocket_vector_gradient` appears to be unused">
+        <location
+            file="src\main\res\drawable\rocket_vector_gradient.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.shape_oval` appears to be unused">
+        <location
+            file="src\main\res\drawable\shape_oval.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.slide_from_down` appears to be unused">
+        <location
+            file="src\main\res\anim\slide_from_down.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.slide_in_up` appears to be unused">
+        <location
+            file="src\main\res\anim\slide_in_up.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.space_ride` appears to be unused">
+        <location
+            file="src\main\res\raw\space_ride.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.star_enjoys` appears to be unused">
+        <location
+            file="src\main\res\raw\star_enjoys.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.open_policy` appears to be unused">
+        <location
+            file="src\main\res\values\string.xml"
+            line="10"/>
+        <location
+            file="src\main\res\values-de\string.xml"
+            line="8"/>
+        <location
+            file="src\main\res\values-es\string.xml"
+            line="9"/>
+        <location
+            file="src\main\res\values-fr\string.xml"
+            line="9"/>
+        <location
+            file="src\main\res\values-pl\string.xml"
+            line="9"/>
+        <location
+            file="src\main\res\values-ru\string.xml"
+            line="9"/>
+        <location
+            file="src\main\res\values-uk\string.xml"
+            line="9"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.hours` appears to be unused">
+        <location
+            file="src\main\res\values\string.xml"
+            line="22"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.minutes` appears to be unused">
+        <location
+            file="src\main\res\values\string.xml"
+            line="33"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.train` appears to be unused">
+        <location
+            file="src\main\res\raw\train.json"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.your_gradient_file5` appears to be unused">
+        <location
+            file="src\main\res\drawable\your_gradient_file5.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="Custom view ``FrameLayout`` has `setOnTouchListener` called on it but does not override `performClick`">
+        <location
+            file="src\main\java\com\appsforkids\pasz\spacelight\MainActivity.java"
+            line="231"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="`onTouch` should call `View#performClick` when a click is detected">
+        <location
+            file="src\main\java\com\appsforkids\pasz\spacelight\MainActivity.java"
+            line="233"/>
     </issue>
 
 </issues>

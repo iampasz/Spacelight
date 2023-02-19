@@ -23,9 +23,7 @@ public class App extends MultiDexApplication {
                 .build();
 
         Realm.setDefaultConfiguration(config);
+
+
     }
-
-
-
-
 }

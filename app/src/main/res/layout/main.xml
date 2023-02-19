@@ -30,7 +30,7 @@
         android:contentDescription="@string/hide_nl"
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintTop_toTopOf="parent"
-        ads:srcCompat="@drawable/suit_vector_gradient" />
+        app:srcCompat="@drawable/suit_vector_gradient" />
 
     <TextView
         android:id="@+id/timer2"
@@ -92,7 +92,7 @@
                 android:layout_width="@dimen/play_buttons_size"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/home"
-                ads:srcCompat="@drawable/settings_vector_gradient" />
+                ads:srcCompat="@drawable/home_vector_gradient" />
 
             <ImageView
                 android:id="@+id/melody_list"
@@ -116,7 +116,7 @@
                 android:id="@+id/random_list"
                 android:layout_width="@dimen/play_buttons_size"
                 android:layout_height="match_parent"
-                ads:srcCompat="@drawable/repeat_vector_gradient" />
+                ads:srcCompat="@drawable/random_vector_gradient" />
 
         </LinearLayout>
 
@@ -193,7 +193,7 @@
             android:id="@+id/lock_button"
             android:layout_width="@dimen/play_buttons_size"
             android:layout_height="@dimen/play_buttons_size"
-            ads:srcCompat="@drawable/unlock_vector_gradient" />
+            ads:srcCompat="@drawable/lock_vector_gradient" />
 
         <TextView
             android:layout_width="match_parent"

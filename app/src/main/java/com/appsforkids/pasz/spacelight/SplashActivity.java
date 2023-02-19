@@ -16,6 +16,10 @@ public class SplashActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
 
+        //Оновлення мелодій з інтернету
+        AddToRealm addToRealm = new AddToRealm(this);
+        addToRealm.refreshListFromJSON();
+
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

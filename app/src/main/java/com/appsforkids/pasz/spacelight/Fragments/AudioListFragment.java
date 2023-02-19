@@ -39,10 +39,6 @@ public class AudioListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        //Оновлення мелодій з інтернету
-        AddToRealm addToRealm = new AddToRealm();
-        addToRealm.refreshListFromJSON();
-
         View view = inflater.inflate(R.layout.audiolist, container, false);
 
         close_button = (ImageView) view.findViewById(R.id.close_button);

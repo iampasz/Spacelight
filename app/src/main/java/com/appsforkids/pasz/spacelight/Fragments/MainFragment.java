@@ -21,7 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.airbnb.lottie.LottieAnimationView;
+
 import com.appsforkids.pasz.spacelight.Adapters.MyPagerAdapter;
 import com.appsforkids.pasz.spacelight.AddToRealm;
 import com.appsforkids.pasz.spacelight.Interfaces.DoThisAction;

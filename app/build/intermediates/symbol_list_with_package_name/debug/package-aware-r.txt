@@ -2622,6 +2622,8 @@ drawable avd_show_password
 drawable bg_002
 drawable bg_016
 drawable bgcolor
+drawable bt_pause
+drawable bt_play
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -2705,6 +2707,7 @@ drawable ic_bbutton
 drawable ic_clock_black_24dp
 drawable ic_download
 drawable ic_keyboard_black_24dp
+drawable ic_launcher_foreground
 drawable ic_m3_chip_check
 drawable ic_m3_chip_checked_circle
 drawable ic_m3_chip_close
@@ -2712,12 +2715,15 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable ic_pause
+drawable ic_play
 drawable image_b
 drawable image_vector_gradient
 drawable light_vector_gradient
 drawable list_s
 drawable list_vector_gradient
 drawable lock_b
+drawable lock_message
 drawable lock_vector_gradient
 drawable m3_appbar_background
 drawable m3_popupmenu_background_overlay
@@ -2815,6 +2821,7 @@ drawable settings
 drawable settings_vector_gradient
 drawable shape_menu
 drawable shape_oval
+drawable shape_rounded
 drawable sm_1
 drawable sm_10
 drawable sm_11
