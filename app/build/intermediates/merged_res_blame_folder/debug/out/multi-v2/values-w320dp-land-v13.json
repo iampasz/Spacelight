@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.appsforkids.pasz.spacelight.app-mergeDebugResources-5:/values-w320dp-land-v13/values-w320dp-land-v13.xml",
+            "outputFile": "com.appsforkids.pasz.spacelight.app-mergeDebugResources-40:/values-w320dp-land-v13/values-w320dp-land-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\pasz\\.gradle\\caches\\transforms-3\\aad2e67ff501b0c4bf8a4511dfe40723\\transformed\\material-1.7.0\\res\\values-w320dp-land-v13\\values-w320dp-land-v13.xml",
+                    "source": "/Users/macbookair/.gradle/caches/transforms-3/aad2e67ff501b0c4bf8a4511dfe40723/transformed/material-1.7.0/res/values-w320dp-land-v13/values-w320dp-land-v13.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

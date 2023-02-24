@@ -2,6 +2,7 @@ package com.appsforkids.pasz.spacelight;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -12,6 +13,8 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -20,6 +23,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewManager;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,19 +32,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.appsforkids.pasz.spacelight.Adapters.RecyclerViewAdapter;
 import com.appsforkids.pasz.spacelight.Fragments.AudioListFragment;
 import com.appsforkids.pasz.spacelight.Fragments.BgListFragment;
-import com.appsforkids.pasz.spacelight.Fragments.ImgeListFragment;
-import com.appsforkids.pasz.spacelight.Fragments.LottieFragment;
+import com.appsforkids.pasz.spacelight.Fragments.ImgeList;
+import com.appsforkids.pasz.spacelight.Fragments.LottieList;
 import com.appsforkids.pasz.spacelight.Fragments.MainFragment;
+import com.appsforkids.pasz.spacelight.Fragments.MessageFragment;
+import com.appsforkids.pasz.spacelight.Fragments.SimpleMessageFragment;
+import com.appsforkids.pasz.spacelight.Fragments.TimerFragment;
 import com.appsforkids.pasz.spacelight.Interfaces.ChangeColors;
+import com.appsforkids.pasz.spacelight.Interfaces.DoThisAction;
 import com.appsforkids.pasz.spacelight.RealmObjects.AudioFile;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 import com.google.android.gms.ads.AdRequest;
@@ -65,47 +75,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     MediaPlayer mediaPlayer;
     private static final String MY_SETTINGS = "my_settings";
     private static final String MY_AUDIO = "my_audio";
-    String savedAudioFile = "";
-    ArrayList <AudioFile> arrayList;
-    //int activeAudio;
-    //int previousAudio;
-    Boolean isLooping = false;
+    String savedAudioFile = "",
+            currentLink,
+            currentName;
+
+    ArrayList<AudioFile> arrayList;
+
     SoundPool soundPool;
     private AdView mAdView;
     AdRequest adRequest;
 
-    boolean chekMenu = true;
-    boolean chekStatus = true;
+    LinearLayout main_m;
 
-    Boolean loopingMelody = false;
+    boolean show = true,
+            timerOn = false,
+            backgroundTumbler = false,
+            isLooping = false,
+            chekMenu = true;
 
-    public LinearLayout main_m;
+    int gradientCounter = 0,
+            brights = 0,
+            smImage = 0,
+            audioCounter = 0;
 
-    Boolean show = true;
-    Boolean timerOn = false;
+    CountDownTimer offTimer,
+                   hideLockTimer;
 
-
-    Boolean backgroundTumbler = false;
-
-    boolean hideSuit = false;
-
-    boolean playerStatus =  true;
-
-    Drawable mDrawable;
-
-    String[] colors;
-    String[] bgColors;
-    String[] bgNlColors;
-    String[] menuColors;
-
-    int suitCounter = 0;
-    int gradientCounter = 0;
-    int anim_bg = 0;
-    int brights = 0;
-    int smImage = -1;
-
-
-    public RevolutionAnimationView revolutionAnimationView;
+    RevolutionAnimationView revolutionAnimationView;
+    RecyclerViewAdapter adapter;
+    MainFragment mainFragment;
+    MyObjects myObjects;
 
 
     @SuppressLint("NonConstantResourceId")
@@ -123,11 +122,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.alien_bt)
-    ImageView alien_bt;
+    LottieAnimationView alien_bt;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.rocket)
-    ImageView rocket;
+    LottieAnimationView rocket;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.lock_button)
@@ -136,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.lock_frame)
     FrameLayout lock_frame;
-
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.right_p)
@@ -156,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.constrain)
-    public ConstraintLayout constrain;
+    ConstraintLayout constrain;
 
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.melody_list)
@@ -167,20 +165,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public TextView audio_name;
 
     @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.timer_text)
+    public TextView timer_text;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.rv)
     public RecyclerView rv;
-
-    RecyclerViewAdapter adapter;
-
-    MainFragment mainFragment;
-
-    MyObjects myObjects;
-
-    String currentLink;
-    String currentName;
-
-    CountDownTimer hideLockTimer;
-    int audioCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,20 +179,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ButterKnife.bind(this);
 
-
-        LoadMelody loadMelody = new LoadMelody(this);
-
-
-
         float dip = 80f;
         Resources r = getResources();
         float px = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 dip,
-                r.getDisplayMetrics()
-        );
-
-//        main_m.setY(px);
+                r.getDisplayMetrics());
 
         home_b.setOnClickListener(this);
         right_p.setOnClickListener(this);
@@ -228,6 +210,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Встановлюємо повно-екранний режим
         setFullScrean();
 
+        myObjects = new MyObjects(this);
+        hideLockTimer = new CountDownTimer(3000, 3000) {
+            @Override
+            public void onTick(long l) {
+            }
+
+            @Override
+            public void onFinish() {
+                if (chekMenu) {
+
+                } else {
+                    lockButton.setVisibility(View.GONE);
+                }
+            }
+        };
+
 
         //Блокуванян екрану
         lock_frame.setOnTouchListener(new View.OnTouchListener() {
@@ -236,29 +234,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 lockButton.setVisibility(View.VISIBLE);
                 //suit.setVisibility(View.VISIBLE);
-               // hideLockTimer.start();
+                // hideLockTimer.start();
 
                 return false;
             }
         });
 
-        hideLockTimer = new CountDownTimer(3000, 3000) {
-            @Override
-            public void onTick(long l) {
-            }
-
-            @Override
-            public void onFinish() {
-                if(chekMenu){
-
-                }else{
-                    lockButton.setVisibility(View.GONE);
-                }
-            }
-        };
-
-
-        myObjects = new MyObjects(this);
 
         //Встановлюємо стандартні налаштунки
         if (!isFirstOpen()) {
@@ -267,6 +248,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             realm.beginTransaction();
             realm.insert(getDefualtSettings());
             realm.commitTransaction();
+            LoadMelody loadMelody = new LoadMelody(this);
+
         }
 
 
@@ -285,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Відкриваємо MainFragment
 
-         mainFragment = new MainFragment();
+        mainFragment = new MainFragment();
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.container, mainFragment, "main_fragment").commit();
 
@@ -314,24 +297,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case 3:
                         //timer
-                      //  mainFragment.setTimer();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .add(R.id.constrain, new TimerFragment())
+                                .commit();
                         break;
                     case 4:
                         //animation
-                      //  mainFragment.startAnim();
-
+                        startAnim();
                         break;
                     case 5:
                         //bright
-                      //  mainFragment.changeBrighest();
+                        changeBrighest();
                         break;
                     case 6:
                         //suit color
-                     //   mainFragment.changeSuitColor();
+                        mainFragment.changeSuitColor();
                         break;
                     case 7:
                         //politic
-                      //  mainFragment.openPrivatePolicy();
+                        openPrivatePolicy();
                         break;
                     case 8:
                         break;
@@ -381,20 +366,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Програвання музики
     public void playLockalMusic(AudioFile audioFile, Boolean play_status) {
-
-
-
         savedAudioFile = "";
-
         if (mediaPlayer != null) {
             mediaPlayer.reset();
         }
-
         Log.i("press_play", mediaPlayer + " we are press play");
-
     }
 
-    public void playLockalMusic(String link, String name,  Boolean play_status) {
+    public void playLockalMusic(String link, String name, Boolean play_status) {
 
         currentLink = link;
         currentName = name;
@@ -421,10 +400,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             play_p.setImageResource(R.drawable.pause_vector_gradient);
 
-           // audio_name.setText(name);
+            // audio_name.setText(name);
             audio_name.setText(name);
 
-        }else{
+        } else {
             play_p.setImageResource(R.drawable.play_vector_gradient);
         }
         //activeAudio = link;
@@ -432,13 +411,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-               // mediaPlayer.release();
+                // mediaPlayer.release();
                 playNextAudio();
                 //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
             }
         });
 
-        Log.i("statusp", mediaPlayer.isLooping()+" st");
+        Log.i("statusp", mediaPlayer.isLooping() + " st");
 
     }
 
@@ -461,7 +440,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             mediaPlayer.start();
             //name_song.setText(audioFile.nameSong);
-        }else{
+        } else {
             play_p.setImageResource(R.drawable.play_vector_gradient);
         }
     }
@@ -480,18 +459,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mediaPlayer.setLooping(isLooping);
 
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                //mediaPlayer.release();
-                playNextAudio();
-                //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    //mediaPlayer.release();
+                    playNextAudio();
+                    //Toast.makeText(MainActivity.this, "deded", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             mediaPlayer.start();
-            audio_name.setText(name+", "+auth);
+            audio_name.setText(name + ", " + auth);
 
-        }else{
+        } else {
             play_p.setImageResource(R.drawable.play_vector_gradient);
         }
     }
@@ -505,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.i("playSavedAudio", "empty");
         } else {
             playLockalMusic(savedAudio, "", true);
-            Log.i("playSavedAudio", savedAudio+" savedAudio");
+            Log.i("playSavedAudio", savedAudio + " savedAudio");
             refreshSavingAudio(savedAudio);
         }
     }
@@ -518,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AudioFile audioFile = realm.where(AudioFile.class).equalTo("lockalLink", savedAudio).findFirst();
         MySettings settings = realm.where(MySettings.class).findFirst();
         settings.setCurrentMusic(audioFile.getNameSong());
-        Log.i("playSavedAudio", savedAudio+" refreshSavingAudio");
+        Log.i("playSavedAudio", savedAudio + " refreshSavingAudio");
         realm.commitTransaction();
     }
 
@@ -540,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void platSPool(int position){
+    public void platSPool(int position) {
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         float curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         float maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -554,7 +533,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private ArrayList<AudioFile> getAudios(){
+    private ArrayList<AudioFile> getAudios() {
 
         ArrayList<AudioFile> arrayList = new ArrayList<>();
         assert Realm.getDefaultConfiguration() != null;
@@ -577,33 +556,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return arrayList;
     }
 
-    public String playNextAudio(){
+    public String playNextAudio() {
 
         int allAudio = arrayList.size();
         getAudios();
 
-        switch (allAudio){
+        switch (allAudio) {
             case 0:
                 //Have not any audio
                 break;
             case 1:
                 //Have first audio with id
-                        if(arrayList.get(audioCounter).getResourceLink()!=0){
-                            playMusic(arrayList.get(audioCounter).getResourceLink(), arrayList.get(audioCounter).nameSong, arrayList.get(audioCounter).authorSong, true);
-                            //activeAudio=audioCounter;
-                        }
+                if (arrayList.get(audioCounter).getResourceLink() != 0) {
+                    playMusic(arrayList.get(audioCounter).getResourceLink(), arrayList.get(audioCounter).nameSong, arrayList.get(audioCounter).authorSong, true);
+                    //activeAudio=audioCounter;
+                }
                 break;
 
             default:
                 //Have melody with lockal link
 
-                if(arrayList.get(audioCounter).getResourceLink()!=0){
+                if (arrayList.get(audioCounter).getResourceLink() != 0) {
                     playMusic(arrayList.get(audioCounter).getResourceLink(), arrayList.get(audioCounter).nameSong, arrayList.get(audioCounter).authorSong, true);
-                   // activeAudio=audioCounter;
-                }else{
+                    // activeAudio=audioCounter;
+                } else {
                     playLockalMusic(
                             arrayList.get(audioCounter).getLockalLink(),
-                            arrayList.get(audioCounter).getNameSong()+", "+arrayList.get(audioCounter).authorSong,
+                            arrayList.get(audioCounter).getNameSong() + ", " + arrayList.get(audioCounter).authorSong,
                             true);
                     //activeAudio=audioCounter;
                 }
@@ -612,57 +591,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         audioCounter++;
 
-        Log.i("audioCounter",audioCounter+" rrr "+allAudio);
+        Log.i("audioCounter", audioCounter + " rrr " + allAudio);
 
-        if(audioCounter==allAudio){
-            audioCounter=0;
+        if (audioCounter == allAudio) {
+            audioCounter = 0;
         }
 
         return "";
     }
 
-    public Boolean startStop(){
-
+    public Boolean startStop() {
         Log.i("isplay", " startStop");
-
-        if(mediaPlayer!=null){
-
-            if(mediaPlayer.isPlaying()){
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
                 play_p.setImageResource(R.drawable.play_vector_gradient);
                 Log.i("isplay", " true");
                 return false;
 
-            }else{
+            } else {
                 Log.i("isplay", " false");
-                if(mediaPlayer!=null){
+                if (mediaPlayer != null) {
                     mediaPlayer.start();
                     play_p.setImageResource(R.drawable.pause_vector_gradient);
-                    Log.i("isplay", mediaPlayer+" false");
+                    Log.i("isplay", mediaPlayer + " false");
                     return true;
                 }
             }
 
-        }else{
+        } else {
             play_p.setImageResource(R.drawable.pause_vector_gradient);
             playNextAudio();
             Log.i("isplay", " pause_vector_gradient");
         }
-
-
         return false;
     }
 
-    public void playLoopingAudio(Boolean status){
+    public void playLoopingAudio(Boolean status) {
         isLooping = status;
     }
 
-    public void hidePlayer(){
+    public void hidePlayer() {
         player.animate().translationY(player.getHeight()).setDuration(1000);
 
     }
 
-    public void showPlayer(){
+    public void showPlayer() {
         player.animate().translationY(0).setDuration(1000);
 
     }
@@ -670,7 +644,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.home_b:
                 rv.animate().translationY(0).setDuration(1000);
                 hidePlayer();
@@ -680,22 +654,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 play_p.setImageResource(R.drawable.pause_vector_gradient);
                 break;
             case R.id.play_p:
-                 startStop();
+                startStop();
                 break;
             case R.id.melody_list:
                 showNewList();
                 break;
             case R.id.random_list:
-                if(isLooping){
-                    isLooping=false;
+                if (isLooping) {
+                    isLooping = false;
                     random_list.setImageResource(R.drawable.repeat_vector_gradient);
-                }else{
-                    isLooping=true;
+                } else {
+                    isLooping = true;
                     random_list.setImageResource(R.drawable.random_vector_gradient);
                 }
-                if(mediaPlayer!=null ){
-                    if(mediaPlayer.isPlaying()){
-                        Log.i("statusp", mediaPlayer.isLooping()+" st");
+                if (mediaPlayer != null) {
+                    if (mediaPlayer.isPlaying()) {
+                        Log.i("statusp", mediaPlayer.isLooping() + " st");
                         mediaPlayer.setLooping(isLooping);
                     }
                 }
@@ -711,17 +685,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.suit_button:
                 mainFragment = new MainFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, mainFragment).commit();
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                        .replace(R.id.container, mainFragment)
+                        .commit();
                 break;
         }
     }
 
-    public void showNewList(){
+    public void showNewList() {
 
-        AudioListFragment myFragment = (AudioListFragment)getSupportFragmentManager().findFragmentByTag("LIST_FRAGMENT");
+        AudioListFragment myFragment = (AudioListFragment) getSupportFragmentManager().findFragmentByTag("LIST_FRAGMENT");
         if (myFragment != null && myFragment.isVisible()) {
             // add your code here
-        }else{
+        } else {
             AudioListFragment audioListFragment = AudioListFragment.init();
             getSupportFragmentManager().beginTransaction().addToBackStack(null)
                     .add(R.id.constrain, audioListFragment, "LIST_FRAGMENT").commit();
@@ -741,14 +720,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdView.loadAd(adRequest);
     }
 
-    public void hideAddView(){
+    public void hideAddView() {
         mAdView.animate().alpha(0f).setDuration(1000).start();
         rv.animate().alpha(0f).setDuration(1000).start();
         player.animate().alpha(0f).setDuration(1000).start();
         audio_name.animate().alpha(0f).setDuration(1000).start();
     }
 
-    public void showAddView(){
+    public void showAddView() {
         mAdView.animate().alpha(1f).setDuration(1000).start();
         rv.animate().alpha(1f).setDuration(1000).start();
         player.animate().alpha(1f).setDuration(1000).start();
@@ -756,34 +735,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void showMainMenu(){
+    public void showMainMenu() {
         main_m.animate().translationY(0).setDuration(1000).start();
     }
 
-    public void hideMainMenu(){
-        main_m.animate().translationY( main_m.getHeight()).setDuration(1000).start();
+    public void hideMainMenu() {
+        main_m.animate().translationY(main_m.getHeight()).setDuration(1000).start();
     }
 
-    public void showRvMenu(){
+    public void showRvMenu() {
         rv.animate().translationY(0).setDuration(1000).start();
     }
 
-    public void hideRvMenu(){
-        rv.animate().translationY( rv.getHeight()).setDuration(1000).start();
+    public void hideRvMenu() {
+        rv.animate().translationY(rv.getHeight()).setDuration(1000).start();
     }
 
-   public void updateAudioList(){
-       arrayList = getAudios();
+    public void updateAudioList() {
+        arrayList = getAudios();
     }
 
-    private void loopOrRandom(){
+    private void loopOrRandom() {
 
         savedAudioFile = "";
         if (mediaPlayer != null) {
             mediaPlayer.pause();
             mediaPlayer.setLooping(true);
-            mediaPlayer.start();}
-        else{
+            mediaPlayer.start();
+        } else {
             play_p.setImageResource(R.drawable.play_vector_gradient);
         }
     }
@@ -791,9 +770,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onError(MediaPlayer mp, int what, int extras) {
 
-        Log.i("errorq", mp+"mp");
-        Log.i("errorq", what+"what");
-        Log.i("errorq", extras+"extras");
+        Log.i("errorq", mp + "mp");
+        Log.i("errorq", what + "what");
+        Log.i("errorq", extras + "extras");
 
         play_p.setImageResource(R.drawable.play_vector_gradient);
         audio_name.setText("");
@@ -802,8 +781,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    private void clickAlian(){
-        LottieFragment lottieFragment = new LottieFragment();
+    private void clickAlian() {
+        LottieList lottieFragment = new LottieList();
         lottieFragment.setCallBack(new MainFragment.ChoseItem() {
             @Override
             public void setImage(String link) {
@@ -815,41 +794,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.constrain, lottieFragment, "LOTTIE_FRAGMENT")
+                .add(R.id.container, lottieFragment, "LOTTIE_FRAGMENT")
                 .commit();
 
+        rocket.animate().alpha(0f).start();
+        alien_bt.animate().alpha(0f).start();
     }
 
-    private void clickRocket(){
+    private void clickRocket() {
         //Analistic
-       // sendAnalystics("rocket", "press_rocekt");
+        // sendAnalystics("rocket", "press_rocekt");
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
 
-        rocket.animate().translationY(-height).setDuration(2000).start();
+        //rocket.animate().translationY(-height).setDuration(2000).start();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.slide_from_down, R.anim.slide_in_up)
+                .add(R.id.container, new ImgeList())
+                .commit();
 
-        CountDownTimer cdt = new CountDownTimer(2000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-            }
-            @Override
-            public void onFinish() {
-                rocket.setY(2500);
-                rocket.animate().translationY(0).start();
-                getSupportFragmentManager().beginTransaction().add(R.id.constrain, new ImgeListFragment()).commit();
-            }
-        }.start();
+        rocket.animate().alpha(0f).start();
+        alien_bt.animate().alpha(0f).start();
+
     }
 
     public void lockButton() {
 
-       // Fragment myFragment = getParentFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
-       // final TextView textView = myFragment.getView().findViewById(R.id.nameNightlight);
+        // Fragment myFragment = getParentFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
+        // final TextView textView = myFragment.getView().findViewById(R.id.nameNightlight);
 
         if (chekMenu) {
             //openMenu(menuItems.getMenuButtons(colors));
-           // textView.animate().alpha(0).setDuration(1000).start();
+            // textView.animate().alpha(0).setDuration(1000).start();
             //timerText.animate().alpha(0).setDuration(1000).start();
             //suit_button.setVisibility(View.GONE);
             suit_button.animate().alpha(0).setDuration(1000).start();
@@ -888,7 +866,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             lockButton.setAlpha(1f);
             if (timerOn) {
-               // timerText.animate().alpha(1f).setDuration(1000).start();
+                // timerText.animate().alpha(1f).setDuration(1000).start();
             } else {
 
             }
@@ -908,134 +886,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-       // sendAnalystics("lock", "lock is: "+chekMenu);
+        // sendAnalystics("lock", "lock is: "+chekMenu);
 
     }
 
-//    public void startTimer(int hours, int minutes) {
-//        if (hours == 0 && minutes == 0) {
-//            timerText.setVisibility(View.INVISIBLE);
-//        } else {
-//            timerText.setVisibility(View.VISIBLE);
-//            int mySeconds = (((hours * 60 * 60) + (60 * minutes)) * 1000);
-//            offTimer = new CountDownTimer(mySeconds, 1000) {
-//                @SuppressLint("DefaultLocale")
-//                @Override
-//                public void onTick(long l) {
-//
-//                    timerText.setText(String.format("%02d:%02d:%02d", (l / 1000) / 3600, ((l / 1000) % 3600) / 60, (l / 1000) % 60));
-//                }
-//
-//                @Override
-//                public void onFinish() {
-//                    Log.i("FINISH", "App is OFF");
-//                    turnOff();
-//                }
-//            };
-//            offTimer.start();
-//        }
-//
-//        sendAnalystics("timer", "timer is: " + hours +" and " + minutes);
-//
-//    }
-//
-//    public void setTimer() {
-//
-//        if (offTimer != null) {
-//            offTimer.cancel();
-//            timerText.setVisibility(View.INVISIBLE);
-//            timerOn = false;
-//        }
-//
-//        TimerFragment myFragment = (TimerFragment)getParentFragmentManager().findFragmentByTag("TIMER_FRAGMENT");
-//        if (myFragment != null && myFragment.isVisible()) {
-//            // add your code here
-//        }else{
-//            getParentFragmentManager()
-//                    .beginTransaction()
-//                    .add(R.id.container, TimerFragment.init(new DoThisAction() {
-//                        @Override
-//                        public void doThis() {
-//                        }
-//                        @Override
-//                        public void doThis(int hours, int minutes) {
-//                            startTimer(hours, minutes);
-//                            timerOn = true;
-//                        }
-//                        @Override
-//                        public void doThat() {
-//                        }
-//                    }), "TIMER_FRAGMENT")
-//                    .commit();
-//        }
-//
-//    }
+    public void openPrivatePolicy() {
+        MessageFragment myFragment = (MessageFragment) getSupportFragmentManager().findFragmentByTag("POLICY_FRAGMENT");
+        if (myFragment != null && myFragment.isVisible()) {
+            // add your code here
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container, MessageFragment.init(getString(R.string.open_policy), new DoThisAction() {
+                        @Override
+                        public void doThis() {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://paszzsap.github.io/nightlight2/politic.html"));
+
+                            if (hasConnection()) {
 
 
+                                startActivity(browserIntent);
+                            } else {
+                                getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
+                                        .commit();
+                            }
+                        }
 
-//    public void turnOff() {
-//        ((MainActivity) getActivity()).playMusic(0, "", "", false);
-//        getActivity().finish();
-//    }
+                        @Override
+                        public void doThis(int hours, int minutes) {
+                        }
 
-//    public void openPrivatePolicy() {
-//        MessageFragment myFragment = (MessageFragment)getParentFragmentManager().findFragmentByTag("POLICY_FRAGMENT");
-//        if (myFragment != null && myFragment.isVisible()) {
-//            // add your code here
-//        }else{
-//            getParentFragmentManager()
-//                    .beginTransaction()
-//                    .add(R.id.container, MessageFragment.init(getString(R.string.open_policy), new DoThisAction() {
-//                        @Override
-//                        public void doThis() {
-//                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://paszzsap.github.io/nightlight2/politic.html"));
-//
-//                            switch (hasConnection(getContext())) {
-//                                case 0:
-//                                    getParentFragmentManager()
-//                                            .beginTransaction()
-//                                            .add(R.id.container, SimpleMessageFragment.init(getResources().getString(R.string.message_1)))
-//                                            .commit();
-//                                    break;
-//                                case 1:
-//                                    startActivity(browserIntent);
-//                                    break;
-//                                case 2:
-//                                    startActivity(browserIntent);
-//                                    break;
-//                                case 3:
-//                                    //internet onected with WIFI
-//                                    startActivity(browserIntent);
-//                                    break;
-//                            }
-//                        }
-//                        @Override
-//                        public void doThis(int hours, int minutes) {
-//                        }
-//
-//                        @Override
-//                        public void doThat() {
-//                        }
-//                    }), "POLICY_FRAGMENT")
-//                    .commit();
-//        }
-//
-//        sendAnalystics("politica", "press");
-//    }
+                        @Override
+                        public void doThat() {
+                        }
+                    }), "POLICY_FRAGMENT")
+                    .commit();
+        }
+
+        //sendAnalystics("politica", "press");
+    }
 
     public Boolean hasConnection() {
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (wifiInfo != null && wifiInfo.isConnected()) {
-           // sendAnalystics("internet", "WIFI");
+            // sendAnalystics("internet", "WIFI");
             return true;
         } else {
 
         }
         wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         if (wifiInfo != null && wifiInfo.isConnected()) {
-           // sendAnalystics("internet", "MOBILE");
+            // sendAnalystics("internet", "MOBILE");
             return true;
         } else {
 
@@ -1046,11 +951,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
 
         }
-       // sendAnalystics("internet", "NO INTERNET");
+        // sendAnalystics("internet", "NO INTERNET");
         return false;
     }
-
-
 
     public void changeBgColor() {
 
@@ -1064,9 +967,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //sendAnalystics("changeBgColor", "changeBgColor: "+gradientCounter);
     }
 
-
     public void changeBackgroundImage() {
-
         BgListFragment bgListFragment = new BgListFragment();
         bgListFragment.setCallBack(new MainFragment.ChoseItem() {
             @Override
@@ -1090,8 +991,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        getSupportFragmentManager().beginTransaction().add(R.id.container, bgListFragment).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container, bgListFragment)
+                .commit();
+    }
 
+    public void startAnim() {
+
+        if (smImage == -1) {
+
+        } else {
+
+            startAnimation2(myObjects.getAnimationImage()[smImage]);
+            // Toast.makeText(this, "We are here "+ myObjects.getAnimationImage()[smImage], Toast.LENGTH_SHORT).show();
+            smImage++;
+            if (smImage >= myObjects.getAnimationImage().length) {
+                deleteAnimation();
+                smImage = 0;
+            }
+        }
+    }
+
+    public void startAnimation2(int imageViewAnimation) {
+        Log.i("startAnimation2", imageViewAnimation + "");
+        if (revolutionAnimationView == null) {
+            //Создаем анимацию
+            revolutionAnimationView = new RevolutionAnimationView(this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                revolutionAnimationView.setZ(-1);
+            }
+            constrain.addView(revolutionAnimationView);
+            revolutionAnimationView.changeImage(ContextCompat.getDrawable(this, imageViewAnimation));
+
+        } else {
+            if (revolutionAnimationView.getParent() == null) {
+                constrain.addView(revolutionAnimationView);
+            }
+            revolutionAnimationView.changeImage(ContextCompat.getDrawable(this, imageViewAnimation));
+            Log.i("startAnimation2", imageViewAnimation + " tyt");
+        }
+
+        //sendAnalystics("start_anim", "animation is= " + imageViewAnimation);
+    }
+
+    public void deleteAnimation() {
+        //Удаляем созданную вьюху с анимацией
+        ((ViewManager) revolutionAnimationView.getParent()).removeView(revolutionAnimationView);
+        Log.i("anim", "анимация удалена");
+
+    }
+
+    public void changeBrighest() {
+
+        WindowManager.LayoutParams layout = getWindow().getAttributes();
+        layout.screenBrightness = myObjects.getBrights()[brights];
+        getWindow().setAttributes(layout);
+        brights++;
+
+        if (brights >= myObjects.getBrights().length) {
+            brights = 0;
+        }
+
+        //sendAnalystics("bright", "bright="+brights);
     }
 
 }

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.appsforkids.pasz.spacelight.app-mergeDebugResources-5:/values-v22/values-v22.xml",
+            "outputFile": "com.appsforkids.pasz.spacelight.app-mergeDebugResources-40:/values-v22/values-v22.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\pasz\\.gradle\\caches\\transforms-3\\36a424ef76fb9e1b0c30ef374a392de5\\transformed\\appcompat-1.6.0\\res\\values-v22\\values-v22.xml",
+                    "source": "/Users/macbookair/.gradle/caches/transforms-3/36a424ef76fb9e1b0c30ef374a392de5/transformed/appcompat-1.6.0/res/values-v22/values-v22.xml",
                     "from": {
                         "startLines": "2,3,4,9",
                         "startColumns": "4,4,4,4",

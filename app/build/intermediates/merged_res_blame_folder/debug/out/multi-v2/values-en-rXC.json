@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.appsforkids.pasz.spacelight.app-mergeDebugResources-5:/values-en-rXC/values-en-rXC.xml",
+            "outputFile": "com.appsforkids.pasz.spacelight.app-mergeDebugResources-40:/values-en-rXC/values-en-rXC.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\pasz\\.gradle\\caches\\transforms-3\\3cca367e2d75615d7c6c486a41e6f1d2\\transformed\\core-1.9.0\\res\\values-en-rXC\\values-en-rXC.xml",
+                    "source": "/Users/macbookair/.gradle/caches/transforms-3/3cca367e2d75615d7c6c486a41e6f1d2/transformed/core-1.9.0/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\pasz\\.gradle\\caches\\transforms-3\\36a424ef76fb9e1b0c30ef374a392de5\\transformed\\appcompat-1.6.0\\res\\values-en-rXC\\values-en-rXC.xml",
+                    "source": "/Users/macbookair/.gradle/caches/transforms-3/36a424ef76fb9e1b0c30ef374a392de5/transformed/appcompat-1.6.0/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\pasz\\.gradle\\caches\\transforms-3\\9113accfaacba69fd0f255e2c18534ce\\transformed\\browser-1.4.0\\res\\values-en-rXC\\values-en-rXC.xml",
+                    "source": "/Users/macbookair/.gradle/caches/transforms-3/9113accfaacba69fd0f255e2c18534ce/transformed/browser-1.4.0/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

@@ -51,7 +51,7 @@ public class LottieAdapter extends RecyclerView.Adapter<LottieAdapter.ViewHolder
         holder.lottie_nl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getItemPosition.usePosition(items.get(holder.getAdapterPosition()).getImage_internet_link());
+                getItemPosition.usePosition(holder.getAdapterPosition());
             }
         });
 

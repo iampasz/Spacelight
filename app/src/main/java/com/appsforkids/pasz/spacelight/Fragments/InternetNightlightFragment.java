@@ -66,7 +66,7 @@ public class InternetNightlightFragment extends Fragment  {
         close_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closeFragment("");
+                closeFragment(0);
             }
         });
 
@@ -78,7 +78,9 @@ public class InternetNightlightFragment extends Fragment  {
         this.choseItem = choseItem;
     }
 
-    public void closeFragment(String link){
+    public void closeFragment(int position){
+
+        String link = imagesArray.get(position).getImage_internet_link();
 
         if(link.equals("")){
 
@@ -128,8 +130,8 @@ public class InternetNightlightFragment extends Fragment  {
     private void showImages(){
         rv_cards.setAdapter(new ImageAdapter(imagesArray, height,   new GetActionFromAdapter() {
             @Override
-            public void usePosition(String link) {
-                closeFragment(link);
+            public void usePosition(int position) {
+                closeFragment(position);
             }
 
         }));

@@ -32,6 +32,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 public class DownloadedList extends Fragment {
@@ -60,7 +61,7 @@ public class DownloadedList extends Fragment {
         rv_melody = (RecyclerView) view.findViewById(R.id.rv_images);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv_melody.setLayoutManager(llm);
-        getAudios();
+       // getAudios();
 
         //Set current music position
         setSettings();
@@ -249,12 +250,7 @@ public class DownloadedList extends Fragment {
         return needFile.getInternetLink();
     }
 
-    private void refreshList() {
-        listMusicAdapter.setPressedPosition();
-        arrayList.clear();
-        getAudios();
-        //listMusicAdapter.notifyDataSetChanged();
-    }
+
 
     public int hasConnection(final Context context) {
 
@@ -316,7 +312,7 @@ public class DownloadedList extends Fragment {
             @Override
             public void fileDownloaded(String path) {
                 saveLink(clickId, path);
-                refreshList();
+               // refreshList();
             }
         }, true).execute(audioFile.getInternetLink());
     }
@@ -325,17 +321,20 @@ public class DownloadedList extends Fragment {
         assert Realm.getDefaultConfiguration() != null;
         Realm realm = Realm.getInstance(Realm.getDefaultConfiguration());
         RealmResults<AudioFile> realmResults;
+
         //RealmResults<AudioFile> realmResults = realm.where(AudioFile.class).findAll();
 
         //Перша мелодія яка яку не потрібно завантажувати з інтернету
-        AudioFile firstAudio = new AudioFile();
-        firstAudio.setResourseLink(R.raw.sound_file_3);
-        firstAudio.setNameSong("Stream");
-        firstAudio.setAuthorSong("Twarres");
-        firstAudio.setStatus(true);
-        firstAudio.setLockalLink("plug");
 
-        arrayList.add(firstAudio);
+
+//        AudioFile firstAudio = new AudioFile();
+//        firstAudio.setResourseLink(R.raw.sound_file_3);
+//        firstAudio.setNameSong("Stream");
+//        firstAudio.setAuthorSong("Twarres");
+//        firstAudio.setStatus(true);
+//        firstAudio.setLockalLink("plug");
+//
+//        arrayList.add(firstAudio);
 
 //        switch (hasConnection(getContext())){
 //            case 0:
@@ -348,11 +347,16 @@ public class DownloadedList extends Fragment {
 
         realmResults = realm.where(AudioFile.class).equalTo("status", true).findAll();
 
+        realmResults.addChangeListener(new RealmChangeListener<RealmResults<AudioFile>>() {
+            @Override
+            public void onChange(RealmResults<AudioFile> audioFiles) {
+                Log.v("Testing_R", "The size is: " + audioFiles.size());
+                //listMusicAdapter.notifyDataSetChanged();
+            }
+        });
+
         for(int i = 0; realmResults.size()>i; i++){
-
             AudioFile audioFile = realmResults.get(i);
-            Log.i("ara", audioFile.getLockalLink()+" jj");
-
         }
 
         // realm.commitTransaction();//??
@@ -368,4 +372,47 @@ public class DownloadedList extends Fragment {
         realm.commitTransaction();
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            Log.i("REFRESH_FR", "setUserVisibleHint");
+            if(arrayList!=null){
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            RealmResults<AudioFile> reamRes = realm
+                    .where(AudioFile.class)
+                    .equalTo("status", true)
+                    .findAll();
+            realm.commitTransaction();
+
+                arrayList.clear();
+                arrayList.addAll(reamRes);
+                listMusicAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Log.i("REFRESH_FR", "START");
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        RealmResults<AudioFile> reamRes = realm
+                .where(AudioFile.class)
+                .equalTo("status", true)
+                .findAll();
+        realm.commitTransaction();
+        arrayList.clear();
+        arrayList.addAll(reamRes);
+        listMusicAdapter.notifyDataSetChanged();
+
+        //getAudios();
+       // listMusicAdapter.notifyDataSetChanged();
+    }
 }

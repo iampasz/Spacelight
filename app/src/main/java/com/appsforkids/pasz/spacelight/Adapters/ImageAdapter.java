@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.appsforkids.pasz.spacelight.Interfaces.GetActionFromAdapter;
@@ -43,13 +44,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder>{
         CardView.LayoutParams params = new CardView.LayoutParams(size, (int) (size*1.5));
         holder.image.setLayoutParams(params);
 
-
         Picasso.get().load(items.get(holder.getAdapterPosition()).getImage_internet_link()).into(holder.image);
 
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getItemPosition.usePosition(items.get(holder.getAdapterPosition()).getImage_internet_link());
+                getItemPosition.usePosition(holder.getAdapterPosition());
             }
         });
 
@@ -66,6 +66,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
+            ViewCompat.setTransitionName(image, "item_image");
         }
     }
 }

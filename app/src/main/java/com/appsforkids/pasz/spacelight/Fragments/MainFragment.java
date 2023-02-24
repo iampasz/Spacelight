@@ -7,6 +7,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -58,6 +61,8 @@ public class MainFragment extends Fragment implements Serializable {
     MyObjects myObjects;
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    int suitCounter = 0;
+
 
     @Nullable
     @Override
@@ -66,7 +71,6 @@ public class MainFragment extends Fragment implements Serializable {
         ButterKnife.bind(this, view);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-
         return view;
     }
 
@@ -80,10 +84,7 @@ public class MainFragment extends Fragment implements Serializable {
 
         pagerAdapter = new MyPagerAdapter(getParentFragmentManager(), myObjects.getNightlighters());
 
-
         pager.setAdapter(pagerAdapter);
-        //pager.setCurrentItem(2);
-
         tab_l2.setupWithViewPager(pager, true);
 
         float dip = 70f;
@@ -93,102 +94,29 @@ public class MainFragment extends Fragment implements Serializable {
                 dip,
                 r.getDisplayMetrics()
         );
-
-
-        //Налаштунки
-       // setSettings();
-
-
-
-//        switch (hasConnection(getContext())) {
-//            case 0:
-//                break;
-//            case 1:
-//               // addToRealm.addJsonToRealm();
-//                break;
-//            case 2:
-//                //addToRealm.addJsonToRealm();
-//                break;
-//            case 3:
-//                //addToRealm.addJsonToRealm();
-//                break;
-//        }
-        Resources res = getResources();
-
-//        colors = res.getStringArray(R.array.myColors);
-//        bgColors = res.getStringArray(R.array.bgColors);
-//        bgNlColors = res.getStringArray(R.array.bgNlColors);
-//        menuColors = res.getStringArray(R.array.menuColors);
-
-
-        image= new ImageView(getContext());
-        image.setLayoutParams(new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.MATCH_PARENT));
-        main_constrain.addView(image);
     }
 
-//    public void changeSuitColor() {
-//        Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
-//        suitColor = myFragment.getView().findViewById(R.id.suit_color);
-//
-//        if(suitColor!=null){
-//            if(suitColor.isShown()){
-//
-//                suitCounter++;
-//                if (suitCounter >= myObjects.getGradientArray().length) {
-//                    suitCounter = 0;
-//                }
-//                suitColor.setImageResource(myObjects.getGradientArray()[suitCounter]);
-//            }
-//        }
-//        sendAnalystics("change_color", "color"+suitCounter);
-//    }
-//
-//    public void changeBrighest() {
-//
-//        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-//        layout.screenBrightness = myObjects.getBrights()[brights];
-//        getActivity().getWindow().setAttributes(layout);
-//        brights++;
-//
-//        if (brights >= myObjects.getBrights().length) {
-//            brights = 0;
-//        }
-//
-//        sendAnalystics("bright", "bright="+brights);
-//    }
 
 
-//    public void startAnimation2(int imageViewAnimation) {
-//        Log.i("startAnimation2", imageViewAnimation + "");
-//        if (revolutionAnimationView == null) {
-//            //Создаем анимацию
-//            revolutionAnimationView = new RevolutionAnimationView(getContext());
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                revolutionAnimationView.setZ(-1);
-//            }
-//            mainBg.addView(revolutionAnimationView);
-//            revolutionAnimationView.changeImage(ContextCompat.getDrawable(getContext(), imageViewAnimation));
-//
-//        } else {
-//            if (revolutionAnimationView.getParent() == null) {
-//                mainBg.addView(revolutionAnimationView);
-//            }
-//            revolutionAnimationView.changeImage(ContextCompat.getDrawable(getContext(), imageViewAnimation));
-//            Log.i("startAnimation2", imageViewAnimation + " tyt");
-//        }
-//
-//        sendAnalystics("start_anim", "animation is= " + imageViewAnimation);
-//    }
+    public void changeSuitColor() {
+        Fragment myFragment = getFragmentManager().findFragmentByTag("myFragment" + pager.getCurrentItem());
+      ImageView  suitColor = myFragment.getView().findViewById(R.id.suit_color);
 
-//    public void deleteAnimation() {
-//        //Удаляем созданную вьюху с анимацией
-//        ((ViewManager) revolutionAnimationView.getParent()).removeView(revolutionAnimationView);
-//        Log.i("anim", "анимация удалена");
-//
-//    }
-//
+        if(suitColor!=null){
+            if(suitColor.isShown()){
+
+                suitCounter++;
+                if (suitCounter >= myObjects.getGradientArray().length) {
+                    suitCounter = 0;
+                }
+                suitColor.setImageResource(myObjects.getGradientArray()[suitCounter]);
+            }
+        }
+        sendAnalystics("change_color", "color"+suitCounter);
+    }
+
+
+
 
 
 
@@ -273,7 +201,6 @@ public class MainFragment extends Fragment implements Serializable {
     }
 
     private void showPlayer(){
-
         ((MainActivity)getActivity()).showPlayer();
 
     }
@@ -284,19 +211,6 @@ public class MainFragment extends Fragment implements Serializable {
 //        revolutionAnimationView.changeColorImage(ContextCompat.getDrawable(getContext(), image), Color.YELLOW );
 //    }
 //
-//    public void  startAnim(){
-//        if (smImage == -1) {
-//
-//        } else {
-//
-//            startAnimation2(myObjects.getAnimationImage()[smImage]);
-//            smImage++;
-//            if (smImage >= myObjects.getAnimationImage().length) {
-//                deleteAnimation();
-//                smImage = 0;
-//            }
-//        }
-//    }
 
 //    public void hideSuit(){
 //        if(hideSuit){
@@ -331,14 +245,10 @@ public class MainFragment extends Fragment implements Serializable {
 //    }
 
     public void hideElements(){
-
-
         tab_l2.animate().alpha(0).setDuration(1000).start();
-
     }
 
     public void showElements(){
-
         tab_l2.animate().alpha(1f).setDuration(1000).start();
     }
 

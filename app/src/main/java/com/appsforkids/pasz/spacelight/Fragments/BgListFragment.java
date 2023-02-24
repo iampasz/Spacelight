@@ -90,7 +90,7 @@ public class BgListFragment extends Fragment  {
         close_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closeFragment("");
+                closeFragment(0);
             }
         });
 
@@ -113,7 +113,9 @@ public class BgListFragment extends Fragment  {
         this.choseItem = choseItem;
     }
 
-    public void closeFragment(String link){
+    public void closeFragment(int position){
+
+        String link = imageFiles.get(position).getImage_internet_link();
 
         if(link.equals("")){
 
@@ -160,8 +162,8 @@ public class BgListFragment extends Fragment  {
     private void showImages(){
         rv_cards.setAdapter(new ImageAdapter(imageFiles, height,   new GetActionFromAdapter() {
             @Override
-            public void usePosition(String link) {
-                closeFragment(link);
+            public void usePosition(int position) {
+                closeFragment(position);
             }
 
         }));

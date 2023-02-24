@@ -3374,7 +3374,7 @@ id textinput_placeholder
 id textinput_prefix_text
 id textinput_suffix_text
 id time
-id timer2
+id timer_text
 id title
 id titleDividerNoCustom
 id title_template
@@ -3646,6 +3646,7 @@ layout timer_fragment
 mipmap ic_my_icon
 mipmap ic_my_icon_foreground
 plurals mtrl_badge_content_description
+raw alien
 raw butterfly
 raw cat
 raw coala
@@ -3658,6 +3659,9 @@ raw night
 raw night_cycle
 raw no_internet
 raw panda
+raw rocket
+raw rocket2
+raw rocket_loader
 raw sound_file_3
 raw space_ride
 raw star_enjoys
@@ -5100,4 +5104,5 @@ styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
 styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration ifTagNotSet ifTagSet motionInterpolator motionTarget onStateTransition pathMotionArc setsTag transitionDisable upDuration viewTransitionMode
 styleable include constraintSet
+transition shared_image
 xml image_share_filepaths

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constrain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
+    android:background="@drawable/bg_002"
     tools:context=".MainActivity">
 
 
@@ -33,20 +34,20 @@
         app:srcCompat="@drawable/suit_vector_gradient" />
 
     <TextView
-        android:id="@+id/timer2"
+        android:id="@+id/timer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:alpha="0.7"
         android:textColor="#fff"
         android:textSize="20sp"
         android:textStyle="bold"
         android:visibility="invisible"
         ads:layout_constraintStart_toStartOf="parent"
-        ads:layout_constraintTop_toTopOf="parent" />
+        ads:layout_constraintTop_toBottomOf="@+id/suit_button" />
 
-    <ImageView
+
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/rocket"
         android:layout_width="75dp"
         android:layout_height="75dp"
@@ -55,9 +56,13 @@
         android:contentDescription="@string/hide_nl"
         ads:layout_constraintBottom_toBottomOf="@+id/container"
         ads:layout_constraintStart_toStartOf="parent"
-        ads:srcCompat="@drawable/rocket" />
+        app:lottie_rawRes="@raw/rocket2"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
+
         android:id="@+id/alien_bt"
         android:layout_width="75dp"
         android:layout_height="75dp"
@@ -65,7 +70,12 @@
         android:layout_marginBottom="50dp"
         ads:layout_constraintBottom_toBottomOf="@+id/container"
         ads:layout_constraintEnd_toEndOf="parent"
-        ads:srcCompat="@drawable/alien" />
+        android:contentDescription="@string/hide_nl"
+        app:lottie_rawRes="@raw/alien"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
+
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -193,7 +203,7 @@
             android:id="@+id/lock_button"
             android:layout_width="@dimen/play_buttons_size"
             android:layout_height="@dimen/play_buttons_size"
-            ads:srcCompat="@drawable/lock_vector_gradient" />
+            ads:srcCompat="@drawable/unlock_vector_gradient" />
 
         <TextView
             android:layout_width="match_parent"
