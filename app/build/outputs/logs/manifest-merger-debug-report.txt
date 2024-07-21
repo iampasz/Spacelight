@@ -5,7 +5,6 @@ INJECTED from /Users/macbookair/AndroidStudioProjects/Spacelight/app/src/main/An
 INJECTED from /Users/macbookair/AndroidStudioProjects/Spacelight/app/src/main/AndroidManifest.xml:2:1-46:12
 INJECTED from /Users/macbookair/AndroidStudioProjects/Spacelight/app/src/main/AndroidManifest.xml:2:1-46:12
 MERGED from [io.realm:realm-android-library:10.11.1] /Users/macbookair/.gradle/caches/transforms-3/991c5793b4228a078797514d48aa2720/transformed/jetified-realm-android-library-10.11.1/AndroidManifest.xml:2:1-9:12
-MERGED from [androidx.multidex:multidex:2.0.0] /Users/macbookair/.gradle/caches/transforms-3/8d37e3177872a278c6371821bdc6bbb6/transformed/multidex-2.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.android.material:material:1.7.0] /Users/macbookair/.gradle/caches/transforms-3/aad2e67ff501b0c4bf8a4511dfe40723/transformed/material-1.7.0/AndroidManifest.xml:17:1-26:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/macbookair/.gradle/caches/transforms-3/6a615641fd93397badcdbf86a5d8a7b9/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
 MERGED from [com.airbnb.android:lottie:3.4.0] /Users/macbookair/.gradle/caches/transforms-3/4de4eabcd055934cf4ceb70e2dd7effc/transformed/jetified-lottie-3.4.0/AndroidManifest.xml:2:1-11:12
@@ -16,6 +15,7 @@ MERGED from [com.google.firebase:firebase-analytics:21.2.0] /Users/macbookair/.g
 MERGED from [com.google.firebase:firebase-crashlytics:18.3.3] /Users/macbookair/.gradle/caches/transforms-3/ed67fc5dd1b1db53433ccb58b9fa4951/transformed/jetified-firebase-crashlytics-18.3.3/AndroidManifest.xml:2:1-23:12
 MERGED from [fr.nicolaspomepuy:discreetapprate:2.0.4] /Users/macbookair/.gradle/caches/transforms-3/0ee620a66b369956a9604ec8d1912ee1/transformed/jetified-discreetapprate-2.0.4/AndroidManifest.xml:2:1-14:12
 MERGED from [com.jakewharton:butterknife:10.2.3] /Users/macbookair/.gradle/caches/transforms-3/8db2e7a87ff411fc015f366f88de28d0/transformed/jetified-butterknife-10.2.3/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.multidex:multidex:2.0.0] /Users/macbookair/.gradle/caches/transforms-3/8d37e3177872a278c6371821bdc6bbb6/transformed/multidex-2.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.squareup.picasso:picasso:2.71828] /Users/macbookair/.gradle/caches/transforms-3/c5437ed3fcb6f460976a133413f2826d/transformed/jetified-picasso-2.71828/AndroidManifest.xml:2:1-14:12
 MERGED from [com.daimajia.easing:library:2.4] /Users/macbookair/.gradle/caches/transforms-3/d013a9d2a0ca31cf8ef6ae43312bf17b/transformed/jetified-library-2.4/AndroidManifest.xml:2:1-11:12
 MERGED from [com.daimajia.androidanimations:library:2.4] /Users/macbookair/.gradle/caches/transforms-3/51c601d78caba14b998cad98deb6fd97/transformed/jetified-library-2.4/AndroidManifest.xml:2:1-11:12
@@ -293,8 +293,6 @@ INJECTED from /Users/macbookair/AndroidStudioProjects/Spacelight/app/src/main/An
 INJECTED from /Users/macbookair/AndroidStudioProjects/Spacelight/app/src/main/AndroidManifest.xml
 MERGED from [io.realm:realm-android-library:10.11.1] /Users/macbookair/.gradle/caches/transforms-3/991c5793b4228a078797514d48aa2720/transformed/jetified-realm-android-library-10.11.1/AndroidManifest.xml:5:5-7:41
 MERGED from [io.realm:realm-android-library:10.11.1] /Users/macbookair/.gradle/caches/transforms-3/991c5793b4228a078797514d48aa2720/transformed/jetified-realm-android-library-10.11.1/AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.multidex:multidex:2.0.0] /Users/macbookair/.gradle/caches/transforms-3/8d37e3177872a278c6371821bdc6bbb6/transformed/multidex-2.0.0/AndroidManifest.xml:20:5-43
-MERGED from [androidx.multidex:multidex:2.0.0] /Users/macbookair/.gradle/caches/transforms-3/8d37e3177872a278c6371821bdc6bbb6/transformed/multidex-2.0.0/AndroidManifest.xml:20:5-43
 MERGED from [com.google.android.material:material:1.7.0] /Users/macbookair/.gradle/caches/transforms-3/aad2e67ff501b0c4bf8a4511dfe40723/transformed/material-1.7.0/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.android.material:material:1.7.0] /Users/macbookair/.gradle/caches/transforms-3/aad2e67ff501b0c4bf8a4511dfe40723/transformed/material-1.7.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /Users/macbookair/.gradle/caches/transforms-3/6a615641fd93397badcdbf86a5d8a7b9/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
@@ -315,6 +313,8 @@ MERGED from [fr.nicolaspomepuy:discreetapprate:2.0.4] /Users/macbookair/.gradle/
 MERGED from [fr.nicolaspomepuy:discreetapprate:2.0.4] /Users/macbookair/.gradle/caches/transforms-3/0ee620a66b369956a9604ec8d1912ee1/transformed/jetified-discreetapprate-2.0.4/AndroidManifest.xml:7:5-9:41
 MERGED from [com.jakewharton:butterknife:10.2.3] /Users/macbookair/.gradle/caches/transforms-3/8db2e7a87ff411fc015f366f88de28d0/transformed/jetified-butterknife-10.2.3/AndroidManifest.xml:5:5-44
 MERGED from [com.jakewharton:butterknife:10.2.3] /Users/macbookair/.gradle/caches/transforms-3/8db2e7a87ff411fc015f366f88de28d0/transformed/jetified-butterknife-10.2.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.multidex:multidex:2.0.0] /Users/macbookair/.gradle/caches/transforms-3/8d37e3177872a278c6371821bdc6bbb6/transformed/multidex-2.0.0/AndroidManifest.xml:20:5-43
+MERGED from [androidx.multidex:multidex:2.0.0] /Users/macbookair/.gradle/caches/transforms-3/8d37e3177872a278c6371821bdc6bbb6/transformed/multidex-2.0.0/AndroidManifest.xml:20:5-43
 MERGED from [com.squareup.picasso:picasso:2.71828] /Users/macbookair/.gradle/caches/transforms-3/c5437ed3fcb6f460976a133413f2826d/transformed/jetified-picasso-2.71828/AndroidManifest.xml:5:5-44
 MERGED from [com.squareup.picasso:picasso:2.71828] /Users/macbookair/.gradle/caches/transforms-3/c5437ed3fcb6f460976a133413f2826d/transformed/jetified-picasso-2.71828/AndroidManifest.xml:5:5-44
 MERGED from [com.daimajia.easing:library:2.4] /Users/macbookair/.gradle/caches/transforms-3/d013a9d2a0ca31cf8ef6ae43312bf17b/transformed/jetified-library-2.4/AndroidManifest.xml:7:5-9:41
