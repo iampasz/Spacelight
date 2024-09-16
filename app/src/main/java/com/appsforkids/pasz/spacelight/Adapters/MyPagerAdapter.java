@@ -25,7 +25,7 @@ public class MyPagerAdapter extends MyFragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return Integer.MAX_VALUE;
+        return list.size();
     }
 
 

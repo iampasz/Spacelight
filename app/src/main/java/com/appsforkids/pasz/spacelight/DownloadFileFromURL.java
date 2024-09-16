@@ -1,5 +1,6 @@
 package com.appsforkids.pasz.spacelight;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -20,13 +21,16 @@ import static android.content.Context.MODE_PRIVATE;
  * Background Async Task to download file
  * */public class DownloadFileFromURL extends AsyncTask<String, String, String> {
     String file_name;
+    @SuppressLint("StaticFieldLeak")
     Activity activity;
     ProgressDialog mProgressDialog;
     FileIsDownloaded fileIsDownloaded;
+    Boolean showLoader = false;
 
-    public DownloadFileFromURL(Activity activity, String file_name, FileIsDownloaded fileIsDownloaded) {
+    public DownloadFileFromURL(Activity activity, String file_name, FileIsDownloaded fileIsDownloaded, Boolean showLoader) {
         this.file_name = file_name;
         this.activity = activity;
+        this.showLoader = showLoader;
         this.fileIsDownloaded = fileIsDownloaded;
         // instantiate it within the onCreate method
         mProgressDialog = new ProgressDialog(activity);
@@ -43,7 +47,10 @@ import static android.content.Context.MODE_PRIVATE;
     protected void onPreExecute() {
         super.onPreExecute();
        //activity.showDialog(progress_bar_type);
-        mProgressDialog.show();
+        if(showLoader){
+            mProgressDialog.show();
+        }
+
     }
 
     /**
@@ -51,6 +58,8 @@ import static android.content.Context.MODE_PRIVATE;
      * */
     @Override
     protected String doInBackground(@NonNull String... f_url) {
+
+        Log.i("CHEK", f_url[0]+ " Internet ling for aploading");
 
         int count;
         try {
@@ -69,7 +78,7 @@ import static android.content.Context.MODE_PRIVATE;
                     8192);
 
             OutputStream output = activity.openFileOutput(file_name, MODE_PRIVATE);
-            byte data[] = new byte[1024];
+            byte[] data = new byte[1024];
             long total = 0;
             while ((count = input.read(data)) != -1) {
                 total += count;
@@ -82,6 +91,10 @@ import static android.content.Context.MODE_PRIVATE;
             output.flush();
             output.close();
             input.close();
+            Log.i("CHEK",  "File is loaded");
+            fileIsDownloaded.fileDownloaded(activity.getFilesDir().getAbsoluteFile()+"/"+file_name+"");
+
+
         } catch (Exception e) {
             Log.e("Error: ", e.getMessage());
             Log.i("CHEK",  "Файл не завантажується. Можливо проблеми з лінком або з інтернет налаштуваннями");
@@ -100,12 +113,10 @@ import static android.content.Context.MODE_PRIVATE;
     @Override
     protected void onPostExecute(String file_url) {
         mProgressDialog.dismiss();
-        fileIsDownloaded.fileDownloaded(activity.getFilesDir().getAbsoluteFile()+"/"+file_name+"");
-    }
+       }
 
     private AudioFile getAudio(int id){
         Realm realm = Realm.getDefaultInstance();
-        AudioFile audioFile = realm.where(AudioFile.class).equalTo("id", id).findFirst();
-        return audioFile;
+        return realm.where(AudioFile.class).equalTo("id", id).findFirst();
     }
 }

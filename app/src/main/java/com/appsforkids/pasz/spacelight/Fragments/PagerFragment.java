@@ -1,8 +1,12 @@
 package  com.appsforkids.pasz.spacelight.Fragments;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,12 +19,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.appsforkids.pasz.spacelight.ColorController;
+import com.appsforkids.pasz.spacelight.MainActivity;
 import com.appsforkids.pasz.spacelight.MyObjects;
 import com.appsforkids.pasz.spacelight.Objects.Nightlighter;
 import com.appsforkids.pasz.spacelight.R;
 import com.appsforkids.pasz.spacelight.RealmObjects.MySettings;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+
 //mport com.daimajia.androidanimations.library.Techniques;
 //import com.daimajia.androidanimations.library.YoYo;
 
@@ -38,7 +44,8 @@ public class PagerFragment extends Fragment {
     Realm realm;
     Context ctx;
 
-     ImageView suitColorImg;
+    ImageView suitColorImg;
+
     TextView nameNightlight;
 
 
@@ -59,12 +66,14 @@ public class PagerFragment extends Fragment {
         myNightlighter = (Nightlighter) getArguments().getSerializable("nightlight");
     }
 
+    @SuppressLint("InflateParams")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.pager_fragment, null);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -77,6 +86,7 @@ public class PagerFragment extends Fragment {
         final ImageView moonImg = (ImageView) view.findViewById(R.id.moon);
         final ImageView suitImg = (ImageView) view.findViewById(R.id.suit) ;
          suitColorImg = (ImageView) view.findViewById(R.id.suit_color) ;
+
         final ImageView animalImg = (ImageView) view.findViewById(R.id.animal) ;
 
         moonImg.setImageResource(myNightlighter.getMoonImg());
@@ -109,16 +119,20 @@ public class PagerFragment extends Fragment {
             public void onClick(View v) {
                 Random random = new Random();
 
+               // moonImg.setVisibility(View.INVISIBLE);
+              //  moonImg.animate().alpha(0f).setDuration(5000).start();
 
-               int i =  random.nextInt(techniques.size());
 
-                YoYo.with(techniques.get(i))
-                        .duration(700)
-                        .playOn(moonImg);
 
-                YoYo.with(techniques.get(i))
-                        .duration(700)
-                        .playOn(moonImg);
+//               int i =  random.nextInt(techniques.size());
+//
+//                YoYo.with(techniques.get(i))
+//                        .duration(700)
+//                        .playOn(moonImg);
+//
+//                YoYo.with(techniques.get(i))
+//                        .duration(700)
+//                        .playOn(moonImg);
             }
         });
 
@@ -130,19 +144,21 @@ public class PagerFragment extends Fragment {
         realm = Realm.getDefaultInstance();
 
 
-        suitColorImg.setOnTouchListener(new View.OnTouchListener() {
+        moonImg.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-
                 switch (motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
+                        view.performClick();
                         hideSuit();
                         break;
                     case MotionEvent.ACTION_UP:
+                        view.performClick();
                         showSuit();
                         break;
+                    default:
+                        break;
                 }
-
                 return false;
             }
         });

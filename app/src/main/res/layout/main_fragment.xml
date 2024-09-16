@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:easytabs="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainBg"
     android:layout_width="match_parent"
@@ -16,139 +17,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!--        <com.airbnb.lottie.LottieAnimationView-->
+        <!--            android:id="@+id/lottie_nl"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:scaleType="centerCrop"-->
+        <!--            ads:layout_constraintBottom_toTopOf="@+id/tab_l2"-->
+        <!--            ads:layout_constraintEnd_toEndOf="parent"-->
+        <!--            ads:layout_constraintStart_toStartOf="parent"-->
+        <!--            ads:layout_constraintTop_toTopOf="@+id/lock_frame"-->
+        <!--            app:lottie_autoPlay="true"-->
+        <!--            app:lottie_loop="true"-->
+        <!--            app:lottie_rawRes="@raw/coala" />-->
+
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clickable="true"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SpeakableTextPresentCheck">
+            android:contentDescription="@string/again"
+            android:focusable="true"
+            ads:layout_constraintBottom_toTopOf="@+id/tab_l2"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toTopOf="parent"
+            tools:ignore="DuplicateSpeakableTextCheck">
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/again"
-                android:scaleType="fitXY"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </androidx.viewpager.widget.ViewPager>
 
-        <FrameLayout
-            android:id="@+id/lock_frame"
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_l2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="false"
-            tools:ignore="SpeakableTextPresentCheck"
-            tools:layout_editor_absoluteX="4dp">
+            android:layout_height="15dp"
+            android:contentDescription="@string/again"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            tools:ignore="MissingConstraints" />
 
-        </FrameLayout>
-
-        <ImageView
-
-            android:id="@+id/animateBg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="DuplicateClickableBoundsCheck,SpeakableTextPresentCheck" />
-
-        <ImageView
-            android:id="@+id/suit"
-            android:layout_width="@dimen/play_buttons_size"
-            android:layout_height="@dimen/play_buttons_size"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="100dp"
-            ads:srcCompat="@drawable/suit_vector_gradient"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="0dp"
-            android:layout_height="77dp"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lockButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="8dp"
-            android:orientation="vertical"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/lock_button"
-                android:layout_width="@dimen/play_buttons_size"
-                android:layout_height="@dimen/play_buttons_size"
-                ads:srcCompat="@drawable/unlock_vector_gradient" />
-
-            <ImageView
-                android:id="@+id/presents"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1"
-                android:visibility="gone"
-                app:srcCompat="@drawable/present" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/lock"
-                android:textAlignment="center"
-                android:textColor="#fff"
-                android:textSize="10sp" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:alpha="0.7"
-            android:textColor="#fff"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,6 @@
 package com.appsforkids.pasz.spacelight.Adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,15 +41,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PersonViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PersonViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
        // holder.song_name.setText(arrayList.get(position).getName());
         //holder.author.setText(arrayList.get(position).getAutor());
 
         if(!arrayList.get(position).getStatus()){
-            holder.download.setText("Download");
+            holder.download.setText(holder.download.getResources().getString(R.string.download));
         }else{
-            holder.download.setText("X");
+            holder.download.setText(holder.download.getResources().getString(R.string.x));
         }
 
         holder.download.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +123,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
 
 
     public void updateData(ArrayList<AudioFile> viewModels) {
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
 

@@ -2,7 +2,6 @@
 <resources>
     <dimen name="buttons_size">40dp</dimen>
     <dimen name="play_buttons_size">60dp</dimen>
-    <dimen name="margin_5dp">5dp</dimen>
-    <dimen name="hide_130dp">130dp</dimen>
-    <dimen name="hide_65dp">65dp</dimen>
+
+
 </resources>
